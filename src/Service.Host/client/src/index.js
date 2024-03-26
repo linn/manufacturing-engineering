@@ -21,7 +21,7 @@ const oidcConfig = {
     client_id: 'app2',
     response_type: 'code',
     scope: 'openid profile email associations',
-    redirect_uri: `${host}/manufacturing-engineering/redirect`,
+    redirect_uri: `${host}/manufacturing-engineering`,
     post_logout_redirect_uri: `${config.proxyRoot}/authentication/Account/Logout`,
     onSigninCallback: () => {
         window.location = `${host}/manufacturing-engineering`;
