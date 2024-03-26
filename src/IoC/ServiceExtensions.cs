@@ -22,7 +22,9 @@
 
         public static IServiceCollection AddServices(this IServiceCollection services)
         {
-            return services;
+            return services
+                .AddTransient<IRazorEngine, RazorEngine>()
+                .AddTransient<ITemplateEngine, RazorTemplateEngine>();
             // return services.AddTransient<IThingService, ThingService>()
             //     .AddTransient<IAmazonSimpleEmailService>(
             //         x => new AmazonSimpleEmailServiceClient(x.GetService<AWSOptions>()?.Region))

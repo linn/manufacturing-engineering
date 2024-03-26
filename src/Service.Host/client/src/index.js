@@ -3,52 +3,48 @@ import { createRoot } from 'react-dom/client';
 import { SnackbarProvider } from 'notistack';
 import { ThemeProvider, StyledEngineProvider } from '@mui/material/styles';
 import { linnTheme } from '@linn-it/linn-form-components-library';
+import { AuthProvider } from 'react-oidc-context';
+import { WebStorageStateStore } from 'oidc-client-ts';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
-import configureStore from './configureStore';
 import Root from './components/Root';
-import userManager from './helpers/userManager';
 import 'typeface-roboto';
-
-const NextRoot = require('./components/Root').default;
-
-const initialState = {};
-const store = configureStore(initialState);
-const { user } = store.getState().oidc;
+import config from './config';
 
 const container = document.getElementById('root');
 const root = createRoot(container);
-// todo - redux kill
+
+const host = window.location.origin;
+
+const oidcConfig = {
+    authority: config.authorityUri,
+    client_id: 'app2',
+    response_type: 'code',
+    scope: 'openid profile email associations',
+    redirect_uri: `${host}/manufacturing-engineering/redirect`,
+    post_logout_redirect_uri: `${config.proxyRoot}/authentication/Account/Logout`,
+    onSigninCallback: () => {
+        window.location = `${host}/manufacturing-engineering`;
+    },
+    userStore: new WebStorageStateStore({ store: window.localStorage })
+};
+
 const render = Component => {
     root.render(
-        <StyledEngineProvider injectFirst>
-            <ThemeProvider theme={linnTheme}>
-                <SnackbarProvider dense maxSnack={5}>
-                    <LocalizationProvider dateAdapter={AdapterMoment} locale="en-GB">
-                        <Component store={store} />
-                    </LocalizationProvider>
-                </SnackbarProvider>
-            </ThemeProvider>
-        </StyledEngineProvider>
+        <AuthProvider {...oidcConfig}>
+            <StyledEngineProvider injectFirst>
+                <ThemeProvider theme={linnTheme}>
+                    <SnackbarProvider dense maxSnack={5}>
+                        <LocalizationProvider dateAdapter={AdapterMoment} locale="en-GB">
+                            <Component />
+                        </LocalizationProvider>
+                    </SnackbarProvider>
+                </ThemeProvider>
+            </StyledEngineProvider>
+        </AuthProvider>
     );
 };
 
 document.body.style.margin = '0';
 
 render(Root);
-
-if ((!user || user.expired) && window.location.pathname !== '/template/signin-oidc-client') {
-    userManager.signinRedirect({
-        data: { redirect: window.location.pathname + window.location.search }
-    });
-} else {
-    render(Root);
-
-    // Hot Module Replacement API
-    if (module.hot) {
-        //module.hot.accept('./reducers', () => store.replaceReducer(reducer));
-        module.hot.accept('./components/Root', () => {
-            render(NextRoot);
-        });
-    }
-}
