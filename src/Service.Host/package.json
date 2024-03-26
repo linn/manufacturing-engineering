@@ -1,7 +1,7 @@
 {
-  "name": "template",
+  "name": "manufacturing-engineering",
   "version": "1.0.0",
-  "description": "template",
+  "description": "manufacturing-engineering",
   "main": "index.js",
   "scripts": {
     "noEmitOnError": "true",

@@ -25,13 +25,13 @@ function Root({ store }) {
                                     <Route
                                         exact
                                         path="/"
-                                        element={<Navigate to="/template" replace />}
+                                        element={<Navigate to="/manufacturing-engineering" replace />}
                                     />
-                                    <Route path="/template" element={<App />} />
-                                    <Route exact path="/template/:id" element={<App />} />
+                                    <Route path="/manufacturing-engineering" element={<App />} />
+                                    <Route exact path="/manufacturing-engineering/:id" element={<App />} />
                                     <Route
                                         exact
-                                        path="/template/signin-oidc-client"
+                                        path="/manufacturing-engineering/signin-oidc-client"
                                         element={<Callback />}
                                     />
                                     <Route element={<NotFoundPage />} />

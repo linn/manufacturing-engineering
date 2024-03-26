@@ -18,7 +18,7 @@ const { user } = store.getState().oidc;
 
 const container = document.getElementById('root');
 const root = createRoot(container);
-
+// todo - redux kill
 const render = Component => {
     root.render(
         <StyledEngineProvider injectFirst>

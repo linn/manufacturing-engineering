@@ -1,5 +1,5 @@
 ---
-Description: Template
+Description: ManufacturingEngineering
 AWSTemplateFormatVersion: '2010-09-09'
 Parameters:
   dockerTag:
@@ -77,7 +77,7 @@ Resources:
     Properties:
       Tags:
         - Key: "Project"
-          Value: "template"
+          Value: "manufacturing-engineering"
         - Key: "CIT"
           Value: "IT"
         - Key: AppManagerCFNStackKey
@@ -91,7 +91,7 @@ Resources:
             Action: ["sts:AssumeRole"]
       Path: "/"
       Policies:
-        - PolicyName: templateServices
+        - PolicyName: manufacturingEngineeringServices
           PolicyDocument:
             Version: '2012-10-17'
             Statement:
@@ -122,22 +122,22 @@ Resources:
                 Action:
                   - s3:*
                 Resource: !Sub "arn:aws:s3:::auth${environmentSuffix}*-keysbucket*"
-  templateTaskDefinition:
+  manufacturingEngineeringTaskDefinition:
     Type: AWS::ECS::TaskDefinition
     Properties:
       Tags:
         - Key: "Project"
-          Value: "template"
+          Value: "manufacturing-engineering"
         - Key: "CIT"
           Value: "IT"
         - Key: AppManagerCFNStackKey
           Value: !Sub ${AWS::StackId}
-      TaskRoleArn: !GetAtt templateRole.Arn
+      TaskRoleArn: !GetAtt manufacturingEngineeringRole.Arn
       ContainerDefinitions:
-        - Name: template
+        - Name: manufacturing-engineering
           Cpu: '1'
           Essential: 'true'
-          Image: !Sub docker.io/linn/template:${dockerTag}
+          Image: !Sub docker.io/linn/manufacturing-engineering:${dockerTag}
           PortMappings:
             - ContainerPort: 5050
           Memory: '500'
@@ -147,14 +147,14 @@ Resources:
               - "curl -f http://localhost:5050/healthcheck || exit 1"
           DockerLabels:
             traefik.enable: true
-            traefik.http.routers.template.entrypoints: web
-            traefik.http.routers.template.rule: "PathPrefix(`/template`)"
-            traefik.http.services.template.loadbalancer.healthcheck.path: "/healthcheck"
+            traefik.http.routers.manufacturing-engineering.entrypoints: web
+            traefik.http.routers.manufacturing-engineering.rule: "PathPrefix(`/manufacturing-engineering`)"
+            traefik.http.services.manufacturing-engineering.loadbalancer.healthcheck.path: "/healthcheck"
           LogConfiguration:
             LogDriver: gelf
             Options:
               'gelf-address': 'udp://syslog.linn.co.uk:12201'
-              'tag': !Sub template-${dockerTag}-ecs-task
+              'tag': !Sub manufacturing-engineering-${dockerTag}-ecs-task
           Environment:
             - Name: DATABASE_HOST
               Value: !Ref databaseHost
@@ -200,64 +200,12 @@ Resources:
               Value:
                 Fn::ImportValue:
                   !Sub "kms-key-alias${environmentSuffix}"
-  templateMessagingTaskDefinition:
-    Type: AWS::ECS::TaskDefinition
-    Properties:
-      Tags:
-        - Key: "Project"
-          Value: "template"
-        - Key: "CIT"
-          Value: "IT"
-        - Key: AppManagerCFNStackKey
-          Value: !Sub ${AWS::StackId}
-      TaskRoleArn: !GetAtt templateRole.Arn
-      ContainerDefinitions:
-        - Name: templateMessaging
-          Essential: 'true'
-          Image: !Sub docker.io/linn/template-messaging:${dockerTag}
-          PortMappings:
-            - ContainerPort: 5050
-          Memory: '150'
-          LogConfiguration:
-            LogDriver: gelf
-            Options:
-              'gelf-address': 'udp://syslog.linn.co.uk:12201'
-              'tag': !Sub template-messaging-${dockerTag}-ecs-task
-          Environment:
-            - Name: DATABASE_HOST
-              Value: !Ref databaseHost
-            - Name: DATABASE_NAME
-              Value: !Ref databaseName
-            - Name: DATABASE_USER_ID
-              Value: !Ref databaseUserId
-            - Name: DATABASE_PASSWORD
-              Value: !Ref databasePassword
-            - Name: RABBIT_SERVER
-              Value: !Ref rabbitServer
-            - Name: RABBIT_PORT
-              Value: !Ref rabbitPort
-            - Name: RABBIT_USERNAME
-              Value: !Ref rabbitUsername
-            - Name: RABBIT_PASSWORD
-              Value: !Ref rabbitPassword
-            - Name: APP_ROOT
-              Value: !Ref appRoot
-            - Name: PROXY_ROOT
-              Value: !Ref proxyRoot
-            - Name: LOG_AMAZON_SQSQUEUEURI
-              Value: !ImportValue logging-queue-url
-            - Name: LOG_ENVIRONMENT
-              Value: !Ref loggingEnvironment
-            - Name: LOG_MAX_INNER_EXCEPTION_DEPTH
-              Value: !Ref loggingMaxInnerExceptionDepth
-            - Name: awsRegion
-              Value: !Ref AWS::Region
-  templateService:
+  manufacturingEngineeringService:
     Type: AWS::ECS::Service
     Properties:
       Tags:
         - Key: "Project"
-          Value: "template"
+          Value: "manufacturing-engineering"
         - Key: "CIT"
           Value: "IT"
         - Key: AppManagerCFNStackKey
@@ -273,21 +221,4 @@ Resources:
           Type: spread
         - Field: instanceId
           Type: spread
-      TaskDefinition: !Ref templateTaskDefinition
-  templateMessagingService:
-    Type: AWS::ECS::Service
-    Properties:
-      Tags:
-        - Key: "Project"
-          Value: "template"
-        - Key: "CIT"
-          Value: "IT"
-        - Key: AppManagerCFNStackKey
-          Value: !Sub ${AWS::StackId}
-      # Have to use long form conditional
-      Cluster: !If
-        - isTesting
-        - !Sub ${TestClusterName}
-        - !Sub ${ProductionClusterName}
-      DesiredCount: !If [isTesting, 1, 1]
-      TaskDefinition: !Ref templateMessagingTaskDefinition
+      TaskDefinition: !Ref manufacturingEngineeringTaskDefinition
