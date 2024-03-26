@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>net7.0</TargetFramework>
+		<AssemblyName>Linn.ManufacturingEngineering.Integration.Tests</AssemblyName>
+		<RootNamespace>Linn.ManufacturingEngineering.Integration.Tests</RootNamespace>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="FluentAssertions" Version="6.11.0" />
+		<PackageReference Include="Linn.Common.Persistence" Version="3.0.0" />
+		<PackageReference Include="Linn.Common.Reporting.Resources" Version="1.6.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.2.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.2.0" />
+		<PackageReference Include="Microsoft.AspNetCore.TestHost" Version="7.0.9" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.6.3" />
+		<PackageReference Include="MSTest.TestAdapter" Version="3.1.1" />
+		<PackageReference Include="MSTest.TestFramework" Version="3.1.1" />
+		<PackageReference Include="NSubstitute" Version="5.0.0" />
+		<PackageReference Include="nunit" Version="3.13.3" />
+		<PackageReference Include="NUnit3TestAdapter" Version="4.5.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\..\src\Domain.LinnApps\Domain.LinnApps.csproj" />
+		<ProjectReference Include="..\..\..\src\IoC\IoC.csproj" />
+		<ProjectReference Include="..\..\..\src\Resources\Resources.csproj" />
+		<ProjectReference Include="..\..\..\src\Service\Service.csproj" />
+	</ItemGroup>
+
+</Project>

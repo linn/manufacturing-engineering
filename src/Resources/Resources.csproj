@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net7.0</TargetFramework>
+		<AssemblyName>Linn.ManufacturingEngineering.Resources</AssemblyName>
+		<RootNamespace>Linn.ManufacturingEngineering.Resources</RootNamespace>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Linn.Common.Resources" Version="2.1.0" />
+	</ItemGroup>
+
+</Project>
