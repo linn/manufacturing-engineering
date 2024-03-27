@@ -98,12 +98,15 @@ function Page({
             </Tooltip>
         );
     };
-
     return (
         <Grid container spacing={3} className={classes.grid}>
             <Grid item xs={1} />
             <Grid item xs={10} className="hide-when-printing">
-                {showBreadcrumbs && <Breadcrumbs history={history} homeUrl={homeUrl} />}
+                {showBreadcrumbs && (
+                    <div style={{ marginTop: '80px' }}>
+                        <Breadcrumbs history={history} homeUrl={homeUrl} />
+                    </div>
+                )}
             </Grid>
             <Grid item xs={1} />
 

@@ -10,7 +10,7 @@ import history from '../history';
 function App() {
     return (
         <Page homeUrl={config.appRoot} history={history}>
-            <Typography variant="h6">Manufacturing Engineering</Typography>
+            <Typography variant="h4">Manufacturing Engineering</Typography>
             <List>
                 <ListItem component={Link} to="/manufacturing-engineering/inspection">
                     <Typography color="primary">Inspection</Typography>

@@ -10,7 +10,7 @@ import history from '../history';
 function PlaceHolderPage() {
     return (
         <Page homeUrl={config.appRoot} history={history}>
-            <Typography variant="h6">Manufacturing Engineering</Typography>
+            <Typography variant="h4">Inspection</Typography>
             <List>
                 <ListItem component={Link} to="/manufacturing-engineering">
                     <Typography color="primary">Home</Typography>
