@@ -31,6 +31,7 @@ const oidcConfig = {
 
 const render = Component => {
     root.render(
+        //eslint-disable-next-line react/jsx-props-no-spreading
         <AuthProvider {...oidcConfig}>
             <StyledEngineProvider injectFirst>
                 <ThemeProvider theme={linnTheme}>

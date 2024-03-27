@@ -6,12 +6,14 @@ import 'typeface-roboto';
 import NotFoundPage from './NotFoundPage';
 import history from '../history';
 import useSignIn from '../hooks/useSignIn';
+import Navigation from '../containers.js/Navigation';
 
 function Root() {
     useSignIn();
     return (
         <div>
             <div className="padding-top-when-not-printing">
+                <Navigation />
                 <HistoryRouter history={history}>
                     <Routes>
                         <Route

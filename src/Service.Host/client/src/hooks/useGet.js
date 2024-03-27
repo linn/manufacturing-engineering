@@ -27,7 +27,7 @@ function useGet(url, requiresAuth = false) {
         };
 
         const response = await fetch(
-            id ? `${url}/${id}${queryString}}` : `${url}${queryString}`,
+            id ? `${url}/${id}${queryString}}` : `${url}${queryString ?? ''}`,
             requestParameters
         );
         if (response.ok) {
