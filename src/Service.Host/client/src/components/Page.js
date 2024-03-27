@@ -4,12 +4,13 @@ import Avatar from '@mui/material/Avatar';
 import { green, red } from '@mui/material/colors';
 import makeStyles from '@mui/styles/makeStyles';
 import { useSnackbar } from 'notistack';
-import { useAuth, hasAuthParams } from 'react-oidc-context';
+import { useAuth } from 'react-oidc-context';
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Breadcrumbs, Loading } from '@linn-it/linn-form-components-library';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
+import useSignIn from '../hooks/useSignIn';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -50,11 +51,11 @@ function Page({
     requestErrors,
     showRequestErrors,
     homeUrl,
-    showBreadcrumbs
+    showBreadcrumbs,
+    showAuthUi
 }) {
     const classes = useStyles();
     const { enqueueSnackbar } = useSnackbar();
-
     useEffect(() => {
         if (requestErrors && showRequestErrors) {
             requestErrors.forEach(t => {
@@ -67,22 +68,7 @@ function Page({
     }, [requestErrors, enqueueSnackbar, showRequestErrors]);
 
     const auth = useAuth();
-
-    const [hasTriedSignin, setHasTriedSignin] = React.useState(false);
-
-    // automatically sign-in
-    useEffect(() => {
-        if (
-            !hasAuthParams() &&
-            !auth.isAuthenticated &&
-            !auth.activeNavigator &&
-            !auth.isLoading &&
-            !hasTriedSignin
-        ) {
-            auth.signinRedirect();
-            setHasTriedSignin(true);
-        }
-    }, [auth, hasTriedSignin]);
+    useSignIn();
 
     const authUi = () => {
         if (auth.activeNavigator === 'signinSilent') {
@@ -109,19 +95,9 @@ function Page({
             .reduce((response, word) => response + word.slice(0, 1), '');
 
         return (
-            <>
-                <Tooltip title={`you are logged in as ${auth?.user?.profile?.preferred_username}`}>
-                    <Avatar sx={{ bgcolor: green[500] }}>{initials}</Avatar>
-                </Tooltip>
-                {/* <button
-                    onClick={() => {
-                        auth.removeUser();
-                        auth.signoutRedirect();
-                    }}
-                >
-                    Log out
-                </button> */}
-            </>
+            <Tooltip title={`you are logged in as ${auth?.user?.profile?.preferred_username}`}>
+                <Avatar sx={{ bgcolor: green[500] }}>{initials}</Avatar>
+            </Tooltip>
         );
     };
 
@@ -137,7 +113,7 @@ function Page({
             <Grid item xs={pageWidth[width]}>
                 <Paper className={classes.root} square>
                     <>
-                        <div style={{ float: 'right' }}>{authUi()}</div>
+                        {showAuthUi && <div style={{ float: 'right' }}>{authUi()}</div>}
                         {children}
                     </>
                 </Paper>
@@ -154,7 +130,8 @@ Page.propTypes = {
     showRequestErrors: PropTypes.bool,
     requestErrors: PropTypes.arrayOf(PropTypes.shape({})),
     homeUrl: PropTypes.string,
-    showBreadcrumbs: PropTypes.bool
+    showBreadcrumbs: PropTypes.bool,
+    showAuthUi: PropTypes.bool
 };
 
 Page.defaultProps = {
@@ -162,7 +139,8 @@ Page.defaultProps = {
     showRequestErrors: false,
     requestErrors: [],
     homeUrl: null,
-    showBreadcrumbs: true
+    showBreadcrumbs: true,
+    showAuthUi: true
 };
 
 export default Page;
