@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import Typography from '@mui/material/Typography';
 import { Link } from 'react-router-dom';
 import List from '@mui/material/List';
@@ -7,17 +7,17 @@ import Page from './Page';
 import config from '../config';
 import history from '../history';
 
-function App() {
+function PlaceHolderPage() {
     return (
         <Page homeUrl={config.appRoot} history={history}>
             <Typography variant="h6">Manufacturing Engineering</Typography>
             <List>
-                <ListItem component={Link} to="/manufacturing-engineering/inspection">
-                    <Typography color="primary">Inspection</Typography>
+                <ListItem component={Link} to="/manufacturing-engineering">
+                    <Typography color="primary">Home</Typography>
                 </ListItem>
             </List>
         </Page>
     );
 }
 
-export default App;
+export default PlaceHolderPage;

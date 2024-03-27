@@ -7,6 +7,7 @@ import NotFoundPage from './NotFoundPage';
 import history from '../history';
 import useSignIn from '../hooks/useSignIn';
 import Navigation from '../containers.js/Navigation';
+import PlaceHolderPage from './PlacholderPage';
 
 function Root() {
     useSignIn();
@@ -22,7 +23,10 @@ function Root() {
                             element={<Navigate to="/manufacturing-engineering" replace />}
                         />
                         <Route path="/manufacturing-engineering" element={<App />} />
-                        <Route exact path="/manufacturing-engineering/:id" element={<App />} />
+                        <Route
+                            path="/manufacturing-engineering/inspection"
+                            element={<PlaceHolderPage />}
+                        />
 
                         <Route element={<NotFoundPage />} />
                     </Routes>
