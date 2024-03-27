@@ -44,8 +44,8 @@ namespace Linn.ManufacturingEngineering.Service.Host
                 options =>
                     {
                         options.Authority = ApplicationSettings.Get().AuthorityUri;
-                        options.CallbackPath = new PathString("/template/signin-oidc");
-                        options.CookiePath = "/template";
+                        options.CallbackPath = new PathString("/manufacturing-engineering/signin-oidc");
+                        options.CookiePath = "/manufacturing-engineering";
                     });
         }
 
@@ -58,7 +58,7 @@ namespace Linn.ManufacturingEngineering.Service.Host
                 app.UseDeveloperExceptionPage();
                 app.UseStaticFiles(new StaticFileOptions
                                        {
-                                           RequestPath = "/template/build",
+                                           RequestPath = "/manufacturing-engineering/build",
                                            FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "client", "build"))
                                        });
             }
@@ -66,7 +66,7 @@ namespace Linn.ManufacturingEngineering.Service.Host
             {
                 app.UseStaticFiles(new StaticFileOptions
                                        {
-                                           RequestPath = "/template/build",
+                                           RequestPath = "/manufacturing-engineering/build",
                                            FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "app", "client", "build"))
                                        });
             }

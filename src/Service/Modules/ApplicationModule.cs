@@ -15,25 +15,18 @@
         public void MapEndpoints(IEndpointRouteBuilder app)
         {
             app.MapGet("/", this.Redirect);
-            app.MapGet("/template", this.GetApp);
-            app.MapGet("/template/signin-oidc-client", this.GetApp);
-            app.MapGet("/template/signin-oidc-silent", this.GetSilentRenew);
+            app.MapGet("/manufacturing-engineering", this.GetApp);
         }
 
         private Task Redirect(HttpRequest req, HttpResponse res)
         {
-            res.Redirect("/template");
+            res.Redirect("/manufacturing-engineering");
             return Task.CompletedTask;
         }
 
         private async Task GetApp(HttpRequest req, HttpResponse res)
         {
             await res.Negotiate(new ViewResponse { ViewName = "Index.cshtml" });
-        }
-
-        private async Task GetSilentRenew(HttpRequest req, HttpResponse res)
-        {
-            await res.Negotiate(new ViewResponse { ViewName = "SilentRenew.html" });
         }
     }
 }

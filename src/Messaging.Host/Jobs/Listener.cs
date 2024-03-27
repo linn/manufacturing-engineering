@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Linn.Common.Logging;
 using Linn.Common.Messaging.RabbitMQ.Configuration;
 using Linn.Common.Messaging.RabbitMQ.Handlers;
-using Linn.ManufacturingEngineering.Messaging.Handlers;
 using Linn.ManufacturingEngineering.Messaging.Messages;
 
 using Microsoft.Extensions.Hosting;

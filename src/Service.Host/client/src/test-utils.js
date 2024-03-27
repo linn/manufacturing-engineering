@@ -9,9 +9,18 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { apiMiddleware as api } from 'redux-api-middleware';
 import thunkMiddleware from 'redux-thunk';
+import { useAuth } from 'react-oidc-context';
 
 const middleware = [api, thunkMiddleware];
+jest.mock('react-oidc-context', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useAuth: jest.fn(),
+    hasAuthParams: jest.fn()
+}));
 
+useAuth.mockImplementation(() => ({ signinRedirect: jest.fn() }));
+
+useAuth.mockImplementation(() => ({ signinRedirect: jest.fn() }));
 // eslint-disable-next-line react/prop-types
 const Providers = ({ children }) => {
     global.fetch = jest.fn(() =>
