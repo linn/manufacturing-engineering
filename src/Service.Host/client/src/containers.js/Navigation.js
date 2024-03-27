@@ -17,7 +17,7 @@ function Navigation() {
             myStuff={menuData?.myStuff}
             username={auth?.user?.profile?.preferred_username}
             seenNotifications={[]}
-            unseenNotifications={notifcationsData}
+            unseenNotifications={notifcationsData?.notifcations}
             markNotificationSeen={() => {}}
             authRoot={config.authorityUri}
         />
