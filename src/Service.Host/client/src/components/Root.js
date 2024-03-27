@@ -5,8 +5,10 @@ import App from './App';
 import 'typeface-roboto';
 import NotFoundPage from './NotFoundPage';
 import history from '../history';
+import useSignIn from '../hooks/useSignIn';
 
 function Root() {
+    useSignIn();
     return (
         <div>
             <div className="padding-top-when-not-printing">

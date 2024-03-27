@@ -10,7 +10,6 @@ import PropTypes from 'prop-types';
 import { Breadcrumbs, Loading } from '@linn-it/linn-form-components-library';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
-import useSignIn from '../hooks/useSignIn';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -68,7 +67,6 @@ function Page({
     }, [requestErrors, enqueueSnackbar, showRequestErrors]);
 
     const auth = useAuth();
-    useSignIn();
 
     const authUi = () => {
         if (auth.activeNavigator === 'signinSilent') {
