@@ -5,11 +5,16 @@ import App from './App';
 import 'typeface-roboto';
 import NotFoundPage from './NotFoundPage';
 import history from '../history';
+import useSignIn from '../hooks/useSignIn';
+import Navigation from '../containers.js/Navigation';
+import PlaceHolderPage from './PlacholderPage';
 
 function Root() {
+    useSignIn();
     return (
         <div>
             <div className="padding-top-when-not-printing">
+                <Navigation />
                 <HistoryRouter history={history}>
                     <Routes>
                         <Route
@@ -18,7 +23,10 @@ function Root() {
                             element={<Navigate to="/manufacturing-engineering" replace />}
                         />
                         <Route path="/manufacturing-engineering" element={<App />} />
-                        <Route exact path="/manufacturing-engineering/:id" element={<App />} />
+                        <Route
+                            path="/manufacturing-engineering/inspection"
+                            element={<PlaceHolderPage />}
+                        />
 
                         <Route element={<NotFoundPage />} />
                     </Routes>
