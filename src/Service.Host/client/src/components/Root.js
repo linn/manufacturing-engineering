@@ -6,8 +6,9 @@ import 'typeface-roboto';
 import NotFoundPage from './NotFoundPage';
 import history from '../history';
 import useSignIn from '../hooks/useSignIn';
-import Navigation from '../containers.js/Navigation';
-import PlaceHolderPage from './PlacholderPage';
+import Navigation from '../containers/Navigation';
+import InspectionsSummary from './InspectionsSummary';
+import Inspection from './Inspection';
 
 function Root() {
     useSignIn();
@@ -24,8 +25,12 @@ function Root() {
                         />
                         <Route path="/manufacturing-engineering" element={<App />} />
                         <Route
-                            path="/manufacturing-engineering/inspection"
-                            element={<PlaceHolderPage />}
+                            path="/manufacturing-engineering/inspections"
+                            element={<InspectionsSummary />}
+                        />
+                        <Route
+                            path="/manufacturing-engineering/inspections/create"
+                            element={<Inspection creating />}
                         />
 
                         <Route element={<NotFoundPage />} />

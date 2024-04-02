@@ -1,12 +1,12 @@
-﻿namespace Linn.ManufacturingEngineering.Domain.LinnApps;
+﻿using System;
 
-using System;
+namespace Linn.ManufacturingEngineering.Resources;
 
-public class InspectionRecordLine
+public class InspectionRecordLineResource
 {
     public string Material { get; set; }
 
-    public DateTime Timestamp { get; set; }
+    public string Timestamp { get; set; }
 
     public string Status { get; set; }
 

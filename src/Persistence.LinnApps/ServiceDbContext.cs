@@ -16,7 +16,7 @@
 
         public DbSet<InspectionRecordHeader> InspectionRecords { get; set; }
 
-        public DbSet<Part> Parts { get; set; }
+        public DbSet<Employee> Employees { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -25,6 +25,7 @@
             this.BuildInspectionHeaderLines(builder);
             this.BuildInspectionRecordHeaders(builder);
             this.BuildPurchaseOrderLines(builder);
+            this.BuildEmployees(builder);
             this.BuildParts(builder);
         }
 
@@ -54,7 +55,7 @@
             e.HasKey(l => new { l.OrderNumber, l.OrderLine });
             e.Property(l => l.OrderLine).HasColumnName("ORDER_LINE");
             e.Property(l => l.OrderNumber).HasColumnName("ORDER_NUMBER");
-            e.Property(l => l.Qty).HasColumnName("ORDER_QUANTITY");
+            e.Property(l => l.Qty).HasColumnName("ORDER_QTY");
             e.HasOne(l => l.Part).WithMany().HasForeignKey("PART_NUMBER");
             e.HasMany(l => l.InspectionRecords).WithOne().HasForeignKey(i => new { i.OrderNumber, i.OrderLine });
         }
@@ -70,6 +71,7 @@
             e.Property(h => h.OrderNumber).HasColumnName("PURCHASE_ORDER_NUMBER");
             e.Property(h => h.OrderLine).HasColumnName("ORDER_LINE");
             e.HasMany(h => h.Lines).WithOne().HasForeignKey(l => l.HeaderId);
+            e.HasOne(h => h.EnteredBy).WithMany().HasForeignKey("ENTERED_BY");
         }
 
         private void BuildInspectionHeaderLines(ModelBuilder builder)
@@ -80,8 +82,12 @@
             e.Property(l => l.LineNumber).HasColumnName("LINE_NUMBER");
             e.Property(l => l.Timestamp).HasColumnName("TIMESTAMP");
             e.Property(l => l.Status).HasColumnName("STATUS").HasMaxLength(100);
-            e.Property(l => l.FailureModes).HasColumnName("FAILURE_MODES").HasMaxLength(100);
-            e.Property(l => l.Material).HasColumnName("MATERIA").HasMaxLength(100);
+            e.Property(l => l.Material).HasColumnName("MATERIAL").HasMaxLength(100);
+            e.Property(l => l.Mottling).HasColumnName("MOTTLING").HasMaxLength(1);
+            e.Property(l => l.Marked).HasColumnName("MARKED").HasMaxLength(1);
+            e.Property(l => l.Chipped).HasColumnName("CHIPPED").HasMaxLength(1);
+            e.Property(l => l.Pitting).HasColumnName("PITTING").HasMaxLength(1);
+            e.Property(l => l.WhiteSpot).HasColumnName("WHITE_SPOT").HasMaxLength(1);
         }
 
         private void BuildParts(ModelBuilder builder)
@@ -90,6 +96,14 @@
             e.HasKey(p => p.PartNumber);
             e.Property(p => p.PartNumber).HasColumnName("PART_NUMBER");
             e.Property(p => p.Description).HasColumnName("DESCRIPTION");
+        }
+
+        private void BuildEmployees(ModelBuilder builder)
+        {
+            var entity = builder.Entity<Employee>().ToTable("AUTH_USER_NAME_VIEW");
+            entity.HasKey(m => m.Id);
+            entity.Property(e => e.Id).HasColumnName("USER_NUMBER");
+            entity.Property(e => e.Name).HasColumnName("USER_NAME").HasMaxLength(4000);
         }
     }
 }

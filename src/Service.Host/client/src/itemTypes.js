@@ -1,1 +1,7 @@
-﻿import { ItemType } from '@linn-it/linn-form-components-library';
+﻿﻿import config from './config';
+
+const itemTypes = {
+    purchaseOrderLine: { url: `${config.appRoot}/manufacturing-engineering/purchase-orders` }
+};
+
+export default itemTypes;

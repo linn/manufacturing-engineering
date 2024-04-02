@@ -20,5 +20,7 @@ public class InspectionRecordHeader
     public IEnumerable<InspectionRecordLine> Lines { get; set; }
 
     public int Id { get; set; }
+
+    public Employee EnteredBy { get; set; }
 }
 
