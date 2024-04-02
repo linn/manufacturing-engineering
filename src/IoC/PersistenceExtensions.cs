@@ -19,7 +19,7 @@
                 .AddTransient<IQueryRepository<PurchaseOrderLine>, PurchaseOrderLineRepository>()
                 .AddTransient<IRepository<Employee, int>, EntityFrameworkRepository<Employee, int>>(
                     r => new EntityFrameworkRepository<Employee, int>(r.GetService<ServiceDbContext>()?.Employees))
-                .AddTransient<IRepository<InspectionRecordHeader, int>, InspectionRecordHeaderRepository);
+                .AddTransient<IRepository<InspectionRecordHeader, int>, InspectionRecordHeaderRepository>();
         }
     }
 }
