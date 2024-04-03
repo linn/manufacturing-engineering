@@ -14,8 +14,8 @@ public class InspectionRecordResourceBuilder : IBuilder<InspectionRecordHeader>
     {
         return new InspectionRecordResource
                    {
-                       OrderNumber = model.OrderNumber,
-                       OrderLine = model.OrderLine,
+                       OrderNumber = model.PurchaseOrderLine.OrderNumber,
+                       OrderLine = model.PurchaseOrderLine.OrderLine,
                        Id = model.Id,
                        BatchSize = model.BatchSize,
                        DateOfEntry = model.DateOfEntry.ToString("o"),

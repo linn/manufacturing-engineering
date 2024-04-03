@@ -11,6 +11,4 @@ public class PurchaseOrderLine
     public Part Part { get; set; }
 
     public decimal Qty { get; set; }
-
-    public IEnumerable<InspectionRecordHeader> InspectionRecords { get; set; }
 }

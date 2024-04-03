@@ -22,7 +22,7 @@ public class InspectionRecordHeaderRepository : EntityFrameworkRepository<Inspec
     {
         return this.serviceDbContext
             .InspectionRecords
-            .Include(b => b.Id)
+            .Include(a => a.Lines)
             .Include(a => a.EnteredBy)
             .Include(b => b.PurchaseOrderLine).ThenInclude(l => l.Part)
             .SingleOrDefault(a => a.Id == key);
@@ -30,10 +30,7 @@ public class InspectionRecordHeaderRepository : EntityFrameworkRepository<Inspec
 
     public override IQueryable<InspectionRecordHeader> FindAll()
     {
-        return this.serviceDbContext
-            .InspectionRecords
-            .Include(b => b.Id)
-            .Include(a => a.EnteredBy)
-            .Include(b => b.PurchaseOrderLine).ThenInclude(l => l.Part);
+        return this.serviceDbContext.InspectionRecords.Include(a => a.EnteredBy);
+        // .Include(b => b.PurchaseOrderLine).ThenInclude(l => l.Part);
     }
 }

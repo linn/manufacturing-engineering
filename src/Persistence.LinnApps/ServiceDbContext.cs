@@ -44,7 +44,7 @@
             optionsBuilder.UseOracle(connectionString, options => options.UseOracleSQLCompatibility("11"));
 
             // can optionally Log any SQL that is ran by uncommenting:
-            // optionsBuilder.UseLoggerFactory(MyLoggerFactory);
+            optionsBuilder.UseLoggerFactory(MyLoggerFactory);
             optionsBuilder.EnableSensitiveDataLogging(true);
             base.OnConfiguring(optionsBuilder);
         }
@@ -57,7 +57,6 @@
             e.Property(l => l.OrderNumber).HasColumnName("ORDER_NUMBER");
             e.Property(l => l.Qty).HasColumnName("ORDER_QTY");
             e.HasOne(l => l.Part).WithMany().HasForeignKey("PART_NUMBER");
-            e.HasMany(l => l.InspectionRecords).WithOne().HasForeignKey(i => new { i.OrderNumber, i.OrderLine });
         }
 
         private void BuildInspectionRecordHeaders(ModelBuilder builder)
@@ -72,6 +71,7 @@
             e.Property(h => h.OrderLine).HasColumnName("ORDER_LINE");
             e.HasMany(h => h.Lines).WithOne().HasForeignKey(l => l.HeaderId);
             e.HasOne(h => h.EnteredBy).WithMany().HasForeignKey("ENTERED_BY");
+            e.HasOne(h => h.PurchaseOrderLine).WithMany().HasForeignKey(x => new { x.OrderNumber, x.OrderLine });
         }
 
         private void BuildInspectionHeaderLines(ModelBuilder builder)
