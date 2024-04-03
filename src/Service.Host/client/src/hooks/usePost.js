@@ -39,7 +39,6 @@ function usePost(url, requiresAuth = false, redirectOnSuccess = false) {
             setPostResult(result);
             setIsLoading(false);
             if (redirectOnSuccess) {
-                console.log(result);
                 // redirect to the rel:self link of the result
                 history.push(utilities.getSelfHref(result));
             }
