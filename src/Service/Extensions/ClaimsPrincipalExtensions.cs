@@ -30,5 +30,12 @@
 
             return principal.Identities.Any(identity => identity.HasClaim(type));
         }
+
+        public static int GetEmployeeNumber(this ClaimsPrincipal principal)
+        {
+            int.TryParse(principal.GetEmployeeUrl()?.Split('/').Last(), out var employee);
+
+            return employee;
+        }
     }
 }

@@ -21,4 +21,10 @@ public class InspectionRecordResource
     public string EnteredByName { get; set; }
 
     public int EnteredById { get; set; }
+
+    public string PartNumber { get; set; }
+
+    public string PartDescription { get; set; }
+
+    public decimal? OrderQty { get; set; }
 }

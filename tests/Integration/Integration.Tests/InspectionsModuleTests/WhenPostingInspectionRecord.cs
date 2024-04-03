@@ -21,7 +21,7 @@ public class WhenPostingInspectionRecord : ContextBase
     [SetUp]
     public void SetUp()
     {
-        this.EmployeeRepository.FindById(33087).Returns(new Employee());
+        this.EmployeeRepository.FindById(Arg.Any<int>()).Returns(new Employee());
         this.PurchaseOrderLineRepository.FindBy(Arg.Any<Expression<Func<PurchaseOrderLine, bool>>>()).Returns(
             new PurchaseOrderLine { OrderLine = 1, OrderNumber = 123, Part = new Part() });
         this.resource = new InspectionRecordResource

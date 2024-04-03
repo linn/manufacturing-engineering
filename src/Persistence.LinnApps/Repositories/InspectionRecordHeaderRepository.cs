@@ -24,7 +24,7 @@ public class InspectionRecordHeaderRepository : EntityFrameworkRepository<Inspec
             .InspectionRecords
             .Include(b => b.Id)
             .Include(a => a.EnteredBy)
-            .Include(b => b.PurchaseOrderLine)
+            .Include(b => b.PurchaseOrderLine).ThenInclude(l => l.Part)
             .SingleOrDefault(a => a.Id == key);
     }
 }

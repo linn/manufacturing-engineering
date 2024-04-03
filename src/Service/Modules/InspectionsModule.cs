@@ -7,11 +7,13 @@ using Linn.Common.Service.Core;
 using Linn.Common.Service.Core.Extensions;
 using Linn.ManufacturingEngineering.Domain.LinnApps;
 using Linn.ManufacturingEngineering.Resources;
+using Linn.ManufacturingEngineering.Service.Extensions;
 using Linn.ManufacturingEngineering.Service.Models;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
+using Org.BouncyCastle.Ocsp;
 
 public class InspectionsModule : IModule
 {
@@ -44,11 +46,13 @@ public class InspectionsModule : IModule
     }
 
     private async Task PostInspectionRecord(
-        HttpRequest _,
+        HttpRequest req,
         HttpResponse res,
         InspectionRecordResource resource,
         IFacadeResourceFilterService<InspectionRecordHeader, int, InspectionRecordResource, InspectionRecordResource, InspectionRecordResource> service)
     {
+        var user = req.HttpContext.User.GetEmployeeNumber();
+        resource.EnteredById = user;
         await res.Negotiate(service.Add(resource));
     }
 

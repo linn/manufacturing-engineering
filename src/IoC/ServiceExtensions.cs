@@ -32,7 +32,7 @@
                 .AddTransient<ITemplateEngine, RazorTemplateEngine>()
                 .AddTransient<IQueryFacadeResourceService<PurchaseOrderLine, PurchaseOrderLineResource, PurchaseOrderLineResource>, PurchaseOrderLineService>()
                 .AddTransient<IBuilder<PurchaseOrderLine>, PurchaseOrderLineResourceBuilder>()
-                .AddTransient<FacadeFilterResourceService<InspectionRecordHeader, int, InspectionRecordResource, InspectionRecordResource, InspectionRecordResource>, InspectionRecordService>()
+                .AddTransient<IFacadeResourceFilterService<InspectionRecordHeader, int, InspectionRecordResource, InspectionRecordResource, InspectionRecordResource>, InspectionRecordService>()
                 .AddTransient<IBuilder<InspectionRecordHeader>, InspectionRecordResourceBuilder>();
         }
     }

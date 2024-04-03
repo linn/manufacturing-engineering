@@ -23,6 +23,7 @@ public class WhenGettingInspectionById : ContextBase
             .Returns(new InspectionRecordHeader
                          {
                             Id = 1,
+                            EnteredBy = new Employee { Id = 123 },
                             PurchaseOrderLine = new PurchaseOrderLine { Part = new Part { PartNumber = "PART" } },
                             Lines = new List<InspectionRecordLine> { new InspectionRecordLine
                                                                          {

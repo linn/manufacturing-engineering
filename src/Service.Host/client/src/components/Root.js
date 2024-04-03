@@ -32,7 +32,11 @@ function Root() {
                             path="/manufacturing-engineering/inspections/create"
                             element={<Inspection creating />}
                         />
-
+                        <Route
+                            exact
+                            path="/manufacturing-engineering/inspections/:id"
+                            element={<Inspection />}
+                        />
                         <Route element={<NotFoundPage />} />
                     </Routes>
                 </HistoryRouter>

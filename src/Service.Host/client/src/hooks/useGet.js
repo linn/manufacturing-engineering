@@ -12,12 +12,12 @@ function useGet(url, requiresAuth = false) {
     if (requiresAuth) {
         token = auth.user?.access_token;
     }
+    const clearData = () => setResult(null);
 
     const send = async (id, queryString) => {
         setIsLoading(true);
         setResult(null);
         setErrorMessage(null);
-
         const headers = {
             accept: 'application/json'
         };
@@ -40,7 +40,7 @@ function useGet(url, requiresAuth = false) {
         }
     };
 
-    return { send, isLoading, errorMessage, result };
+    return { send, isLoading, errorMessage, result, clearData };
 }
 
 export default useGet;

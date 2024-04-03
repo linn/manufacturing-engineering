@@ -1,10 +1,17 @@
 /* eslint-disable indent */
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import { DataGrid } from '@mui/x-data-grid';
 import Button from '@mui/material/Button';
-import { Dropdown, InputField } from '@linn-it/linn-form-components-library';
+import { useParams } from 'react-router-dom';
+import {
+    Dropdown,
+    InputField,
+    Loading,
+    SaveBackCancelButtons,
+    utilities
+} from '@linn-it/linn-form-components-library';
 import PropTypes from 'prop-types';
 import Page from './Page';
 import config from '../config';
@@ -12,15 +19,50 @@ import history from '../history';
 import useUserProfile from '../hooks/useUserProfile';
 import useGet from '../hooks/useGet';
 import itemTypes from '../itemTypes';
+import usePost from '../hooks/usePost';
 
 function Inspection({ creating }) {
+    const { id } = useParams();
     const { userNumber, name } = useUserProfile();
     const [orderNumber, setOrderNumber] = useState(827702);
-    const { send: fetchPurchaseOrder, result: orderDetails } = useGet(
-        itemTypes.purchaseOrderLine.url
-    );
+    const [inspectionData, setInspectionData] = useState({ preprocessedBatch: 'N' });
 
-    const [inspectionData, setInspectionData] = useState({});
+    const {
+        send: fetchInspection,
+        result: inspectionDetails,
+        isLoading: inspectionLoading
+    } = useGet(itemTypes.inspections.url);
+
+    const {
+        send: fetchPurchaseOrder,
+        result: orderDetails,
+        clearData: clearOrderDetails
+    } = useGet(itemTypes.purchaseOrderLine.url);
+
+    const {
+        send: post,
+        isLoading: postLoading,
+        postResult
+    } = usePost(itemTypes.inspections, true, true);
+
+    useEffect(() => {
+        if (id) {
+            fetchInspection(id);
+        }
+    }, [id, fetchInspection]);
+
+    useEffect(() => {
+        if (inspectionDetails?.id) {
+            setInspectionData(inspectionDetails);
+        }
+    }, [inspectionDetails]);
+
+    // redirect to the newly created records page if post is successful
+    useEffect(() => {
+        if (postResult?.id) {
+            history.push(utilities.getSelfHref(postResult));
+        }
+    }, [postResult]);
 
     useEffect(() => {
         if (orderDetails?.orderNumber) {
@@ -33,10 +75,11 @@ function Inspection({ creating }) {
     }, [orderDetails]);
 
     const onKeyPress = e => {
-        if (e.key === 'Enter' && orderNumber) {
+        if (creating && e.key === 'Enter' && orderNumber) {
             fetchPurchaseOrder(null, `?orderNumber=${orderNumber}&lineNumber=${1}`);
         }
     };
+
     function createLinesArray(n) {
         const lines = [];
         for (let i = 0; i < n; i += 1) {
@@ -126,6 +169,7 @@ function Inspection({ creating }) {
             width: 150
         }
     ];
+
     const processRowUpdate = newRow => {
         setInspectionData(d => ({
             ...d,
@@ -135,12 +179,24 @@ function Inspection({ creating }) {
         return newRow;
     };
 
+    if (inspectionLoading || postLoading) {
+        return (
+            <Page homeUrl={config.appRoot} history={history}>
+                <Grid container spacing={3}>
+                    <Grid item xs={12}>
+                        <Loading />
+                    </Grid>
+                </Grid>
+            </Page>
+        );
+    }
+
     return (
         <Page homeUrl={config.appRoot} history={history}>
             <Grid container spacing={3}>
                 <Grid item xs={12}>
                     <Typography variant="h4">
-                        {creating ? 'Create New Inspection Record' : ''}
+                        {creating ? 'Create New Inspection Record' : 'Inspection Record Details'}
                     </Typography>
                 </Grid>
                 {userNumber && (
@@ -156,7 +212,11 @@ function Inspection({ creating }) {
                                 type="number"
                                 helperText="enter an order number and press enter to load details"
                                 value={orderDetails?.orderNumber ?? orderNumber}
-                                onChange={(_, newVal) => setOrderNumber(newVal)}
+                                onChange={(_, newVal) => {
+                                    if (creating) {
+                                        setOrderNumber(newVal);
+                                    }
+                                }}
                             />
                         </Grid>
                         <Grid item xs={4}>
@@ -164,21 +224,21 @@ function Inspection({ creating }) {
                                 propertyName="enterdBy"
                                 label="Entered By"
                                 fullWidth
-                                value={name}
+                                value={creating ? name : inspectionData.enteredByName}
                                 onChange={() => {}}
                             />
                         </Grid>
                         <Grid item xs={4} />
                     </>
                 )}
-                {orderDetails && (
+                {(orderDetails || inspectionData?.id) && (
                     <>
                         <Grid item xs={4}>
                             <InputField
                                 propertyName="partNumber"
                                 label="Part"
                                 fullWidth
-                                value={orderDetails.partNumber}
+                                value={orderDetails?.partNumber ?? inspectionData?.partNumber}
                                 onChange={() => {}}
                             />
                         </Grid>
@@ -187,7 +247,9 @@ function Inspection({ creating }) {
                                 propertyName="partDescription"
                                 label="Description"
                                 fullWidth
-                                value={orderDetails.partDescription}
+                                value={
+                                    orderDetails.partDescription ?? inspectionData?.partDescription
+                                }
                                 onChange={() => {}}
                             />
                         </Grid>
@@ -196,21 +258,30 @@ function Inspection({ creating }) {
                                 propertyName="qty"
                                 label="Order Qty"
                                 fullWidth
-                                value={orderDetails.qty}
+                                value={orderDetails.qty ?? inspectionData?.orderQty}
                                 onChange={() => {}}
                             />
                         </Grid>
                         <Grid item xs={2}>
                             <InputField
-                                disabled={inspectionData?.lines?.length}
+                                disabled={!creating || inspectionData?.lines?.length}
                                 propertyName="batchSize"
                                 label="Batch Size"
                                 fullWidth
-                                helperText="Enter the size of the batch you are inspecting and then click proceed to initialise the table for data entry"
+                                helperText={
+                                    creating
+                                        ? 'Enter the size of the batch you are inspecting and then click proceed to initialise the table for data entry'
+                                        : ''
+                                }
                                 type="number"
-                                value={inspectionData.batchSize}
+                                value={inspectionData?.batchSize}
                                 onChange={(propertyName, newValue) => {
-                                    setInspectionData(d => ({ ...d, [propertyName]: newValue }));
+                                    if (creating) {
+                                        setInspectionData(d => ({
+                                            ...d,
+                                            [propertyName]: newValue
+                                        }));
+                                    }
                                 }}
                             />
                         </Grid>
@@ -219,14 +290,17 @@ function Inspection({ creating }) {
                                 propertyName="preprocessedBatch"
                                 label="Preprocessed Batch?"
                                 fullWidth
-                                value={inspectionData.preprocessedBatch}
+                                value={inspectionData?.preprocessedBatch}
                                 onChange={(propertyName, newValue) => {
-                                    setInspectionData(d => ({ ...d, [propertyName]: newValue }));
+                                    setInspectionData(d => ({
+                                        ...d,
+                                        [propertyName]: newValue
+                                    }));
                                 }}
                                 items={['Y', 'N']}
                             />
                         </Grid>
-                        {!inspectionData?.lines?.length && (
+                        {creating && !inspectionData?.lines?.length && (
                             <Grid item xs={12}>
                                 <Button
                                     onClick={() => {
@@ -245,15 +319,35 @@ function Inspection({ creating }) {
                             </Grid>
                         )}
                         <Grid item xs={12}>
-                            <DataGrid
-                                columns={columns}
-                                autoHeight
-                                columnBuffer={6}
-                                processRowUpdate={processRowUpdate}
-                                rows={
-                                    inspectionData?.lines?.map(i => ({ ...i, id: i.lineNumber })) ||
-                                    []
+                            {!creating ||
+                                (inspectionData?.lines?.length && (
+                                    <DataGrid
+                                        columns={columns}
+                                        autoHeight
+                                        columnBuffer={6}
+                                        processRowUpdate={processRowUpdate}
+                                        rows={
+                                            inspectionData?.lines?.map(i => ({
+                                                ...i,
+                                                id: i.lineNumber
+                                            })) || []
+                                        }
+                                    />
+                                ))}
+                        </Grid>
+                        <Grid item xs={12}>
+                            <SaveBackCancelButtons
+                                cancelClick={() => {
+                                    setInspectionData({ preprocessedBatch: 'N' });
+                                    clearOrderDetails();
+                                }}
+                                saveClick={() => {
+                                    post(inspectionData);
+                                }}
+                                saveDisabled={
+                                    !creating || !orderDetails || !inspectionData?.lines?.length
                                 }
+                                showBackButton={false}
                             />
                         </Grid>
                     </>

@@ -20,6 +20,10 @@ public class InspectionRecordResourceBuilder : IBuilder<InspectionRecordHeader>
                        BatchSize = model.BatchSize,
                        DateOfEntry = model.DateOfEntry.ToString("o"),
                        PreprocessedBatch = model.PreprocessedBatch,
+                       EnteredByName = model.EnteredBy.Name,
+                       PartNumber = model.PurchaseOrderLine.Part.PartNumber,
+                       PartDescription = model.PurchaseOrderLine.Part.Description,
+                       OrderQty = model.PurchaseOrderLine.Qty,
                        Lines = model.Lines.Select(l => new InspectionRecordLineResource
                                                            {
                                                                Material = l.Material,
