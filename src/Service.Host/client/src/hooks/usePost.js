@@ -1,7 +1,9 @@
 import { useState } from 'react';
+import { utilities } from '@linn-it/linn-form-components-library';
 import { useAuth } from 'react-oidc-context';
+import history from '../history';
 
-function usePost(url, id, data, requiresAuth = false) {
+function usePost(url, requiresAuth = false, redirectOnSuccess = false) {
     const [isLoading, setIsLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState(null);
     const [postResult, setPostResult] = useState(null);
@@ -13,7 +15,9 @@ function usePost(url, id, data, requiresAuth = false) {
         token = auth.user?.access_token;
     }
 
-    const send = async () => {
+    const clearResult = () => setPostResult(null);
+
+    const send = async (id, data) => {
         setIsLoading(true);
         setPostResult(null);
         setErrorMessage(null);
@@ -31,8 +35,13 @@ function usePost(url, id, data, requiresAuth = false) {
         const response = await fetch(id ? `${url}/${id}` : url, requestParameters);
 
         if (response.ok) {
-            setPostResult(await response.json());
+            const result = await response.json();
+            setPostResult(result);
             setIsLoading(false);
+            if (redirectOnSuccess) {
+                // redirect to the rel:self link of the result
+                history.push(utilities.getSelfHref(result));
+            }
         } else {
             const text = await response.text();
             setErrorMessage(text);
@@ -40,7 +49,7 @@ function usePost(url, id, data, requiresAuth = false) {
         }
     };
 
-    return { send, isLoading, errorMessage, postResult };
+    return { send, isLoading, errorMessage, postResult, clearResult };
 }
 
 export default usePost;

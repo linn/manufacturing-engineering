@@ -12,12 +12,12 @@ function useGet(url, requiresAuth = false) {
     if (requiresAuth) {
         token = auth.user?.access_token;
     }
+    const clearData = () => setResult(null);
 
     const send = async (id, queryString) => {
         setIsLoading(true);
         setResult(null);
         setErrorMessage(null);
-
         const headers = {
             accept: 'application/json'
         };
@@ -25,9 +25,8 @@ function useGet(url, requiresAuth = false) {
             method: 'GET',
             headers: requiresAuth ? { ...headers, Authorization: `Bearer ${token}` } : headers
         };
-
         const response = await fetch(
-            id ? `${url}/${id}${queryString}}` : `${url}${queryString ?? ''}`,
+            id ? `${url}/${id}${queryString ?? ''}` : `${url}${queryString ?? ''}`,
             requestParameters
         );
         if (response.ok) {
@@ -40,7 +39,7 @@ function useGet(url, requiresAuth = false) {
         }
     };
 
-    return { send, isLoading, errorMessage, result };
+    return { send, isLoading, errorMessage, result, clearData };
 }
 
 export default useGet;

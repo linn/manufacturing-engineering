@@ -7,8 +7,13 @@
 
     using Linn.Common.Configuration;
     using Linn.Common.Email;
+    using Linn.Common.Facade;
     using Linn.Common.Pdf;
-    
+    using Linn.ManufacturingEngineering.Domain.LinnApps;
+    using Linn.ManufacturingEngineering.Facade.ResourceBuilders;
+    using Linn.ManufacturingEngineering.Facade.Services;
+    using Linn.ManufacturingEngineering.Resources;
+
     using Microsoft.Extensions.DependencyInjection;
 
     using RazorEngineCore;
@@ -24,18 +29,11 @@
         {
             return services
                 .AddTransient<IRazorEngine, RazorEngine>()
-                .AddTransient<ITemplateEngine, RazorTemplateEngine>();
-            // return services.AddTransient<IThingService, ThingService>()
-            //     .AddTransient<IAmazonSimpleEmailService>(
-            //         x => new AmazonSimpleEmailServiceClient(x.GetService<AWSOptions>()?.Region))
-            //     .AddTransient<IRazorEngine, RazorEngine>()
-            //
-            //     .AddTransient<IEmailService>(x => new EmailService(x.GetService<IAmazonSimpleEmailService>()))
-            //     
-            //     .AddTransient<ITemplateEngine, RazorTemplateEngine>()
-            //
-            //     .AddTransient<IPdfService>(
-            //         x => new PdfService(ConfigurationManager.Configuration["PDF_SERVICE_ROOT"], new HttpClient()));
+                .AddTransient<ITemplateEngine, RazorTemplateEngine>()
+                .AddTransient<IQueryFacadeResourceService<PurchaseOrderLine, PurchaseOrderLineResource, PurchaseOrderLineResource>, PurchaseOrderLineService>()
+                .AddTransient<IBuilder<PurchaseOrderLine>, PurchaseOrderLineResourceBuilder>()
+                .AddTransient<IFacadeResourceFilterService<InspectionRecordHeader, int, InspectionRecordResource, InspectionRecordResource, InspectionRecordResource>, InspectionRecordService>()
+                .AddTransient<IBuilder<InspectionRecordHeader>, InspectionRecordResourceBuilder>();
         }
     }
 }
