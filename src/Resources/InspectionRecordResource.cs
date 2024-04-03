@@ -2,7 +2,9 @@
 
 using System.Collections.Generic;
 
-public class InspectionRecordResource
+using Linn.Common.Resources;
+
+public class InspectionRecordResource : HypermediaResource
 {
     public int OrderNumber { get; set; }
 

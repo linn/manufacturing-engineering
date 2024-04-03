@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Linn.Common.Facade;
+using Linn.Common.Resources;
 using Linn.ManufacturingEngineering.Domain.LinnApps;
 using Linn.ManufacturingEngineering.Resources;
 
@@ -36,13 +37,19 @@ public class InspectionRecordResourceBuilder : IBuilder<InspectionRecordHeader>
                                                                Chipped = l.Chipped,
                                                                Marked = l.Marked,
                                                                Pitting = l.Pitting
-                                                           })
+                                                           }),
+                       Links = this.BuildLinks(model, null).ToArray()
                    };
     }
 
     public string GetLocation(InspectionRecordHeader p)
     {
-        throw new NotImplementedException();
+        return $"/manufacturing-engineering/inpsections/{p.Id}";
+    }
+
+    private IEnumerable<LinkResource> BuildLinks(InspectionRecordHeader model, IEnumerable<string> claims)
+    {
+        yield return new LinkResource { Rel = "self", Href = this.GetLocation(model) };
     }
 
     object IBuilder<InspectionRecordHeader>.Build(InspectionRecordHeader model, IEnumerable<string> claims) => this.Build(model, claims);
