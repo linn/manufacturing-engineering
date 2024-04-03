@@ -9,8 +9,7 @@ import {
     Dropdown,
     InputField,
     Loading,
-    SaveBackCancelButtons,
-    utilities
+    SaveBackCancelButtons
 } from '@linn-it/linn-form-components-library';
 import PropTypes from 'prop-types';
 import Page from './Page';
@@ -39,11 +38,7 @@ function Inspection({ creating }) {
         clearData: clearOrderDetails
     } = useGet(itemTypes.purchaseOrderLine.url);
 
-    const {
-        send: post,
-        isLoading: postLoading,
-        postResult
-    } = usePost(itemTypes.inspections, true, true);
+    const { send: post, isLoading: postLoading } = usePost(itemTypes.inspections, true, true);
 
     useEffect(() => {
         if (id) {
@@ -56,13 +51,6 @@ function Inspection({ creating }) {
             setInspectionData(inspectionDetails);
         }
     }, [inspectionDetails]);
-
-    // redirect to the newly created records page if post is successful
-    useEffect(() => {
-        if (postResult?.id) {
-            history.push(utilities.getSelfHref(postResult));
-        }
-    }, [postResult]);
 
     useEffect(() => {
         if (orderDetails?.orderNumber) {
