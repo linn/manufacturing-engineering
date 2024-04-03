@@ -36,15 +36,16 @@ public class InspectionRecordResourceBuilder : IBuilder<InspectionRecordHeader>
                                                                WhiteSpot = l.WhiteSpot,
                                                                Chipped = l.Chipped,
                                                                Marked = l.Marked,
-                                                               Pitting = l.Pitting
-                                                           }),
+                                                               Pitting = l.Pitting,
+                                                               SentToReprocess = l.SentToReprocess
+                                                           }).OrderBy(x => x.LineNumber),
                        Links = this.BuildLinks(model, null).ToArray()
                    };
     }
 
     public string GetLocation(InspectionRecordHeader p)
     {
-        return $"/manufacturing-engineering/inpsections/{p.Id}";
+        return $"/manufacturing-engineering/inspections/{p.Id}";
     }
 
     private IEnumerable<LinkResource> BuildLinks(InspectionRecordHeader model, IEnumerable<string> claims)

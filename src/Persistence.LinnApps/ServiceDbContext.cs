@@ -76,7 +76,7 @@
 
         private void BuildInspectionHeaderLines(ModelBuilder builder)
         {
-            var e = builder.Entity<InspectionRecordLine>().ToTable("INSPECTION_RECORD_LINE");
+            var e = builder.Entity<InspectionRecordLine>().ToTable("INSPECTION_RECORD_LINES");
             e.HasKey(l => new { l.HeaderId, l.LineNumber });
             e.Property(l => l.HeaderId).HasColumnName("HEADER_ID");
             e.Property(l => l.LineNumber).HasColumnName("LINE_NUMBER");
@@ -88,6 +88,7 @@
             e.Property(l => l.Chipped).HasColumnName("CHIPPED").HasMaxLength(1);
             e.Property(l => l.Pitting).HasColumnName("PITTING").HasMaxLength(1);
             e.Property(l => l.WhiteSpot).HasColumnName("WHITE_SPOT").HasMaxLength(1);
+            e.Property(l => l.SentToReprocess).HasColumnName("SENT_TO_REPROCESS").HasMaxLength(1);
         }
 
         private void BuildParts(ModelBuilder builder)

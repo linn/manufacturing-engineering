@@ -18,6 +18,7 @@ using NUnit.Framework;
 public class WhenPostingInspectionRecord : ContextBase
 {
     private InspectionRecordResource resource;
+
     [SetUp]
     public void SetUp()
     {

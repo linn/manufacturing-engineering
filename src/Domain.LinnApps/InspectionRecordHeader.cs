@@ -17,7 +17,7 @@ public class InspectionRecordHeader
 
     public decimal BatchSize { get; set; }
 
-    public IEnumerable<InspectionRecordLine> Lines { get; set; }
+    public ICollection<InspectionRecordLine> Lines { get; set; }
 
     public int Id { get; set; }
 

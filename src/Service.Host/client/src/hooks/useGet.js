@@ -25,9 +25,8 @@ function useGet(url, requiresAuth = false) {
             method: 'GET',
             headers: requiresAuth ? { ...headers, Authorization: `Bearer ${token}` } : headers
         };
-
         const response = await fetch(
-            id ? `${url}/${id}${queryString}}` : `${url}${queryString ?? ''}`,
+            id ? `${url}/${id}${queryString ?? ''}` : `${url}${queryString ?? ''}`,
             requestParameters
         );
         if (response.ok) {

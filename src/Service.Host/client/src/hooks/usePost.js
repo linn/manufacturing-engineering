@@ -15,6 +15,8 @@ function usePost(url, requiresAuth = false, redirectOnSuccess = false) {
         token = auth.user?.access_token;
     }
 
+    const clearResult = () => setPostResult(null);
+
     const send = async (id, data) => {
         setIsLoading(true);
         setPostResult(null);
@@ -37,6 +39,7 @@ function usePost(url, requiresAuth = false, redirectOnSuccess = false) {
             setPostResult(result);
             setIsLoading(false);
             if (redirectOnSuccess) {
+                console.log(result);
                 // redirect to the rel:self link of the result
                 history.push(utilities.getSelfHref(result));
             }
@@ -47,7 +50,7 @@ function usePost(url, requiresAuth = false, redirectOnSuccess = false) {
         }
     };
 
-    return { send, isLoading, errorMessage, postResult };
+    return { send, isLoading, errorMessage, postResult, clearResult };
 }
 
 export default usePost;

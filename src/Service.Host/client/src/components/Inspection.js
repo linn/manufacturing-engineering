@@ -9,7 +9,8 @@ import {
     Dropdown,
     InputField,
     Loading,
-    SaveBackCancelButtons
+    SaveBackCancelButtons,
+    SnackbarMessage
 } from '@linn-it/linn-form-components-library';
 import PropTypes from 'prop-types';
 import Page from './Page';
@@ -38,13 +39,19 @@ function Inspection({ creating }) {
         clearData: clearOrderDetails
     } = useGet(itemTypes.purchaseOrderLine.url);
 
-    const { send: post, isLoading: postLoading } = usePost(itemTypes.inspections, true, true);
+    const {
+        send: post,
+        isLoading: postLoading,
+        postResult,
+        clearResult
+    } = usePost(itemTypes.inspections.url, true, true);
 
-    useEffect(() => {
-        if (id) {
-            fetchInspection(id);
-        }
-    }, [id, fetchInspection]);
+    const [hasFetched, setHasFetched] = useState(false);
+
+    if (id && !hasFetched) {
+        setHasFetched(true);
+        fetchInspection(id);
+    }
 
     useEffect(() => {
         if (inspectionDetails?.id) {
@@ -80,6 +87,7 @@ function Inspection({ creating }) {
                 marked: 'N',
                 pitting: 'N',
                 material: 'MATERIAL 1',
+                sentToReprocess: '',
                 timestamp: new Date()
             };
             lines.push(obj);
@@ -158,6 +166,17 @@ function Inspection({ creating }) {
         }
     ];
 
+    if (inspectionData?.preprocessedBatch === 'N') {
+        columns.push({
+            field: 'sentToReprocess',
+            headerName: 'Sent To Reprocess?',
+            type: 'singleSelect',
+            valueOptions: ['Y', 'N', ''],
+            editable: true,
+            width: 200
+        });
+    }
+
     const processRowUpdate = newRow => {
         setInspectionData(d => ({
             ...d,
@@ -181,6 +200,11 @@ function Inspection({ creating }) {
 
     return (
         <Page homeUrl={config.appRoot} history={history}>
+            <SnackbarMessage
+                visible={!!postResult?.id}
+                onClose={clearResult}
+                message="Save Successful"
+            />
             <Grid container spacing={3}>
                 <Grid item xs={12}>
                     <Typography variant="h4">
@@ -236,7 +260,7 @@ function Inspection({ creating }) {
                                 label="Description"
                                 fullWidth
                                 value={
-                                    orderDetails.partDescription ?? inspectionData?.partDescription
+                                    orderDetails?.partDescription ?? inspectionData?.partDescription
                                 }
                                 onChange={() => {}}
                             />
@@ -246,7 +270,7 @@ function Inspection({ creating }) {
                                 propertyName="qty"
                                 label="Order Qty"
                                 fullWidth
-                                value={orderDetails.qty ?? inspectionData?.orderQty}
+                                value={orderDetails?.qty ?? inspectionData?.orderQty}
                                 onChange={() => {}}
                             />
                         </Grid>
@@ -307,21 +331,22 @@ function Inspection({ creating }) {
                             </Grid>
                         )}
                         <Grid item xs={12}>
-                            {!creating ||
-                                (inspectionData?.lines?.length && (
-                                    <DataGrid
-                                        columns={columns}
-                                        autoHeight
-                                        columnBuffer={6}
-                                        processRowUpdate={processRowUpdate}
-                                        rows={
-                                            inspectionData?.lines?.map(i => ({
-                                                ...i,
-                                                id: i.lineNumber
-                                            })) || []
-                                        }
-                                    />
-                                ))}
+                            {(!creating || inspectionData?.lines?.length) && (
+                                <DataGrid
+                                    columns={columns}
+                                    autoHeight
+                                    columnBuffer={6}
+                                    disableRowSelectionOnClick
+                                    processRowUpdate={processRowUpdate}
+                                    rows={
+                                        inspectionData?.lines?.map(i => ({
+                                            ...i,
+                                            id: i.lineNumber,
+                                            timestamp: new Date(i.timestamp)
+                                        })) || []
+                                    }
+                                />
+                            )}
                         </Grid>
                         <Grid item xs={12}>
                             <SaveBackCancelButtons
@@ -330,7 +355,7 @@ function Inspection({ creating }) {
                                     clearOrderDetails();
                                 }}
                                 saveClick={() => {
-                                    post(inspectionData);
+                                    post(null, inspectionData);
                                 }}
                                 saveDisabled={
                                     !creating || !orderDetails || !inspectionData?.lines?.length

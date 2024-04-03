@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Linn.ManufacturingEngineering.Resources;
+﻿namespace Linn.ManufacturingEngineering.Resources;
 
 public class InspectionRecordLineResource
 {
@@ -23,4 +21,6 @@ public class InspectionRecordLineResource
     public string Marked { get; set; }
 
     public string Pitting { get; set; }
+
+    public string SentToReprocess { get; set; }
 }

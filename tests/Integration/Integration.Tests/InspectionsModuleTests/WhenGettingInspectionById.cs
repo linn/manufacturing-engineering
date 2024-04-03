@@ -15,7 +15,6 @@ using NUnit.Framework;
 
 public class WhenGettingInspectionById : ContextBase
 {
-
     [SetUp]
     public void SetUp()
     {

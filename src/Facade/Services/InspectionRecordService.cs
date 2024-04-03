@@ -45,7 +45,8 @@ public class InspectionRecordService : FacadeFilterResourceService<InspectionRec
                          WhiteSpot = x.WhiteSpot,
                          Chipped = x.Chipped,
                          Marked = x.Marked,
-                         Pitting = x.Pitting
+                         Pitting = x.Pitting,
+                         SentToReprocess = x.SentToReprocess
                      });
         return new InspectionRecordHeader
                    {
@@ -56,7 +57,7 @@ public class InspectionRecordService : FacadeFilterResourceService<InspectionRec
                        DateOfEntry = DateTime.Now,
                        BatchSize = resource.BatchSize,
                        EnteredBy = enteredBy,
-                       Lines = lines
+                       Lines = lines.ToList()
                    };
     }
 

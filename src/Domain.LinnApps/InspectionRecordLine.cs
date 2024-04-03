@@ -23,4 +23,6 @@ public class InspectionRecordLine
     public string Marked { get; set; }
 
     public string Pitting { get; set; }
+
+    public string SentToReprocess { get; set; }
 }
