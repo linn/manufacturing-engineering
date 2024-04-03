@@ -24,7 +24,7 @@ import usePost from '../hooks/usePost';
 function Inspection({ creating }) {
     const { id } = useParams();
     const { userNumber, name } = useUserProfile();
-    const [orderNumber, setOrderNumber] = useState(827702);
+    const [orderNumber, setOrderNumber] = useState();
     const [inspectionData, setInspectionData] = useState({ preprocessedBatch: 'N' });
 
     const {
