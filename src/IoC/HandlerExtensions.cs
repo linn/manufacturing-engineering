@@ -15,7 +15,6 @@
                 .AddTransient<IHandler, JsonResultHandler<PurchaseOrderLineResource>>()
                 .AddTransient<IHandler, JsonResultHandler<InspectionRecordResource>>()
                 .AddTransient<IHandler, JsonResultHandler<IEnumerable<InspectionRecordResource>>>();
-
         }
     }
 }
