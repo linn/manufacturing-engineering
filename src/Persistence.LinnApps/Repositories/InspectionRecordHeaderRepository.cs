@@ -27,4 +27,13 @@ public class InspectionRecordHeaderRepository : EntityFrameworkRepository<Inspec
             .Include(b => b.PurchaseOrderLine).ThenInclude(l => l.Part)
             .SingleOrDefault(a => a.Id == key);
     }
+
+    public override IQueryable<InspectionRecordHeader> FindAll()
+    {
+        return this.serviceDbContext
+            .InspectionRecords
+            .Include(b => b.Id)
+            .Include(a => a.EnteredBy)
+            .Include(b => b.PurchaseOrderLine).ThenInclude(l => l.Part);
+    }
 }

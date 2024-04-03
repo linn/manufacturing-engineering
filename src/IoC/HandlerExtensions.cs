@@ -1,5 +1,7 @@
 ﻿namespace Linn.ManufacturingEngineering.IoC
 {
+    using System.Collections.Generic;
+
     using Linn.Common.Service.Core.Handlers;
     using Linn.ManufacturingEngineering.Resources;
 
@@ -11,7 +13,9 @@
         {
             return services
                 .AddTransient<IHandler, JsonResultHandler<PurchaseOrderLineResource>>()
-                .AddTransient<IHandler, JsonResultHandler<InspectionRecordResource>>();
+                .AddTransient<IHandler, JsonResultHandler<InspectionRecordResource>>()
+                .AddTransient<IHandler, JsonResultHandler<IEnumerable<InspectionRecordResource>>>();
+
         }
     }
 }

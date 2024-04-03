@@ -20,7 +20,7 @@ public class InspectionsModule : IModule
     public void MapEndpoints(IEndpointRouteBuilder endpoints)
     {
         endpoints.MapGet("/manufacturing-engineering/purchase-orders", this.GetOrderLine);
-        endpoints.MapGet("/manufacturing-engineering/inspections", this.GetApp);
+        endpoints.MapGet("/manufacturing-engineering/inspections", this.GetAll);
         endpoints.MapGet("/manufacturing-engineering/inspections/create", this.GetApp);
         endpoints.MapGet("/manufacturing-engineering/inspections/{id}", this.GetById);
         endpoints.MapPost("/manufacturing-engineering/inspections", this.PostInspectionRecord);
@@ -64,4 +64,13 @@ public class InspectionsModule : IModule
     {
         await res.Negotiate(service.GetById(id));
     }
+
+    private async Task GetAll(
+        HttpRequest _,
+        HttpResponse res,
+        IFacadeResourceFilterService<InspectionRecordHeader, int, InspectionRecordResource, InspectionRecordResource, InspectionRecordResource> service)
+    {
+        await res.Negotiate(service.GetAll());
+    }
 }
+
