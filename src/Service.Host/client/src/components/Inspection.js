@@ -86,7 +86,7 @@ function Inspection({ creating }) {
                 chipped: 'N',
                 marked: 'N',
                 pitting: 'N',
-                material: 'MATERIAL 1',
+                material: 'Gleich 5083',
                 sentToReprocess: '',
                 timestamp: new Date()
             };
@@ -120,7 +120,7 @@ function Inspection({ creating }) {
             field: 'material',
             headerName: 'Material',
             type: 'singleSelect',
-            valueOptions: ['MATERIAL 1', 'MATERIAL 2', 'etc'],
+            valueOptions: ['Gleich 5083', 'V-Cast 5754', 'Alimex 5754'],
             editable: true,
             width: 150
         },
@@ -223,7 +223,7 @@ function Inspection({ creating }) {
                                 }}
                                 type="number"
                                 helperText="enter an order number and press enter to load details"
-                                value={orderDetails?.orderNumber ?? orderNumber}
+                                value={creating ? orderNumber : inspectionData?.orderNumber}
                                 onChange={(_, newVal) => {
                                     if (creating) {
                                         setOrderNumber(newVal);
@@ -360,7 +360,9 @@ function Inspection({ creating }) {
                                 saveDisabled={
                                     !creating || !orderDetails || !inspectionData?.lines?.length
                                 }
-                                showBackButton={false}
+                                backClick={() =>
+                                    history.push('/manufacturing-engineering/inspections')
+                                }
                             />
                         </Grid>
                     </>

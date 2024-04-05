@@ -13,6 +13,14 @@ public class InspectionRecordResourceBuilder : IBuilder<InspectionRecordHeader>
 {
     public InspectionRecordResource Build(InspectionRecordHeader model, IEnumerable<string> claims)
     {
+        string formattedPercentage = string.Empty;
+        if (model.Lines?.Count > 0)
+        {
+            var passed = model.Lines.Count(x => x.Status == "PASSED" || x.Status == "PASSED AND REPAIRED");
+            double percentage = (double)passed / model.Lines.Count * 100;
+            formattedPercentage = percentage.ToString("0.0") + "%";
+        }
+
         return new InspectionRecordResource
                    {
                        OrderNumber = model.PurchaseOrderLine.OrderNumber,
@@ -39,7 +47,8 @@ public class InspectionRecordResourceBuilder : IBuilder<InspectionRecordHeader>
                                                                Pitting = l.Pitting,
                                                                SentToReprocess = l.SentToReprocess
                                                            }).OrderBy(x => x.LineNumber),
-                       Links = this.BuildLinks(model, null).ToArray()
+                       Links = this.BuildLinks(model, null).ToArray(),
+                       PassPercentage = formattedPercentage
                    };
     }
 
