@@ -16,7 +16,7 @@ public class InspectionRecordResourceBuilder : IBuilder<InspectionRecordHeader>
         string formattedPercentage = string.Empty;
         if (model.Lines?.Count > 0)
         {
-            var passed = model.Lines.Count(x => x.Status == "PASSED" || x.Status == "PASSED AND REPAIRED");
+            var passed = model.Lines.Count(x => x.Status == "PASSED");
             double percentage = (double)passed / model.Lines.Count * 100;
             formattedPercentage = percentage.ToString("0.0") + "%";
         }
