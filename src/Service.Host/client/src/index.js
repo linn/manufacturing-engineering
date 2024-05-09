@@ -10,6 +10,7 @@ import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import Root from './components/Root';
 import 'typeface-roboto';
 import config from './config';
+import history from './history';
 
 const container = document.getElementById('root');
 const root = createRoot(container);
@@ -24,7 +25,13 @@ const oidcConfig = {
     redirect_uri: `${host}/manufacturing-engineering`,
     post_logout_redirect_uri: `${config.proxyRoot}/authentication/Account/Logout`,
     onSigninCallback: () => {
-        window.location = `${host}/manufacturing-engineering`;
+        const redirect = sessionStorage.getItem('auth:redirect');
+        if (redirect) {
+            history.push(redirect);
+            sessionStorage.removeItem('auth:redirect');
+        } else {
+            history.push(`${host}/manufacturing-engineering`);
+        }
     },
     userStore: new WebStorageStateStore({ store: window.localStorage })
 };
