@@ -109,8 +109,8 @@ function InspectionsSummary() {
                 <Grid item xs={12} style={{ paddingBottom: '40px' }}>
                     <Stack direction={{ xs: 'column', md: 'row' }} spacing={{ xs: 1, md: 3 }}>
                         <Gauge
-                            width={300}
-                            height={300}
+                            width={250}
+                            height={250}
                             value={averagePassPercentage}
                             cornerRadius="50%"
                             text={({ value }) => `Total Pass %: ${value}`}
@@ -128,8 +128,8 @@ function InspectionsSummary() {
                             })}
                         />
                         <Gauge
-                            width={300}
-                            height={300}
+                            width={250}
+                            height={250}
                             value={averageAnodisedPassPercentage}
                             cornerRadius="50%"
                             text={({ value }) => `Anodised Pass %: ${value}`}
@@ -163,7 +163,7 @@ function InspectionsSummary() {
                                     label: 'Number of Failure Mode Occurences'
                                 }
                             ]}
-                            width={750}
+                            width={400}
                             height={300}
                         />
                     </Stack>
