@@ -1,14 +1,13 @@
+/* eslint-disable indent */
+/* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
 import Typography from '@mui/material/Typography';
 import { Link } from 'react-router-dom';
 import { Gauge, gaugeClasses } from '@mui/x-charts/Gauge';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
-import { PieChart } from '@mui/x-charts/PieChart';
-import { useDrawingArea } from '@mui/x-charts/hooks';
-import { styled } from '@mui/material/styles';
-
 import { Loading, utilities } from '@linn-it/linn-form-components-library';
+import { BarChart } from '@mui/x-charts/BarChart';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import moment from 'moment';
@@ -21,40 +20,17 @@ import itemTypes from '../itemTypes';
 
 function InspectionsSummary() {
     const { result, isLoading } = useInitialise(itemTypes.inspections.url);
-
+    const anodised = result?.filter(r => /\/A$|\/AB$/.test(r.partNumber));
     const averagePassPercentage = result?.length
         ? (
               result.reduce((acc, obj) => acc + parseFloat(obj.passPercentage), 0) / result.length
           ).toFixed(1)
         : 0;
-
-    const data = [
-        { value: 5, label: 'A' },
-        { value: 10, label: 'B' },
-        { value: 15, label: 'C' },
-        { value: 20, label: 'D' }
-    ];
-
-    const size = {
-        width: 380,
-        height: 200
-    };
-
-    const StyledText = styled('text')(({ theme }) => ({
-        fill: theme.palette.text.primary,
-        textAnchor: 'middle',
-        dominantBaseline: 'central',
-        fontSize: 20
-    }));
-
-    function PieCenterLabel({ children }) {
-        const { width, height, left, top } = useDrawingArea();
-        return (
-            <StyledText x={left + width / 2} y={top + height / 2}>
-                {children}
-            </StyledText>
-        );
-    }
+    const averageAnodisedPassPercentage = anodised?.length
+        ? (
+              anodised.reduce((acc, obj) => acc + parseFloat(obj.passPercentage), 0) / result.length
+          ).toFixed(1)
+        : 0;
     const columns = [
         {
             field: 'dateOfEntry',
@@ -89,11 +65,108 @@ function InspectionsSummary() {
             width: 200
         }
     ];
+    const valueFormatter = value => `${value} Instances`;
+
+    const getAnodisedFailureModeCount = mode => {
+        const lines = anodised?.flatMap(obj => obj.lines);
+        if (!lines?.length) {
+            return 0;
+        }
+        return lines.reduce((acc, obj) => (obj[mode] === 'Y' ? acc + 1 : acc), 0);
+    };
+
+    const dataset = [
+        {
+            anodised: getAnodisedFailureModeCount('mottling'),
+            mode: 'Mottling'
+        },
+        {
+            anodised: getAnodisedFailureModeCount('pitting'),
+
+            mode: 'Pitting'
+        },
+        {
+            anodised: getAnodisedFailureModeCount('chipped'),
+
+            mode: 'Chipped'
+        },
+        {
+            anodised: getAnodisedFailureModeCount('marked'),
+
+            mode: 'Marked'
+        },
+        {
+            anodised: getAnodisedFailureModeCount('whiteSpot'),
+            mode: 'White Spot'
+        }
+    ];
     return (
         <Page homeUrl={config.appRoot} history={history}>
             <Grid container spacing={3}>
-                <Grid item xs={12}>
-                    <Typography variant="h4">Inspection</Typography>
+                <Grid item xs={12} style={{ paddingBottom: '40px' }}>
+                    <Typography variant="h2">Inspection Summary</Typography>
+                </Grid>
+                <Grid item xs={12} style={{ paddingBottom: '40px' }}>
+                    <Stack direction={{ xs: 'column', md: 'row' }} spacing={{ xs: 1, md: 3 }}>
+                        <Gauge
+                            width={300}
+                            height={300}
+                            value={averagePassPercentage}
+                            cornerRadius="50%"
+                            text={({ value }) => `Total Pass %: ${value}`}
+                            sx={theme => ({
+                                [`& .${gaugeClasses.valueText}`]: {
+                                    fontSize: 18,
+                                    fontFamily: 'roboto'
+                                },
+                                [`& .${gaugeClasses.valueArc}`]: {
+                                    fill: '#52b202'
+                                },
+                                [`& .${gaugeClasses.referenceArc}`]: {
+                                    fill: theme.palette.text.disabled
+                                }
+                            })}
+                        />
+                        <Gauge
+                            width={300}
+                            height={300}
+                            value={averageAnodisedPassPercentage}
+                            cornerRadius="50%"
+                            text={({ value }) => `Anodised Pass %: ${value}`}
+                            sx={theme => ({
+                                [`& .${gaugeClasses.valueText}`]: {
+                                    fontSize: 18,
+                                    fontFamily: 'roboto'
+                                },
+                                [`& .${gaugeClasses.valueArc}`]: {
+                                    fill: '#52b202'
+                                },
+                                [`& .${gaugeClasses.referenceArc}`]: {
+                                    fill: theme.palette.text.disabled
+                                }
+                            })}
+                        />
+                        <BarChart
+                            dataset={dataset}
+                            yAxis={[{ scaleType: 'band', dataKey: 'mode' }]}
+                            series={[
+                                {
+                                    dataKey: 'anodised',
+                                    color: 'orange',
+                                    label: 'Anodised Failure Breakdown',
+                                    valueFormatter
+                                }
+                            ]}
+                            layout="horizontal"
+                            xAxis={[
+                                {
+                                    label: 'Number of Failure Mode Occurences'
+                                }
+                            ]}
+                            width={750}
+                            height={300}
+                        />
+                    </Stack>
                 </Grid>
                 <Grid item xs={12}>
                     <List>
@@ -111,62 +184,19 @@ function InspectionsSummary() {
                             </Typography>
                         </ListItem>
                     </List>
-                    <Grid item xs={12}>
-                        <Stack direction={{ xs: 'column', md: 'row' }} spacing={{ xs: 1, md: 3 }}>
-                            <Gauge
-                                width={200}
-                                height={200}
-                                value={averagePassPercentage}
-                                cornerRadius="50%"
-                                text={({ value }) => `Avg Pass %: ${value}`}
-                                sx={theme => ({
-                                    [`& .${gaugeClasses.valueText}`]: {
-                                        fontSize: 14
-                                    },
-                                    [`& .${gaugeClasses.valueArc}`]: {
-                                        fill: '#52b202'
-                                    },
-                                    [`& .${gaugeClasses.referenceArc}`]: {
-                                        fill: theme.palette.text.disabled
-                                    }
-                                })}
-                            />
-                            <Gauge
-                                width={200}
-                                height={200}
-                                value={averagePassPercentage}
-                                cornerRadius="50%"
-                                text={({ value }) => `Anodised Pass %: ${value}`}
-                                sx={theme => ({
-                                    [`& .${gaugeClasses.valueText}`]: {
-                                        fontSize: 14
-                                    },
-                                    [`& .${gaugeClasses.valueArc}`]: {
-                                        fill: '#52b202'
-                                    },
-                                    [`& .${gaugeClasses.referenceArc}`]: {
-                                        fill: theme.palette.text.disabled
-                                    }
-                                })}
-                            />
-                            <PieChart series={[{ data, innerRadius: 80 }]} {...size}>
-                                <PieCenterLabel>Center label</PieCenterLabel>
-                            </PieChart>
-                        </Stack>
-                    </Grid>
-                    <Grid item xs={12}>
-                        {result && (
-                            <DataGrid
-                                columns={columns}
-                                autoHeight
-                                columnBuffer={6}
-                                rows={result}
-                                onRowClick={clicked => {
-                                    history.push(utilities.getSelfHref(clicked.row));
-                                }}
-                            />
-                        )}
-                    </Grid>
+                </Grid>
+                <Grid item xs={12}>
+                    {result && (
+                        <DataGrid
+                            columns={columns}
+                            autoHeight
+                            columnBuffer={6}
+                            rows={result}
+                            onRowClick={clicked => {
+                                history.push(utilities.getSelfHref(clicked.row));
+                            }}
+                        />
+                    )}
                 </Grid>
                 {isLoading && (
                     <Grid item xs={12}>
