@@ -54,7 +54,7 @@ function Inspection({ creating }) {
         isLoading: putLoading,
         putResult,
         clearPutResult
-    } = usePut(itemTypes.inspections.url, id, true, true);
+    } = usePut(itemTypes.inspections.url, true);
 
     const [hasFetched, setHasFetched] = useState(false);
 
