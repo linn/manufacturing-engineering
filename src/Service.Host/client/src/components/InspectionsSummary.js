@@ -180,7 +180,8 @@ function InspectionsSummary() {
                         </ListItem>
                         <ListItem>
                             <Typography variant="subtitle2">
-                                Click the link above to log a new batch inspection.
+                                Click the link above to log a new batch inspection. Click a record
+                                below to view/edit it.
                             </Typography>
                         </ListItem>
                     </List>

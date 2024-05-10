@@ -98,7 +98,7 @@ function Inspection({ creating }) {
                 pitting: 'N',
                 material: 'Gleich 5083',
                 sentToReprocess: '',
-                timestamp: new Date()
+                timestamp: null
             };
             lines.push(obj);
         }
@@ -367,7 +367,7 @@ function Inspection({ creating }) {
                                         inspectionData?.lines?.map(i => ({
                                             ...i,
                                             id: i.lineNumber,
-                                            timestamp: new Date(i.timestamp)
+                                            timestamp: i.timestamp ? new Date(i.timestamp) : null
                                         })) || []
                                     }
                                 />
