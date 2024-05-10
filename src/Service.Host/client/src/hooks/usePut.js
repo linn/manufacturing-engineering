@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useAuth } from 'react-oidc-context';
 
-function usePut(url, id, data, requiresAuth = false) {
+function usePut(url, requiresAuth = false) {
     const [isLoading, setIsLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState(null);
 
@@ -9,12 +9,14 @@ function usePut(url, id, data, requiresAuth = false) {
 
     let token = '';
 
+    const clearPutResult = () => setPutResult(null);
+
     const auth = useAuth();
     if (requiresAuth) {
         token = auth.user?.access_token;
     }
 
-    const send = async () => {
+    const send = async (id, data) => {
         setIsLoading(true);
         setPutResult(null);
         setErrorMessage(null);
@@ -41,7 +43,7 @@ function usePut(url, id, data, requiresAuth = false) {
         }
     };
 
-    return { send, isLoading, errorMessage, putResult };
+    return { send, isLoading, errorMessage, putResult, clearPutResult };
 }
 
 export default usePut;
