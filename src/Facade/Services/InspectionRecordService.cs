@@ -66,7 +66,23 @@ public class InspectionRecordService : FacadeFilterResourceService<InspectionRec
         InspectionRecordResource updateResource,
         IEnumerable<string> privileges = null)
     {
-        throw new NotImplementedException();
+        entity.BatchSize = updateResource.BatchSize;
+        entity.PreprocessedBatch = updateResource.PreprocessedBatch;
+        entity.Lines = updateResource.Lines.Select(
+            x => new InspectionRecordLine
+                     {
+                         Material = x.Material,
+                         Timestamp = DateTime.Parse(x.Timestamp),
+                         Status = x.Status,
+                         HeaderId = x.HeaderId,
+                         LineNumber = x.LineNumber,
+                         Mottling = x.Mottling,
+                         WhiteSpot = x.WhiteSpot,
+                         Chipped = x.Chipped,
+                         Marked = x.Marked,
+                         Pitting = x.Pitting,
+                         SentToReprocess = x.SentToReprocess
+                     }).ToList();
     }
 
     protected override Expression<Func<InspectionRecordHeader, bool>> SearchExpression(string searchTerm)
