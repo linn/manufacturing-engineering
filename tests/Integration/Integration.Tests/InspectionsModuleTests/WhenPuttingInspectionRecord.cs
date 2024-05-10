@@ -82,7 +82,7 @@ public class WhenPuttingInspectionRecord : ContextBase
                                                       Pitting = "N",
                                                       SentToReprocess = "N",
                                                       Material = "MAT",
-                                                      Timestamp = 30.March(2024),
+                                                      Timestamp = 28.March(2024),
                                                       Status = "PASSED",
                                                       HeaderId = 123,
                                                       Mottling = "N",
@@ -140,6 +140,7 @@ public class WhenPuttingInspectionRecord : ContextBase
         this.record.Lines.First().Mottling.Should().Be(firstUpdateLine.Mottling);
         this.record.Lines.First().SentToReprocess.Should().Be(firstUpdateLine.SentToReprocess);
         this.record.Lines.First().Status.Should().Be(firstUpdateLine.Status);
+        this.record.Lines.First().Timestamp.Should().Be(30.March(2024));
 
         // check the new line got added with the correct values
         var secondUpdateLine = this.resource.Lines.Last();
@@ -151,6 +152,7 @@ public class WhenPuttingInspectionRecord : ContextBase
         this.record.Lines.Last().Mottling.Should().Be(secondUpdateLine.Mottling);
         this.record.Lines.Last().SentToReprocess.Should().Be(secondUpdateLine.SentToReprocess);
         this.record.Lines.Last().Status.Should().Be(secondUpdateLine.Status);
+        this.record.Lines.Last().Timestamp.Should().Be(30.March(2024));
     }
 
     [Test]

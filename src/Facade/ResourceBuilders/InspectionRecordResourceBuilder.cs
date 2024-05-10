@@ -36,7 +36,7 @@ public class InspectionRecordResourceBuilder : IBuilder<InspectionRecordHeader>
                        Lines = model.Lines.Select(l => new InspectionRecordLineResource
                                                            {
                                                                Material = l.Material,
-                                                               Timestamp = l.Timestamp.ToString("o"),
+                                                               Timestamp = l.Timestamp?.ToString("o"),
                                                                Status = l.Status,
                                                                HeaderId = l.HeaderId,
                                                                LineNumber = l.LineNumber,

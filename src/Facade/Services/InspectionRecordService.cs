@@ -37,7 +37,7 @@ public class InspectionRecordService : FacadeFilterResourceService<InspectionRec
             x => new InspectionRecordLine
                      {
                          Material = x.Material,
-                         Timestamp = DateTime.Parse(x.Timestamp),
+                         Timestamp = !string.IsNullOrEmpty(x.Timestamp) ? DateTime.Parse(x.Timestamp) : null,
                          Status = x.Status,
                          HeaderId = x.HeaderId,
                          LineNumber = x.LineNumber,
@@ -72,7 +72,7 @@ public class InspectionRecordService : FacadeFilterResourceService<InspectionRec
             x => new InspectionRecordLine
                      {
                          Material = x.Material,
-                         Timestamp = DateTime.Parse(x.Timestamp),
+                         Timestamp = !string.IsNullOrEmpty(x.Timestamp) ? DateTime.Parse(x.Timestamp) : null,
                          Status = x.Status,
                          HeaderId = x.HeaderId,
                          LineNumber = x.LineNumber,
