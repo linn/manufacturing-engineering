@@ -13,6 +13,7 @@ import {
     SnackbarMessage
 } from '@linn-it/linn-form-components-library';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 import Page from './Page';
 import config from '../config';
 import history from '../history';
@@ -20,12 +21,14 @@ import useUserProfile from '../hooks/useUserProfile';
 import useGet from '../hooks/useGet';
 import itemTypes from '../itemTypes';
 import usePost from '../hooks/usePost';
+import usePut from '../hooks/usePut';
 
 function Inspection({ creating }) {
     const { id } = useParams();
     const { userNumber, name } = useUserProfile();
     const [orderNumber, setOrderNumber] = useState();
     const [inspectionData, setInspectionData] = useState({ preprocessedBatch: 'N' });
+    const [changesMade, setChangesMade] = useState(false);
 
     const {
         send: fetchInspection,
@@ -43,8 +46,15 @@ function Inspection({ creating }) {
         send: post,
         isLoading: postLoading,
         postResult,
-        clearResult
+        clearPostResult
     } = usePost(itemTypes.inspections.url, true, true);
+
+    const {
+        send: put,
+        isLoading: putLoading,
+        putResult,
+        clearPutResult
+    } = usePut(itemTypes.inspections.url, true);
 
     const [hasFetched, setHasFetched] = useState(false);
 
@@ -88,7 +98,7 @@ function Inspection({ creating }) {
                 pitting: 'N',
                 material: 'Gleich 5083',
                 sentToReprocess: '',
-                timestamp: new Date()
+                timestamp: null
             };
             lines.push(obj);
         }
@@ -103,7 +113,7 @@ function Inspection({ creating }) {
         },
         {
             field: 'timestamp',
-            headerName: 'Timestamp',
+            headerName: 'Machining Timestamp',
             type: 'dateTime',
             editable: true,
             width: 300
@@ -178,6 +188,7 @@ function Inspection({ creating }) {
     }
 
     const processRowUpdate = newRow => {
+        setChangesMade(true);
         setInspectionData(d => ({
             ...d,
             lines: d.lines.map(x => (x.lineNumber === newRow.lineNumber ? { ...newRow } : x))
@@ -186,7 +197,7 @@ function Inspection({ creating }) {
         return newRow;
     };
 
-    if (inspectionLoading || postLoading) {
+    if (inspectionLoading || postLoading || putLoading) {
         return (
             <Page homeUrl={config.appRoot} history={history}>
                 <Grid container spacing={3}>
@@ -201,8 +212,11 @@ function Inspection({ creating }) {
     return (
         <Page homeUrl={config.appRoot} history={history}>
             <SnackbarMessage
-                visible={!!postResult?.id}
-                onClose={clearResult}
+                visible={!!postResult?.id || !!putResult?.id}
+                onClose={() => {
+                    clearPostResult();
+                    clearPutResult();
+                }}
                 message="Save Successful"
             />
             <Grid container spacing={3}>
@@ -217,6 +231,7 @@ function Inspection({ creating }) {
                             <InputField
                                 propertyName="searchTerm"
                                 label="Purchase Order"
+                                disabled={!creating}
                                 fullWidth
                                 textFieldProps={{
                                     onKeyPress
@@ -240,7 +255,15 @@ function Inspection({ creating }) {
                                 onChange={() => {}}
                             />
                         </Grid>
-                        <Grid item xs={4} />
+                        <Grid item xs={4}>
+                            <InputField
+                                propertyName="dateOfEntry"
+                                label="Date Of Entry"
+                                fullWidth
+                                value={moment(inspectionData.dateOfEntry).format('DD MMM YYYY')}
+                                onChange={() => {}}
+                            />
+                        </Grid>
                     </>
                 )}
                 {(orderDetails || inspectionData?.id) && (
@@ -289,6 +312,7 @@ function Inspection({ creating }) {
                                 value={inspectionData?.batchSize}
                                 onChange={(propertyName, newValue) => {
                                     if (creating) {
+                                        setChangesMade(true);
                                         setInspectionData(d => ({
                                             ...d,
                                             [propertyName]: newValue
@@ -304,6 +328,7 @@ function Inspection({ creating }) {
                                 fullWidth
                                 value={inspectionData?.preprocessedBatch}
                                 onChange={(propertyName, newValue) => {
+                                    setChangesMade(true);
                                     setInspectionData(d => ({
                                         ...d,
                                         [propertyName]: newValue
@@ -342,7 +367,7 @@ function Inspection({ creating }) {
                                         inspectionData?.lines?.map(i => ({
                                             ...i,
                                             id: i.lineNumber,
-                                            timestamp: new Date(i.timestamp)
+                                            timestamp: i.timestamp ? new Date(i.timestamp) : null
                                         })) || []
                                     }
                                 />
@@ -353,13 +378,19 @@ function Inspection({ creating }) {
                                 cancelClick={() => {
                                     setInspectionData({ preprocessedBatch: 'N' });
                                     clearOrderDetails();
+                                    setChangesMade(false);
                                 }}
                                 saveClick={() => {
-                                    post(null, inspectionData);
+                                    setChangesMade(false);
+                                    clearPostResult();
+                                    clearPutResult();
+                                    if (creating) {
+                                        post(null, inspectionData);
+                                    } else {
+                                        put(id, inspectionData);
+                                    }
                                 }}
-                                saveDisabled={
-                                    !creating || !orderDetails || !inspectionData?.lines?.length
-                                }
+                                saveDisabled={!inspectionData?.lines?.length || !changesMade}
                                 backClick={() =>
                                     history.push('/manufacturing-engineering/inspections')
                                 }

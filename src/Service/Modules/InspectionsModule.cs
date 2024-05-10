@@ -24,6 +24,7 @@ public class InspectionsModule : IModule
         endpoints.MapGet("/manufacturing-engineering/inspections/create", this.GetApp);
         endpoints.MapGet("/manufacturing-engineering/inspections/{id}", this.GetById);
         endpoints.MapPost("/manufacturing-engineering/inspections", this.PostInspectionRecord);
+        endpoints.MapPut("/manufacturing-engineering/inspections/{id}", this.PutInspectionRecord);
     }
 
     private async Task GetApp(HttpRequest req, HttpResponse res)
@@ -54,6 +55,18 @@ public class InspectionsModule : IModule
         var user = req.HttpContext.User.GetEmployeeNumber();
         resource.EnteredById = user;
         await res.Negotiate(service.Add(resource));
+    }
+
+    private async Task PutInspectionRecord(
+        HttpRequest req,
+        HttpResponse res,
+        int id,
+        InspectionRecordResource resource,
+        IFacadeResourceFilterService<InspectionRecordHeader, int, InspectionRecordResource, InspectionRecordResource, InspectionRecordResource> service)
+    {
+        var user = req.HttpContext.User.GetEmployeeNumber();
+        resource.EnteredById = user;
+        await res.Negotiate(service.Update(id, resource, null));
     }
 
     private async Task GetById(
