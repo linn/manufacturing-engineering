@@ -150,11 +150,6 @@ Resources:
             traefik.http.routers.manufacturing-engineering.entrypoints: web
             traefik.http.routers.manufacturing-engineering.rule: "PathPrefix(`/manufacturing-engineering`)"
             traefik.http.services.manufacturing-engineering.loadbalancer.healthcheck.path: "/healthcheck"
-          LogConfiguration:
-            LogDriver: gelf
-            Options:
-              'gelf-address': 'udp://syslog.linn.co.uk:12201'
-              'tag': !Sub manufacturing-engineering-${dockerTag}-ecs-task
           Environment:
             - Name: DATABASE_HOST
               Value: !Ref databaseHost
