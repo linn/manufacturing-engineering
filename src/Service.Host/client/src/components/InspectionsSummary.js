@@ -43,7 +43,7 @@ function InspectionsSummary() {
 
     if (filters.toDate) {
         filtered = filtered.filter(r =>
-            moment(r.dateOfEntry).isSameOrBefore(moment(filters.toDate).startOf('day'))
+            moment(r.dateOfEntry).isSameOrBefore(moment(filters.toDate).endOf('day'))
         );
     }
 
