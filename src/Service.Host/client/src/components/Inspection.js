@@ -96,7 +96,7 @@ function Inspection({ creating }) {
                 chipped: 'N',
                 marked: 'N',
                 pitting: 'N',
-                material: 'Gleich 5083',
+                material: 'Not Specified',
                 sentToReprocess: '',
                 timestamp: null
             };
@@ -130,7 +130,13 @@ function Inspection({ creating }) {
             field: 'material',
             headerName: 'Material',
             type: 'singleSelect',
-            valueOptions: ['Gleich 5083', 'V-Cast 5754', 'Alimex 5754'],
+            valueOptions: [
+                'Not Specified',
+                'Gleich 5083',
+                'Gleich 6082',
+                'V-Cast 5754',
+                'Alimex 5754'
+            ],
             editable: true,
             width: 150
         },

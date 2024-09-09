@@ -57,6 +57,7 @@ public class InspectionRecordService : FacadeFilterResourceService<InspectionRec
                        DateOfEntry = DateTime.Now,
                        BatchSize = resource.BatchSize,
                        EnteredBy = enteredBy,
+                       Order = orderLine.Order,
                        Lines = lines.ToList()
                    };
     }

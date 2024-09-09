@@ -20,7 +20,8 @@ public class PurchaseOrderLineRepository : IQueryRepository<PurchaseOrderLine>
 
     public PurchaseOrderLine FindBy(Expression<Func<PurchaseOrderLine, bool>> expression)
     {
-        return this.serviceDbContext.PurchaseOrderLines.Include(x => x.Part).FirstOrDefault(expression);
+        return this.serviceDbContext.PurchaseOrderLines.Include(x => x.Part)
+            .Include(x => x.Order).FirstOrDefault(expression);
     }
 
     public IQueryable<PurchaseOrderLine> FilterBy(Expression<Func<PurchaseOrderLine, bool>> expression)
