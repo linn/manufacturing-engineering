@@ -1,17 +1,17 @@
 /* eslint-disable indent */
 /* eslint-disable react/jsx-props-no-spreading */
-import React from 'react';
+import React, { useState } from 'react';
 import Typography from '@mui/material/Typography';
 import { Link } from 'react-router-dom';
 import { Gauge, gaugeClasses } from '@mui/x-charts/Gauge';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
-import { Loading, utilities } from '@linn-it/linn-form-components-library';
+import { Dropdown, Loading, utilities, DatePicker } from '@linn-it/linn-form-components-library';
 import { BarChart } from '@mui/x-charts/BarChart';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import moment from 'moment';
-import { DataGrid } from '@mui/x-data-grid';
+import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import Page from './Page';
 import config from '../config';
 import history from '../history';
@@ -20,15 +20,37 @@ import itemTypes from '../itemTypes';
 
 function InspectionsSummary() {
     const { result, isLoading } = useInitialise(itemTypes.inspections.url);
-    const anodised = result?.filter(r => /\/A$|\/AB$/.test(r.partNumber));
-    const averagePassPercentage = result?.length
+    const [filters, setFilters] = useState({ part: 'ALL', fromDate: null, toDate: null });
+    let filtered = [];
+
+    if (filters.part === 'ALL') {
+        filtered = result;
+    } else if (filters.part === 'ALL ANODISED') {
+        filtered = result?.filter(r => /\/A$|\/AB$/.test(r.partNumber));
+    } else {
+        filtered = result?.filter(x => x.partNumber === filters.part);
+    }
+
+    const partFilterOptions = [
+        ...new Set(['ALL', 'ALL ANODISED', ...(result ? result.map(r => r.partNumber) : [])])
+    ];
+
+    if (filters.fromDate) {
+        filtered = filtered.filter(r =>
+            moment(r.dateOfEntry).isSameOrAfter(moment(filters.fromDate).startOf('day'))
+        );
+    }
+
+    if (filters.toDate) {
+        filtered = filtered.filter(r =>
+            moment(r.dateOfEntry).isSameOrBefore(moment(filters.toDate).startOf('day'))
+        );
+    }
+
+    const averagePassPercentage = filtered?.length
         ? (
-              result.reduce((acc, obj) => acc + parseFloat(obj.passPercentage), 0) / result.length
-          ).toFixed(1)
-        : 0;
-    const averageAnodisedPassPercentage = anodised?.length
-        ? (
-              anodised.reduce((acc, obj) => acc + parseFloat(obj.passPercentage), 0) / result.length
+              filtered.reduce((acc, obj) => acc + parseFloat(obj.passPercentage), 0) /
+              filtered.length
           ).toFixed(1)
         : 0;
     const columns = [
@@ -63,12 +85,17 @@ function InspectionsSummary() {
             field: 'preprocessedBatch',
             headerName: 'Preprocessed Batch',
             width: 200
+        },
+        {
+            field: 'supplierName',
+            headerName: 'Supplier',
+            width: 300
         }
     ];
     const valueFormatter = value => `${value} Instances`;
 
-    const getAnodisedFailureModeCount = mode => {
-        const lines = anodised?.flatMap(obj => obj.lines);
+    const getFailureModeCount = mode => {
+        const lines = filtered?.flatMap(obj => obj.lines);
         if (!lines?.length) {
             return 0;
         }
@@ -77,69 +104,96 @@ function InspectionsSummary() {
 
     const dataset = [
         {
-            anodised: getAnodisedFailureModeCount('mottling'),
+            anodised: getFailureModeCount('mottling'),
             mode: 'Mottling'
         },
         {
-            anodised: getAnodisedFailureModeCount('pitting'),
+            anodised: getFailureModeCount('pitting'),
 
             mode: 'Pitting'
         },
         {
-            anodised: getAnodisedFailureModeCount('chipped'),
+            anodised: getFailureModeCount('chipped'),
 
             mode: 'Chipped'
         },
         {
-            anodised: getAnodisedFailureModeCount('marked'),
+            anodised: getFailureModeCount('marked'),
 
             mode: 'Marked'
         },
         {
-            anodised: getAnodisedFailureModeCount('whiteSpot'),
+            anodised: getFailureModeCount('whiteSpot'),
             mode: 'White Spot'
         }
     ];
+    const getFillColour = passPercentage => {
+        switch (true) {
+            //  red when below 75%, orange/yellow between 75-80 and green above 80.
+            case passPercentage < 75:
+                return '#ff4848';
+            case passPercentage >= 75 && passPercentage <= 80:
+                return '#ffa500';
+            case passPercentage > 80:
+                return '#52b202';
+            default:
+                return '#000000';
+        }
+    };
+    const handleFilterChange = (propertyName, newValue) => {
+        setFilters(f => ({ ...f, [propertyName]: newValue }));
+    };
     return (
         <Page homeUrl={config.appRoot} history={history}>
             <Grid container spacing={3}>
-                <Grid item xs={12} style={{ paddingBottom: '40px' }}>
+                <Grid item xs={12}>
                     <Typography variant="h2">Inspection Summary</Typography>
                 </Grid>
+                <Grid item xs={12}>
+                    <Typography variant="subtitle2">
+                        You can adjust the filters below to change the visualisation
+                    </Typography>
+                </Grid>
+                <Grid item xs={3} style={{ paddingBottom: '40px' }}>
+                    <Dropdown
+                        allowNoValue={false}
+                        items={partFilterOptions}
+                        propertyName="part"
+                        onChange={handleFilterChange}
+                        label="PART FILTER"
+                        value={filters.part}
+                    />
+                </Grid>
+                <Grid item xs={3} style={{ paddingBottom: '40px' }}>
+                    <DatePicker
+                        label="From Date"
+                        value={filters.fromDate}
+                        onChange={newVal => handleFilterChange('fromDate', newVal)}
+                    />
+                </Grid>
+                <Grid item xs={3} style={{ paddingBottom: '40px' }}>
+                    <DatePicker
+                        label="To Date"
+                        value={filters.toDate}
+                        onChange={newVal => handleFilterChange('toDate', newVal)}
+                    />
+                </Grid>
+
                 <Grid item xs={12} style={{ paddingBottom: '40px' }}>
                     <Stack direction={{ xs: 'column', md: 'row' }} spacing={{ xs: 1, md: 3 }}>
                         <Gauge
-                            width={250}
-                            height={250}
+                            width={350}
+                            height={350}
                             value={averagePassPercentage}
                             cornerRadius="50%"
-                            text={({ value }) => `Total Pass %: ${value}`}
+                            text={({ value }) => `Pass %: ${value}`}
                             sx={theme => ({
                                 [`& .${gaugeClasses.valueText}`]: {
                                     fontSize: 18,
                                     fontFamily: 'roboto'
                                 },
                                 [`& .${gaugeClasses.valueArc}`]: {
-                                    fill: '#52b202'
-                                },
-                                [`& .${gaugeClasses.referenceArc}`]: {
-                                    fill: theme.palette.text.disabled
-                                }
-                            })}
-                        />
-                        <Gauge
-                            width={250}
-                            height={250}
-                            value={averageAnodisedPassPercentage}
-                            cornerRadius="50%"
-                            text={({ value }) => `Anodised Pass %: ${value}`}
-                            sx={theme => ({
-                                [`& .${gaugeClasses.valueText}`]: {
-                                    fontSize: 18,
-                                    fontFamily: 'roboto'
-                                },
-                                [`& .${gaugeClasses.valueArc}`]: {
-                                    fill: '#52b202'
+                                    fill: getFillColour(averagePassPercentage)
                                 },
                                 [`& .${gaugeClasses.referenceArc}`]: {
                                     fill: theme.palette.text.disabled
@@ -153,7 +207,7 @@ function InspectionsSummary() {
                                 {
                                     dataKey: 'anodised',
                                     color: 'orange',
-                                    label: 'Anodised Failure Breakdown',
+                                    label: 'Failure Modes Breakdown For Selected Parameters',
                                     valueFormatter
                                 }
                             ]}
@@ -163,8 +217,8 @@ function InspectionsSummary() {
                                     label: 'Number of Failure Mode Occurences'
                                 }
                             ]}
-                            width={400}
-                            height={300}
+                            width={500}
+                            height={350}
                         />
                     </Stack>
                 </Grid>
@@ -181,7 +235,8 @@ function InspectionsSummary() {
                         <ListItem>
                             <Typography variant="subtitle2">
                                 Click the link above to log a new batch inspection. Click a record
-                                below to view/edit it.
+                                below to view/edit it. You can filter and sort the table below, or
+                                click export to download a spreadsheet.
                             </Typography>
                         </ListItem>
                     </List>
@@ -192,6 +247,7 @@ function InspectionsSummary() {
                             columns={columns}
                             autoHeight
                             columnBuffer={6}
+                            slots={{ toolbar: GridToolbar }}
                             rows={result}
                             onRowClick={clicked => {
                                 history.push(utilities.getSelfHref(clicked.row));

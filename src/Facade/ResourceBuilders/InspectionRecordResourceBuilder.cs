@@ -48,8 +48,10 @@ public class InspectionRecordResourceBuilder : IBuilder<InspectionRecordHeader>
                                                                SentToReprocess = l.SentToReprocess
                                                            }).OrderBy(x => x.LineNumber),
                        Links = this.BuildLinks(model, null).ToArray(),
-                       PassPercentage = formattedPercentage
-                   };
+                       PassPercentage = formattedPercentage,
+                       SupplierId = model.Order?.Supplier?.Id,
+                       SupplierName = model.Order?.Supplier?.Name
+        };
     }
 
     public string GetLocation(InspectionRecordHeader p)

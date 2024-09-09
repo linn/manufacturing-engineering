@@ -32,6 +32,8 @@ public class InspectionRecordHeaderRepository : EntityFrameworkRepository<Inspec
             .Include(a => a.EnteredBy)
             .Include(b => b.PurchaseOrderLine)
             .ThenInclude(l => l.Part)
+            .Include(b => b.Order).ThenInclude(x => x.Supplier)
+            .AsNoTracking()
             .OrderByDescending(x => x.Id);
     }
 }

@@ -1,7 +1,5 @@
 ﻿namespace Linn.ManufacturingEngineering.Domain.LinnApps;
 
-using System.Collections.Generic;
-
 public class PurchaseOrderLine
 {
     public int OrderNumber { get; set; }
@@ -11,4 +9,6 @@ public class PurchaseOrderLine
     public Part Part { get; set; }
 
     public decimal Qty { get; set; }
+
+    public PurchaseOrder Order { get; set; }
 }

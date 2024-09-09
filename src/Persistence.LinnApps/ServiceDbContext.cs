@@ -27,6 +27,8 @@
             this.BuildPurchaseOrderLines(builder);
             this.BuildEmployees(builder);
             this.BuildParts(builder);
+            this.BuildSuppliers(builder);
+            this.BuildPurchaseOrders(builder);
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -44,8 +46,8 @@
             optionsBuilder.UseOracle(connectionString, options => options.UseOracleSQLCompatibility("11"));
 
             // can optionally Log any SQL that is ran by uncommenting:
-            optionsBuilder.UseLoggerFactory(MyLoggerFactory);
-            optionsBuilder.EnableSensitiveDataLogging(true);
+            // optionsBuilder.UseLoggerFactory(MyLoggerFactory);
+            // optionsBuilder.EnableSensitiveDataLogging(true);
             base.OnConfiguring(optionsBuilder);
         }
 
@@ -57,6 +59,7 @@
             e.Property(l => l.OrderNumber).HasColumnName("ORDER_NUMBER");
             e.Property(l => l.Qty).HasColumnName("ORDER_QTY");
             e.HasOne(l => l.Part).WithMany().HasForeignKey("PART_NUMBER");
+            e.HasOne(l => l.Order).WithMany().HasForeignKey(x => x.OrderNumber);
         }
 
         private void BuildInspectionRecordHeaders(ModelBuilder builder)
@@ -72,6 +75,7 @@
             e.HasMany(h => h.Lines).WithOne().HasForeignKey(l => l.HeaderId);
             e.HasOne(h => h.EnteredBy).WithMany().HasForeignKey("ENTERED_BY");
             e.HasOne(h => h.PurchaseOrderLine).WithMany().HasForeignKey(x => new { x.OrderNumber, x.OrderLine });
+            e.HasOne(h => h.Order).WithMany().HasForeignKey(x => x.OrderNumber);
         }
 
         private void BuildInspectionHeaderLines(ModelBuilder builder)
@@ -105,6 +109,22 @@
             entity.HasKey(m => m.Id);
             entity.Property(e => e.Id).HasColumnName("USER_NUMBER");
             entity.Property(e => e.Name).HasColumnName("USER_NAME").HasMaxLength(4000);
+        }
+
+        private void BuildSuppliers(ModelBuilder builder)
+        {
+            var entity = builder.Entity<Supplier>().ToTable("SUPPLIERS");
+            entity.HasKey(m => m.Id);
+            entity.Property(e => e.Id).HasColumnName("SUPPLIER_ID");
+            entity.Property(e => e.Name).HasColumnName("SUPPLIER_NAME");
+        }
+
+        private void BuildPurchaseOrders(ModelBuilder builder)
+        {
+            var entity = builder.Entity<PurchaseOrder>().ToTable("PL_ORDERS");
+            entity.HasKey(m => m.OrderNumber);
+            entity.Property(e => e.OrderNumber).HasColumnName("ORDER_NUMBER");
+            entity.HasOne(x => x.Supplier).WithMany().HasForeignKey("SUPP_SUPPLIER_ID");
         }
     }
 }

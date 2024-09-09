@@ -31,4 +31,8 @@ public class InspectionRecordResource : HypermediaResource
     public decimal? OrderQty { get; set; }
 
     public string PassPercentage { get; set; }
+
+    public int? SupplierId { get; set; }
+
+    public string SupplierName { get; set; }
 }

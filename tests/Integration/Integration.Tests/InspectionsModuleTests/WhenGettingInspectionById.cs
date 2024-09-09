@@ -23,6 +23,10 @@ public class WhenGettingInspectionById : ContextBase
                          {
                             Id = 1,
                             EnteredBy = new Employee { Id = 123 },
+                            Order = new PurchaseOrder
+                                        {
+                                            Supplier = new Supplier()
+                                        },
                             PurchaseOrderLine = new PurchaseOrderLine { Part = new Part { PartNumber = "PART" } },
                             Lines = new List<InspectionRecordLine> { new InspectionRecordLine
                                                                          {

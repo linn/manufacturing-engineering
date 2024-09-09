@@ -22,5 +22,7 @@ public class InspectionRecordHeader
     public int Id { get; set; }
 
     public Employee EnteredBy { get; set; }
+
+    public PurchaseOrder Order { get; set;}
 }
 
