@@ -154,9 +154,10 @@ function InspectionsSummary() {
                         You can adjust the filters below to change the visualisation
                     </Typography>
                 </Grid>
-                <Grid item xs={3} style={{ paddingBottom: '40px' }}>
+                <Grid item xs={2} style={{ paddingBottom: '40px' }}>
                     <Dropdown
                         allowNoValue={false}
+                        fullWidth
                         items={partFilterOptions}
                         propertyName="part"
                         onChange={handleFilterChange}
@@ -164,16 +165,16 @@ function InspectionsSummary() {
                         value={filters.part}
                     />
                 </Grid>
-                <Grid item xs={3} style={{ paddingBottom: '40px' }}>
+                <Grid item xs={2} style={{ paddingBottom: '40px' }}>
                     <DatePicker
-                        label="From Date"
+                        label="FROM DATE"
                         value={filters.fromDate}
                         onChange={newVal => handleFilterChange('fromDate', newVal)}
                     />
                 </Grid>
-                <Grid item xs={3} style={{ paddingBottom: '40px' }}>
+                <Grid item xs={2} style={{ paddingBottom: '40px' }}>
                     <DatePicker
-                        label="To Date"
+                        label="TO DATE"
                         value={filters.toDate}
                         onChange={newVal => handleFilterChange('toDate', newVal)}
                     />
