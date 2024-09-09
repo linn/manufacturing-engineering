@@ -96,7 +96,7 @@ function Inspection({ creating }) {
                 chipped: 'N',
                 marked: 'N',
                 pitting: 'N',
-                material: 'Gleich 5083',
+                material: 'Not Specified',
                 sentToReprocess: '',
                 timestamp: null
             };
