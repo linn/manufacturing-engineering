@@ -3,9 +3,10 @@
 using System.Threading.Tasks;
 
 using Linn.Common.Facade;
-using Linn.Common.Service.Core;
-using Linn.Common.Service.Core.Extensions;
+using Linn.Common.Service;
+using Linn.Common.Service.Extensions;
 using Linn.ManufacturingEngineering.Domain.LinnApps;
+using Linn.ManufacturingEngineering.Facade.Services;
 using Linn.ManufacturingEngineering.Resources;
 using Linn.ManufacturingEngineering.Service.Extensions;
 using Linn.ManufacturingEngineering.Service.Models;
@@ -37,9 +38,9 @@ public class InspectionsModule : IModule
         int lineNumber,
         HttpRequest _,
         HttpResponse res,
-        IQueryFacadeResourceService<PurchaseOrderLine, PurchaseOrderLineResource, PurchaseOrderLineResource> service)
+        IPurchaseOrderLineService service)
     {
-        await res.Negotiate(service.FindBy(new PurchaseOrderLineResource
+        await res.Negotiate(service.GetLine(new PurchaseOrderLineResource
                                                  {
                                                      OrderLine = lineNumber,
                                                      OrderNumber = orderNumber
@@ -50,7 +51,7 @@ public class InspectionsModule : IModule
         HttpRequest req,
         HttpResponse res,
         InspectionRecordResource resource,
-        IFacadeResourceFilterService<InspectionRecordHeader, int, InspectionRecordResource, InspectionRecordResource, InspectionRecordResource> service)
+        IAsyncFacadeService<InspectionRecordHeader, int, InspectionRecordResource, InspectionRecordResource, InspectionRecordResource> service)
     {
         var user = req.HttpContext.User.GetEmployeeNumber();
         resource.EnteredById = user;
@@ -62,7 +63,7 @@ public class InspectionsModule : IModule
         HttpResponse res,
         int id,
         InspectionRecordResource resource,
-        IFacadeResourceFilterService<InspectionRecordHeader, int, InspectionRecordResource, InspectionRecordResource, InspectionRecordResource> service)
+        IAsyncFacadeService<InspectionRecordHeader, int, InspectionRecordResource, InspectionRecordResource, InspectionRecordResource> service)
     {
         var user = req.HttpContext.User.GetEmployeeNumber();
         resource.EnteredById = user;
@@ -73,7 +74,7 @@ public class InspectionsModule : IModule
         HttpRequest _,
         HttpResponse res,
         int id,
-        IFacadeResourceFilterService<InspectionRecordHeader, int, InspectionRecordResource, InspectionRecordResource, InspectionRecordResource> service)
+        IAsyncFacadeService<InspectionRecordHeader, int, InspectionRecordResource, InspectionRecordResource, InspectionRecordResource> service)
     {
         await res.Negotiate(service.GetById(id));
     }
@@ -81,9 +82,8 @@ public class InspectionsModule : IModule
     private async Task GetAll(
         HttpRequest _,
         HttpResponse res,
-        IFacadeResourceFilterService<InspectionRecordHeader, int, InspectionRecordResource, InspectionRecordResource, InspectionRecordResource> service)
+        IAsyncFacadeService<InspectionRecordHeader, int, InspectionRecordResource, InspectionRecordResource, InspectionRecordResource> service)
     {
         await res.Negotiate(service.GetAll());
     }
 }
-

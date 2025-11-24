@@ -30,9 +30,9 @@
             return services
                 .AddTransient<IRazorEngine, RazorEngine>()
                 .AddTransient<ITemplateEngine, RazorTemplateEngine>()
-                .AddTransient<IQueryFacadeResourceService<PurchaseOrderLine, PurchaseOrderLineResource, PurchaseOrderLineResource>, PurchaseOrderLineService>()
+                .AddTransient<IPurchaseOrderLineService, PurchaseOrderLineService>()
                 .AddTransient<IBuilder<PurchaseOrderLine>, PurchaseOrderLineResourceBuilder>()
-                .AddTransient<IFacadeResourceFilterService<InspectionRecordHeader, int, InspectionRecordResource, InspectionRecordResource, InspectionRecordResource>, InspectionRecordService>()
+                .AddTransient<IAsyncFacadeService<InspectionRecordHeader, int, InspectionRecordResource, InspectionRecordResource, InspectionRecordResource>, InspectionRecordService>()
                 .AddTransient<IBuilder<InspectionRecordHeader>, InspectionRecordResourceBuilder>();
         }
     }

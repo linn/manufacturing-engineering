@@ -1,21 +1,23 @@
-/* eslint-disable indent */
-/* eslint-disable react/jsx-props-no-spreading */
 import React, { useState } from 'react';
 import Typography from '@mui/material/Typography';
 import { Link } from 'react-router-dom';
 import { Gauge, gaugeClasses } from '@mui/x-charts/Gauge';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
-import { Dropdown, Loading, utilities, DatePicker } from '@linn-it/linn-form-components-library';
+import {
+    Dropdown,
+    Loading,
+    utilities,
+    DatePicker,
+    useInitialise
+} from '@linn-it/linn-form-components-library';
 import { BarChart } from '@mui/x-charts/BarChart';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import moment from 'moment';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
-import Page from './Page';
 import config from '../config';
-import history from '../history';
-import useInitialise from '../hooks/useInitialise';
+import Page from '../containers/Page';
 import itemTypes from '../itemTypes';
 
 function InspectionsSummary() {
@@ -60,37 +62,12 @@ function InspectionsSummary() {
             width: 200,
             valueGetter: ({ value }) => value && moment(value).format('DD MMM YYYY')
         },
-        {
-            field: 'partNumber',
-            headerName: 'Part',
-            width: 200
-        },
-        {
-            field: 'batchSize',
-            headerName: 'Batch Size',
-            width: 200
-        },
-        {
-            field: 'passPercentage',
-            headerName: 'Pass Percentage',
-            align: 'right',
-            width: 200
-        },
-        {
-            field: 'enteredByName',
-            headerName: 'Inspected By',
-            width: 200
-        },
-        {
-            field: 'preprocessedBatch',
-            headerName: 'Preprocessed Batch',
-            width: 200
-        },
-        {
-            field: 'supplierName',
-            headerName: 'Supplier',
-            width: 300
-        }
+        { field: 'partNumber', headerName: 'Part', width: 200 },
+        { field: 'batchSize', headerName: 'Batch Size', width: 200 },
+        { field: 'passPercentage', headerName: 'Pass Percentage', align: 'right', width: 200 },
+        { field: 'enteredByName', headerName: 'Inspected By', width: 200 },
+        { field: 'preprocessedBatch', headerName: 'Preprocessed Batch', width: 200 },
+        { field: 'supplierName', headerName: 'Supplier', width: 300 }
     ];
     const valueFormatter = value => `${value} Instances`;
 
@@ -103,10 +80,7 @@ function InspectionsSummary() {
     };
 
     const dataset = [
-        {
-            anodised: getFailureModeCount('mottling'),
-            mode: 'Mottling'
-        },
+        { anodised: getFailureModeCount('mottling'), mode: 'Mottling' },
         {
             anodised: getFailureModeCount('pitting'),
 
@@ -122,10 +96,7 @@ function InspectionsSummary() {
 
             mode: 'Marked'
         },
-        {
-            anodised: getFailureModeCount('whiteSpot'),
-            mode: 'White Spot'
-        }
+        { anodised: getFailureModeCount('whiteSpot'), mode: 'White Spot' }
     ];
     const getFillColour = passPercentage => {
         switch (true) {
@@ -146,15 +117,15 @@ function InspectionsSummary() {
     return (
         <Page homeUrl={config.appRoot} history={history}>
             <Grid container spacing={3}>
-                <Grid item xs={12}>
+                <Grid item size={12}>
                     <Typography variant="h2">Inspection Summary</Typography>
                 </Grid>
-                <Grid item xs={12}>
+                <Grid item size={12}>
                     <Typography variant="subtitle2">
                         You can adjust the filters below to change the visualisation
                     </Typography>
                 </Grid>
-                <Grid item xs={2} style={{ paddingBottom: '40px' }}>
+                <Grid item size={2} style={{ paddingBottom: '40px' }}>
                     <Dropdown
                         allowNoValue={false}
                         fullWidth
@@ -165,14 +136,14 @@ function InspectionsSummary() {
                         value={filters.part}
                     />
                 </Grid>
-                <Grid item xs={2} style={{ paddingBottom: '40px' }}>
+                <Grid item size={2} style={{ paddingBottom: '40px' }}>
                     <DatePicker
                         label="FROM DATE"
                         value={filters.fromDate}
                         onChange={newVal => handleFilterChange('fromDate', newVal)}
                     />
                 </Grid>
-                <Grid item xs={2} style={{ paddingBottom: '40px' }}>
+                <Grid item size={2} style={{ paddingBottom: '40px' }}>
                     <DatePicker
                         label="TO DATE"
                         value={filters.toDate}
@@ -180,7 +151,7 @@ function InspectionsSummary() {
                     />
                 </Grid>
 
-                <Grid item xs={12} style={{ paddingBottom: '40px' }}>
+                <Grid item size={12} style={{ paddingBottom: '40px' }}>
                     <Stack direction={{ xs: 'column', md: 'row' }} spacing={{ xs: 1, md: 3 }}>
                         <Gauge
                             width={350}
@@ -213,17 +184,13 @@ function InspectionsSummary() {
                                 }
                             ]}
                             layout="horizontal"
-                            xAxis={[
-                                {
-                                    label: 'Number of Failure Mode Occurences'
-                                }
-                            ]}
+                            xAxis={[{ label: 'Number of Failure Mode Occurences' }]}
                             width={500}
                             height={350}
                         />
                     </Stack>
                 </Grid>
-                <Grid item xs={12}>
+                <Grid item size={12}>
                     <List>
                         <ListItem
                             component={Link}
@@ -242,7 +209,7 @@ function InspectionsSummary() {
                         </ListItem>
                     </List>
                 </Grid>
-                <Grid item xs={12}>
+                <Grid item size={12}>
                     {result && (
                         <DataGrid
                             columns={columns}
@@ -257,7 +224,7 @@ function InspectionsSummary() {
                     )}
                 </Grid>
                 {isLoading && (
-                    <Grid item xs={12}>
+                    <Grid item size={12}>
                         <Loading />
                     </Grid>
                 )}

@@ -1,36 +1,29 @@
-﻿namespace Linn.ManufacturingEngineering.Persistence.LinnApps.Repositories;
-
-using System;
-using System.Linq;
-using System.Linq.Expressions;
-
-using Linn.Common.Persistence;
-using Linn.ManufacturingEngineering.Domain.LinnApps;
-
-using Microsoft.EntityFrameworkCore;
-
-public class PurchaseOrderLineRepository : IQueryRepository<PurchaseOrderLine>
+﻿namespace Linn.ManufacturingEngineering.Persistence.LinnApps.Repositories
 {
-    private readonly ServiceDbContext serviceDbContext;
+    using System;
+    using System.Linq.Expressions;
+    using System.Threading.Tasks;
 
-    public PurchaseOrderLineRepository(ServiceDbContext serviceDbContext)
-    {
-        this.serviceDbContext = serviceDbContext;
-    }
+    using Linn.Common.Persistence.EntityFramework;
+    using Linn.ManufacturingEngineering.Domain.LinnApps;
 
-    public PurchaseOrderLine FindBy(Expression<Func<PurchaseOrderLine, bool>> expression)
-    {
-        return this.serviceDbContext.PurchaseOrderLines.Include(x => x.Part)
-            .Include(x => x.Order).FirstOrDefault(expression);
-    }
+    using Microsoft.EntityFrameworkCore;
 
-    public IQueryable<PurchaseOrderLine> FilterBy(Expression<Func<PurchaseOrderLine, bool>> expression)
+    public class PurchaseOrderLineRepository : EntityFrameworkQueryRepository<PurchaseOrderLine>
     {
-        throw new NotImplementedException();
-    }
+        private readonly ServiceDbContext serviceDbContext;
 
-    public IQueryable<PurchaseOrderLine> FindAll()
-    {
-        throw new NotImplementedException();
+        public PurchaseOrderLineRepository(ServiceDbContext serviceDbContext)
+            : base(serviceDbContext.PurchaseOrderLines)
+        {
+            this.serviceDbContext = serviceDbContext;
+        }
+
+
+        public override async Task<PurchaseOrderLine> FindByAsync(Expression<Func<PurchaseOrderLine, bool>> expression)
+        {
+            return await this.serviceDbContext.PurchaseOrderLines.Include(x => x.Part).Include(x => x.Order)
+                       .FirstOrDefaultAsync(expression);
+        }
     }
 }

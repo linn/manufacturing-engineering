@@ -1,4 +1,3 @@
-/* eslint-disable indent */
 import React, { useEffect, useState } from 'react';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
@@ -10,18 +9,17 @@ import {
     InputField,
     Loading,
     SaveBackCancelButtons,
-    SnackbarMessage
+    SnackbarMessage,
+    usePost,
+    usePut,
+    useGet
 } from '@linn-it/linn-form-components-library';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import Page from './Page';
+import Page from '../containers/Page';
 import config from '../config';
-import history from '../history';
 import useUserProfile from '../hooks/useUserProfile';
-import useGet from '../hooks/useGet';
 import itemTypes from '../itemTypes';
-import usePost from '../hooks/usePost';
-import usePut from '../hooks/usePut';
 
 function Inspection({ creating }) {
     const { id } = useParams();
@@ -40,7 +38,7 @@ function Inspection({ creating }) {
         send: fetchPurchaseOrder,
         result: orderDetails,
         clearData: clearOrderDetails
-    } = useGet(itemTypes.purchaseOrderLine.url);
+    } = useGet(itemTypes.purchaseOrderLine.url, false);
 
     const {
         send: post,
@@ -207,7 +205,7 @@ function Inspection({ creating }) {
         return (
             <Page homeUrl={config.appRoot} history={history}>
                 <Grid container spacing={3}>
-                    <Grid item xs={12}>
+                    <Grid item size={12}>
                         <Loading />
                     </Grid>
                 </Grid>
@@ -226,14 +224,14 @@ function Inspection({ creating }) {
                 message="Save Successful"
             />
             <Grid container spacing={3}>
-                <Grid item xs={12}>
+                <Grid item size={12}>
                     <Typography variant="h4">
                         {creating ? 'Create New Inspection Record' : 'Inspection Record Details'}
                     </Typography>
                 </Grid>
                 {userNumber && (
                     <>
-                        <Grid item xs={4}>
+                        <Grid item size={4}>
                             <InputField
                                 propertyName="searchTerm"
                                 label="Purchase Order"
@@ -252,7 +250,7 @@ function Inspection({ creating }) {
                                 }}
                             />
                         </Grid>
-                        <Grid item xs={4}>
+                        <Grid item size={4}>
                             <InputField
                                 propertyName="enterdBy"
                                 label="Entered By"
@@ -261,7 +259,7 @@ function Inspection({ creating }) {
                                 onChange={() => {}}
                             />
                         </Grid>
-                        <Grid item xs={4}>
+                        <Grid item size={4}>
                             <InputField
                                 propertyName="dateOfEntry"
                                 label="Date Of Entry"
@@ -274,7 +272,7 @@ function Inspection({ creating }) {
                 )}
                 {(orderDetails || inspectionData?.id) && (
                     <>
-                        <Grid item xs={4}>
+                        <Grid item size={4}>
                             <InputField
                                 propertyName="partNumber"
                                 label="Part"
@@ -283,7 +281,7 @@ function Inspection({ creating }) {
                                 onChange={() => {}}
                             />
                         </Grid>
-                        <Grid item xs={6}>
+                        <Grid item size={6}>
                             <InputField
                                 propertyName="partDescription"
                                 label="Description"
@@ -294,7 +292,7 @@ function Inspection({ creating }) {
                                 onChange={() => {}}
                             />
                         </Grid>
-                        <Grid item xs={2}>
+                        <Grid item size={2}>
                             <InputField
                                 propertyName="qty"
                                 label="Order Qty"
@@ -303,7 +301,7 @@ function Inspection({ creating }) {
                                 onChange={() => {}}
                             />
                         </Grid>
-                        <Grid item xs={2}>
+                        <Grid item size={2}>
                             <InputField
                                 disabled={!creating || inspectionData?.lines?.length}
                                 propertyName="batchSize"
@@ -327,7 +325,7 @@ function Inspection({ creating }) {
                                 }}
                             />
                         </Grid>
-                        <Grid item xs={2}>
+                        <Grid item size={2}>
                             <Dropdown
                                 propertyName="preprocessedBatch"
                                 label="Preprocessed Batch?"
@@ -344,7 +342,7 @@ function Inspection({ creating }) {
                             />
                         </Grid>
                         {creating && !inspectionData?.lines?.length && (
-                            <Grid item xs={12}>
+                            <Grid item size={12}>
                                 <Button
                                     onClick={() => {
                                         if (inspectionData.batchSize) {
@@ -361,7 +359,7 @@ function Inspection({ creating }) {
                                 </Button>
                             </Grid>
                         )}
-                        <Grid item xs={12}>
+                        <Grid item size={12}>
                             {(!creating || inspectionData?.lines?.length) && (
                                 <DataGrid
                                     columns={columns}
@@ -379,7 +377,7 @@ function Inspection({ creating }) {
                                 />
                             )}
                         </Grid>
-                        <Grid item xs={12}>
+                        <Grid item size={12}>
                             <SaveBackCancelButtons
                                 cancelClick={() => {
                                     setInspectionData({ preprocessedBatch: 'N' });
