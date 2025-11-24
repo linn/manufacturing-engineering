@@ -40,7 +40,7 @@ public class InspectionsModule : IModule
         HttpResponse res,
         IPurchaseOrderLineService service)
     {
-        await res.Negotiate(service.GetLine(new PurchaseOrderLineResource
+        await res.Negotiate(await service.GetLine(new PurchaseOrderLineResource
                                                  {
                                                      OrderLine = lineNumber,
                                                      OrderNumber = orderNumber
@@ -55,7 +55,7 @@ public class InspectionsModule : IModule
     {
         var user = req.HttpContext.User.GetEmployeeNumber();
         resource.EnteredById = user;
-        await res.Negotiate(service.Add(resource));
+        await res.Negotiate(await service.Add(resource));
     }
 
     private async Task PutInspectionRecord(
@@ -67,7 +67,7 @@ public class InspectionsModule : IModule
     {
         var user = req.HttpContext.User.GetEmployeeNumber();
         resource.EnteredById = user;
-        await res.Negotiate(service.Update(id, resource, null));
+        await res.Negotiate(await service.Update(id, resource, null));
     }
 
     private async Task GetById(
@@ -76,7 +76,7 @@ public class InspectionsModule : IModule
         int id,
         IAsyncFacadeService<InspectionRecordHeader, int, InspectionRecordResource, InspectionRecordResource, InspectionRecordResource> service)
     {
-        await res.Negotiate(service.GetById(id));
+        await res.Negotiate(await service.GetById(id));
     }
 
     private async Task GetAll(
@@ -84,6 +84,6 @@ public class InspectionsModule : IModule
         HttpResponse res,
         IAsyncFacadeService<InspectionRecordHeader, int, InspectionRecordResource, InspectionRecordResource, InspectionRecordResource> service)
     {
-        await res.Negotiate(service.GetAll());
+        await res.Negotiate(await service.GetAll());
     }
 }

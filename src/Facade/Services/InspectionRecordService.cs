@@ -29,10 +29,10 @@ public class InspectionRecordService : AsyncFacadeService<InspectionRecordHeader
         this.orderLineRepository = orderLineRepository;
     }
 
-    protected override InspectionRecordHeader CreateFromResource(InspectionRecordResource resource, IEnumerable<string> privileges = null)
+    protected override async Task<InspectionRecordHeader> CreateFromResourceAsync(InspectionRecordResource resource, IEnumerable<string> privileges = null)
     {
-        var enteredBy = this.employeeRepository.FindById(resource.EnteredById);
-        var orderLine = this.orderLineRepository.FindBy(
+        var enteredBy = await this.employeeRepository.FindByIdAsync(resource.EnteredById);
+        var orderLine = await this.orderLineRepository.FindByAsync(
             x => x.OrderLine == resource.OrderLine && x.OrderNumber == resource.OrderNumber);
         var lines = resource.Lines.Select(
             x => new InspectionRecordLine

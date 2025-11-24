@@ -18,7 +18,7 @@ public class WhenGettingInspectionById : ContextBase
     [SetUp]
     public void SetUp()
     {
-        this.InspectionRecordHeaderRepisitory.FindById(1)
+        this.InspectionRecordHeaderRepisitory.FindByIdAsync(1)
             .Returns(new InspectionRecordHeader
                          {
                             Id = 1,

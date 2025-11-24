@@ -20,7 +20,7 @@ public class WhenGettingAllInspectionRecords : ContextBase
     [SetUp]
     public void SetUp()
     {
-        this.InspectionRecordHeaderRepisitory.FindAll()
+        this.InspectionRecordHeaderRepisitory.FindAllAsync()
             .Returns(
                 new List<InspectionRecordHeader>
                     {
@@ -41,7 +41,7 @@ public class WhenGettingAllInspectionRecords : ContextBase
                                                     }
                                             }
                             }
-                    }.AsQueryable());
+                    });
 
         this.Response = this.Client.Get(
                 "/manufacturing-engineering/inspections",
