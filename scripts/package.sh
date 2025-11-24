@@ -1,8 +1,17 @@
 #!/bin/bash
 set -ev
+source ./scripts/install.sh
+
+# build the client app
+cd ./src/Service.Host
+npm ci
+BUILD_ENV=production npm run build
+cd ../..
 
 # build dotnet application
-dotnet publish ./src/Service.Host/ -c release
+dotnet publish
+# dotnet publish ./src/Messaging.Host/ -c release
+# dotnet publish ./src/Scheduling.Host/ -c release
 
 # determine which branch this change is from
 if [ "${TRAVIS_PULL_REQUEST}" = "false" ]; then

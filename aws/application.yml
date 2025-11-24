@@ -72,6 +72,12 @@ Conditions:
     - !Equals [!Ref environmentSuffix, "-sys"]
 
 Resources:
+  ManufacturingEngineeringStackLogGroup:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Delete
+    Properties:
+      LogGroupName: !Sub ${AWS::StackName}-LogGroup
+      RetentionInDays: 14
   manufacturingEngineeringRole:
     Type: AWS::IAM::Role
     Properties:
@@ -95,11 +101,6 @@ Resources:
           PolicyDocument:
             Version: '2012-10-17'
             Statement:
-              - Effect: Allow
-                Action:
-                  - sqs:SendMessage
-                Resource:
-                  Fn::ImportValue: logging-queue-arn
               - Effect: Allow
                 Action:
                   - ses:SendEmail
@@ -151,10 +152,11 @@ Resources:
             traefik.http.routers.manufacturing-engineering.rule: "PathPrefix(`/manufacturing-engineering`)"
             traefik.http.services.manufacturing-engineering.loadbalancer.healthcheck.path: "/healthcheck"
           LogConfiguration:
-            LogDriver: gelf
+            LogDriver: awslogs
             Options:
-              'gelf-address': 'udp://syslog.linn.co.uk:12201'
-              'tag': !Sub manufacturing-engineering-${dockerTag}-ecs-task
+              awslogs-region: !Ref AWS::Region
+              awslogs-group: !Ref ServiceStackLogGroup
+              awslogs-stream-prefix: !Ref AWS::StackName
           Environment:
             - Name: DATABASE_HOST
               Value: !Ref databaseHost

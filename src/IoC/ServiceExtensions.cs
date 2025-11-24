@@ -8,7 +8,7 @@
     using Linn.Common.Configuration;
     using Linn.Common.Email;
     using Linn.Common.Facade;
-    using Linn.Common.Pdf;
+    using Linn.Common.Rendering;
     using Linn.ManufacturingEngineering.Domain.LinnApps;
     using Linn.ManufacturingEngineering.Facade.ResourceBuilders;
     using Linn.ManufacturingEngineering.Facade.Services;
