@@ -1,49 +1,37 @@
 import { render } from '@testing-library/react';
-import { Provider } from 'react-redux';
 import React from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import configureMockStore from 'redux-mock-store';
-import { MemoryRouter } from 'react-router-dom';
+import { vi } from 'vitest';
 import { SnackbarProvider } from 'notistack';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
-import { apiMiddleware as api } from 'redux-api-middleware';
-import thunkMiddleware from 'redux-thunk';
 import { useAuth } from 'react-oidc-context';
 
-const middleware = [api, thunkMiddleware];
-jest.mock('react-oidc-context', () => ({
-    ...jest.requireActual('react-router-dom'),
-    useAuth: jest.fn(),
-    hasAuthParams: jest.fn()
+vi.mock('react-oidc-context', () => ({
+    useAuth: vi.fn(),
+    hasAuthParams: vi.fn()
 }));
 
-useAuth.mockImplementation(() => ({ signinRedirect: jest.fn() }));
+useAuth.mockImplementation(() => ({ signinRedirect: vi.fn() }));
 
-useAuth.mockImplementation(() => ({ signinRedirect: jest.fn() }));
-// eslint-disable-next-line react/prop-types
-const Providers = ({ children }) => {
-    global.fetch = jest.fn(() =>
-        Promise.resolve({
-            json: () => Promise.resolve({})
-        })
-    );
-    const mockStore = configureMockStore(middleware);
-    const store = mockStore({ oidc: { user: { profile: {} } }, historyStore: { push: jest.fn() } });
+vi.mock('react-router-dom', () => ({
+    useNavigate: () => vi.fn(),
+    useLocation: () => ({
+        pathname: ''
+    }),
+    useParams: () => vi.fn(),
+    Link: () => <div /> // todo - this might need a more convincing mock if tests require it
+}));
+
+function Providers({ children }) {
     return (
-        <Provider store={store}>
-            <ThemeProvider theme={createTheme()}>
-                <SnackbarProvider dense maxSnack={5}>
-                    <MemoryRouter>
-                        <LocalizationProvider dateAdapter={AdapterMoment}>
-                            {children}
-                        </LocalizationProvider>
-                    </MemoryRouter>
-                </SnackbarProvider>
-            </ThemeProvider>
-        </Provider>
+        <ThemeProvider theme={createTheme()}>
+            <SnackbarProvider dense maxSnack={5}>
+                <LocalizationProvider dateAdapter={AdapterMoment}>{children}</LocalizationProvider>
+            </SnackbarProvider>
+        </ThemeProvider>
     );
-};
+}
 
 const customRender = (ui, options) => render(ui, { wrapper: Providers, ...options });
 
