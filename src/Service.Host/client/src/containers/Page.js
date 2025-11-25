@@ -10,7 +10,7 @@ function PageContainer({
     showRequestErrors = false,
     width = 'l',
     title = null,
-    defaultAppTitle = 'service'
+    defaultAppTitle = 'Manufacturing Engineering'
 }) {
     const location = useLocation();
     const navigate = useNavigate();

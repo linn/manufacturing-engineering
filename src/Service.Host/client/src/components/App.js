@@ -9,7 +9,7 @@ import Page from '../containers/Page';
 
 function App() {
     return (
-        <Page>
+        <Page title="Manufacturing Engineering">
             <Grid container spacing={3}>
                 <Grid item size={12}>
                     <Typography variant="h4">Manufacturing Engineering</Typography>

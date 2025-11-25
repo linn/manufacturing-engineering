@@ -214,7 +214,7 @@ function Inspection({ creating }) {
     }
 
     return (
-        <Page homeUrl={config.appRoot} history={history}>
+        <Page title="Inspection Record">
             <SnackbarMessage
                 visible={!!postResult?.id || !!putResult?.id}
                 onClose={() => {
@@ -380,7 +380,11 @@ function Inspection({ creating }) {
                         <Grid item size={12}>
                             <SaveBackCancelButtons
                                 cancelClick={() => {
-                                    setInspectionData({ preprocessedBatch: 'N' });
+                                    {
+                                        creating
+                                            ? setInspectionData({ preprocessedBatch: 'N' })
+                                            : setInspectionData(inspectionDetails);
+                                    }
                                     clearOrderDetails();
                                     setChangesMade(false);
                                 }}

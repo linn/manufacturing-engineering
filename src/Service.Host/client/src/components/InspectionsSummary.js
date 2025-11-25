@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Typography from '@mui/material/Typography';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Gauge, gaugeClasses } from '@mui/x-charts/Gauge';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
@@ -15,8 +15,7 @@ import { BarChart } from '@mui/x-charts/BarChart';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import moment from 'moment';
-import { DataGrid, GridToolbar } from '@mui/x-data-grid';
-import config from '../config';
+import { DataGrid } from '@mui/x-data-grid';
 import Page from '../containers/Page';
 import itemTypes from '../itemTypes';
 
@@ -24,6 +23,8 @@ function InspectionsSummary() {
     const { result, isLoading } = useInitialise(itemTypes.inspections.url);
     const [filters, setFilters] = useState({ part: 'ALL', fromDate: null, toDate: null });
     let filtered = [];
+
+    const navigate = useNavigate();
 
     if (filters.part === 'ALL') {
         filtered = result;
@@ -60,7 +61,8 @@ function InspectionsSummary() {
             field: 'dateOfEntry',
             headerName: 'Inspection Date',
             width: 200,
-            valueGetter: ({ value }) => value && moment(value).format('DD MMM YYYY')
+            valueGetter: value => (value ? new Date(value) : null),
+            valueFormatter: value => (value ? moment(value).format('DD-MMM-YYYY') : '')
         },
         { field: 'partNumber', headerName: 'Part', width: 200 },
         { field: 'batchSize', headerName: 'Batch Size', width: 200 },
@@ -115,7 +117,7 @@ function InspectionsSummary() {
         setFilters(f => ({ ...f, [propertyName]: newValue }));
     };
     return (
-        <Page homeUrl={config.appRoot} history={history}>
+        <Page>
             <Grid container spacing={3}>
                 <Grid item size={12}>
                     <Typography variant="h2">Inspection Summary</Typography>
@@ -213,12 +215,11 @@ function InspectionsSummary() {
                     {result && (
                         <DataGrid
                             columns={columns}
-                            autoHeight
                             columnBuffer={6}
-                            slots={{ toolbar: GridToolbar }}
+                            showToolbar
                             rows={result}
                             onRowClick={clicked => {
-                                history.push(utilities.getSelfHref(clicked.row));
+                                navigate(utilities.getSelfHref(clicked.row));
                             }}
                         />
                     )}
