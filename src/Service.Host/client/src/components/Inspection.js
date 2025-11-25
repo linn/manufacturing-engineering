@@ -3,7 +3,7 @@ import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import { DataGrid } from '@mui/x-data-grid';
 import Button from '@mui/material/Button';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import {
     Dropdown,
     InputField,
@@ -17,7 +17,6 @@ import {
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import Page from '../containers/Page';
-import config from '../config';
 import useUserProfile from '../hooks/useUserProfile';
 import itemTypes from '../itemTypes';
 
@@ -27,6 +26,8 @@ function Inspection({ creating }) {
     const [orderNumber, setOrderNumber] = useState();
     const [inspectionData, setInspectionData] = useState({ preprocessedBatch: 'N' });
     const [changesMade, setChangesMade] = useState(false);
+
+    const navigate = useNavigate();
 
     const {
         send: fetchInspection,
@@ -203,7 +204,7 @@ function Inspection({ creating }) {
 
     if (inspectionLoading || postLoading || putLoading) {
         return (
-            <Page homeUrl={config.appRoot} history={history}>
+            <Page title="Loading">
                 <Grid container spacing={3}>
                     <Grid item size={12}>
                         <Loading />
@@ -363,7 +364,6 @@ function Inspection({ creating }) {
                             {(!creating || inspectionData?.lines?.length) && (
                                 <DataGrid
                                     columns={columns}
-                                    autoHeight
                                     columnBuffer={6}
                                     disableRowSelectionOnClick
                                     processRowUpdate={processRowUpdate}
@@ -399,9 +399,7 @@ function Inspection({ creating }) {
                                     }
                                 }}
                                 saveDisabled={!inspectionData?.lines?.length || !changesMade}
-                                backClick={() =>
-                                    history.push('/manufacturing-engineering/inspections')
-                                }
+                                backClick={() => navigate('/manufacturing-engineering/inspections')}
                             />
                         </Grid>
                     </>
