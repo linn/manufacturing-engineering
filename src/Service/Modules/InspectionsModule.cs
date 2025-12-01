@@ -53,7 +53,7 @@ public class InspectionsModule : IModule
         HttpRequest req,
         HttpResponse res,
         InspectionRecordResource resource,
-        IMyAuthorisationService authService,
+        // IMyAuthorisationService authService,
         IAsyncFacadeService<InspectionRecordHeader, int, InspectionRecordResource, InspectionRecordResource, InspectionRecordResource> service)
     {
         var user = req.HttpContext.User.GetEmployeeNumber();
@@ -61,9 +61,9 @@ public class InspectionsModule : IModule
         // placeholder demo for show and tell 
         // need to assume client submits a freshly minted token
         // would require client code changes to ensure a new token is fetched before posting
-        var privilegesFromToken = req.HttpContext.GetPrivileges();
-        
-        var permittedFromToken = authService.HasPermissionFor("inspections.create", privilegesFromToken);
+        // var privilegesFromToken = req.HttpContext.GetPrivileges();
+        //
+        // var permittedFromToken = authService.HasPermissionFor("inspections.create", privilegesFromToken);
         
         resource.EnteredById = user;
         await res.Negotiate(await service.Add(resource));
@@ -73,7 +73,7 @@ public class InspectionsModule : IModule
         HttpRequest req,
         HttpResponse res,
         int id,
-        IMyAuthorisationService authService,
+        // IMyAuthorisationService authService,
         InspectionRecordResource resource,
         IAsyncFacadeService<InspectionRecordHeader, int, InspectionRecordResource, InspectionRecordResource, InspectionRecordResource> service)
     {
@@ -84,9 +84,9 @@ public class InspectionsModule : IModule
         // alternative, almost definitely better approach
         // disregard the access token - it could be old for all we know
         // fetch the live permissions from the authorisation API
-        var hasPermissionRightNow 
-            = await authService
-                .CheckUserHasPermissionToPerformAction("inspections.update", req.HttpContext.User.GetEmployeeUrl());
+        // var hasPermissionRightNow 
+        //     = await authService
+        //         .CheckUserHasPermissionToPerformAction("inspections.update", req.HttpContext.User.GetEmployeeUrl());
         
         await res.Negotiate(await service.Update(id, resource, null));
     }
