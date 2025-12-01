@@ -72,11 +72,6 @@ Conditions:
     - !Equals [!Ref environmentSuffix, "-sys"]
 
 Resources:
-  ManufacturingEngineeringStackLogGroup:
-    Type: AWS::Logs::LogGroup
-    DeletionPolicy: Delete
-    Properties:
-      LogGroupName: !Sub ${AWS::StackName}-LogGroup
       RetentionInDays: 14
   manufacturingEngineeringRole:
     Type: AWS::IAM::Role
@@ -155,7 +150,7 @@ Resources:
             LogDriver: awslogs
             Options:
               awslogs-region: !Ref AWS::Region
-              awslogs-group: !Ref ServiceStackLogGroup
+              awslogs-group: !Ref ManufacturingEngineeringStackLogGroup
               awslogs-stream-prefix: !Ref AWS::StackName
           Environment:
             - Name: DATABASE_HOST
