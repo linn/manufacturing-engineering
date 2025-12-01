@@ -16,6 +16,8 @@
         {
             app.MapGet("/", this.Redirect);
             app.MapGet("/manufacturing-engineering", this.GetApp);
+            app.MapGet("/manufacturing-engineering/logged-out", this.GetApp);
+
         }
 
         private Task Redirect(HttpRequest req, HttpResponse res)
