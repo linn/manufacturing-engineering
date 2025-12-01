@@ -5,8 +5,8 @@ namespace Linn.ManufacturingEngineering.Service.Host.Negotiators
     using System.Threading.Tasks;
 
     using Linn.Common.Configuration;
-    using Linn.Common.Pdf;
-    using Linn.Common.Service.Core;
+    using Linn.Common.Rendering;
+    using Linn.Common.Service;
     using Linn.ManufacturingEngineering.Service.Models;
 
     using Microsoft.AspNetCore.Http;
@@ -43,21 +43,24 @@ namespace Linn.ManufacturingEngineering.Service.Host.Negotiators
             var jsonAppSettings = JsonConvert.SerializeObject(
                     new
                     {
-                        AuthorityUri = ConfigurationManager.Configuration["AUTHORITY_URI"],
+                        CognitoHost = ConfigurationManager.Configuration["COGNITO_HOST"],
+                        CognitoClientId = ConfigurationManager.Configuration["COGNITO_CLIENT_ID"],
+                        CognitoDomainPrefix = ConfigurationManager.Configuration["COGNITO_DOMAIN_PREFIX"],
                         AppRoot = ConfigurationManager.Configuration["APP_ROOT"],
-                        ProxyRoot = ConfigurationManager.Configuration["PROXY_ROOT"]
+                        ProxyRoot = ConfigurationManager.Configuration["PROXY_ROOT"],
+                        entraLogoutUri = ConfigurationManager.Configuration["ENTRA_LOGOUT_URI"]
                     },
                     Formatting.Indented,
                     new JsonSerializerSettings
-                        {
-                            ContractResolver = new CamelCasePropertyNamesContractResolver()
-                        });
+                    {
+                        ContractResolver = new CamelCasePropertyNamesContractResolver()
+                    });
 
             var viewModel = new ViewModel
-                                {
-                                    AppSettings = jsonAppSettings,
-                                    BuildNumber = ConfigurationManager.Configuration["BUILD_NUMBER"]
-                                };
+            {
+                AppSettings = jsonAppSettings,
+                BuildNumber = ConfigurationManager.Configuration["BUILD_NUMBER"]
+            };
             var compiled = this.templateEngine.Render(viewModel, view).Result;
 
             res.ContentType = "text/html";

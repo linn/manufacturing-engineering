@@ -4,13 +4,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 using Linn.Common.Facade;
 using Linn.Common.Persistence;
 using Linn.ManufacturingEngineering.Domain.LinnApps;
 using Linn.ManufacturingEngineering.Resources;
 
-public class InspectionRecordService : FacadeFilterResourceService<InspectionRecordHeader, int, InspectionRecordResource, InspectionRecordResource, InspectionRecordResource>
+public class InspectionRecordService : AsyncFacadeService<InspectionRecordHeader, int, InspectionRecordResource, InspectionRecordResource, InspectionRecordResource>
 {
     private readonly IRepository<Employee, int> employeeRepository;
 
@@ -28,10 +29,10 @@ public class InspectionRecordService : FacadeFilterResourceService<InspectionRec
         this.orderLineRepository = orderLineRepository;
     }
 
-    protected override InspectionRecordHeader CreateFromResource(InspectionRecordResource resource, IEnumerable<string> privileges = null)
+    protected override async Task<InspectionRecordHeader> CreateFromResourceAsync(InspectionRecordResource resource, IEnumerable<string> privileges = null)
     {
-        var enteredBy = this.employeeRepository.FindById(resource.EnteredById);
-        var orderLine = this.orderLineRepository.FindBy(
+        var enteredBy = await this.employeeRepository.FindByIdAsync(resource.EnteredById);
+        var orderLine = await this.orderLineRepository.FindByAsync(
             x => x.OrderLine == resource.OrderLine && x.OrderNumber == resource.OrderNumber);
         var lines = resource.Lines.Select(
             x => new InspectionRecordLine
@@ -91,7 +92,7 @@ public class InspectionRecordService : FacadeFilterResourceService<InspectionRec
         throw new NotImplementedException();
     }
 
-    protected override void SaveToLogTable(
+    protected override Task SaveToLogTable(
         string actionType,
         int userNumber,
         InspectionRecordHeader entity,

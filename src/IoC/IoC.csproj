@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net7.0</TargetFramework>
+		<TargetFramework>net9.0</TargetFramework>
 		<AssemblyName>Linn.ManufacturingEngineering.IoC</AssemblyName>
 		<RootNamespace>Linn.ManufacturingEngineering.IoC</RootNamespace>
 	</PropertyGroup>
@@ -10,9 +10,9 @@
 		<PackageReference Include="AWSSDK.Extensions.NETCore.Setup" Version="3.7.7" />
 		<PackageReference Include="Linn.Common.Authorisation" Version="1.0.0" />
 		<PackageReference Include="Linn.Common.Logging" Version="2.0.0" />
-		<PackageReference Include="Linn.Common.Logging.AmazonSqs" Version="3.0.0" />
-		<PackageReference Include="Linn.Common.Persistence.EntityFramework" Version="4.0.0" />
-		<PackageReference Include="Linn.Common.Proxy" Version="3.0.1" />
+		<PackageReference Include="Linn.Common.Persistence.EntityFramework" Version="6.0.0" />
+		<PackageReference Include="Linn.Common.Proxy" Version="4.0.2" />
+		<PackageReference Include="Linn.Common.Rendering" Version="1.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>

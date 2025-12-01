@@ -3,15 +3,10 @@ set -ev
 
 dotnet restore
 
-# upgrade node to latest version
-if [ "$CI" ] && [ "$TRAVIS" ]
-then 
-	source ~/.nvm/nvm.sh; 
-	nvm install 16;
-	nvm use 16;
-fi
+export NVM_DIR="$HOME/.nvm"
+{ [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"; } >/dev/null 2>&1
 
-cd ./src/Service.Host
-npm ci --legacy-peer-deps
-npm run build
-cd ../..
+nvm install 22 >/dev/null 2>&1
+nvm use 22 >/dev/null 2>&1
+
+echo "Using Node version: $(node -v)"

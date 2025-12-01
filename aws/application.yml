@@ -11,9 +11,6 @@ Parameters:
   proxyRoot:
     Type: String
     Description: proxy root
-  authorityUri:
-    Type: String
-    Description: OIDC authority uri
   databaseHost:
     Type: String
     Description: Database host
@@ -65,6 +62,18 @@ Parameters:
     Type: AWS::SSM::Parameter::Value<String>
     Description: Name of production cluster
     Default: ProductionClusterName
+  cognitoHost:
+    Type: String
+    Description: Cognito host
+  cognitoClientId:
+    Type: String
+    Description: Cognito client ID
+  cognitoDomainPrefix:
+    Type: String
+    Description: Cognito domain prefix
+  entraLogoutUri:
+    Type: String
+    Description: Entra logout URI
 
 Conditions:
   isTesting: !Or
@@ -72,6 +81,11 @@ Conditions:
     - !Equals [!Ref environmentSuffix, "-sys"]
 
 Resources:
+  ManufacturingEngineeringStackLogGroup:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Delete
+    Properties:
+      RetentionInDays: 14
   manufacturingEngineeringRole:
     Type: AWS::IAM::Role
     Properties:
@@ -95,11 +109,6 @@ Resources:
           PolicyDocument:
             Version: '2012-10-17'
             Statement:
-              - Effect: Allow
-                Action:
-                  - sqs:SendMessage
-                Resource:
-                  Fn::ImportValue: logging-queue-arn
               - Effect: Allow
                 Action:
                   - ses:SendEmail
@@ -140,7 +149,7 @@ Resources:
           Image: !Sub docker.io/linn/manufacturing-engineering:${dockerTag}
           PortMappings:
             - ContainerPort: 5050
-          Memory: !If [isTesting, '100', '300']
+          Memory: 500
           HealthCheck:
             Command:
               - "CMD-SHELL"
@@ -151,10 +160,11 @@ Resources:
             traefik.http.routers.manufacturing-engineering.rule: "PathPrefix(`/manufacturing-engineering`)"
             traefik.http.services.manufacturing-engineering.loadbalancer.healthcheck.path: "/healthcheck"
           LogConfiguration:
-            LogDriver: gelf
+            LogDriver: awslogs
             Options:
-              'gelf-address': 'udp://syslog.linn.co.uk:12201'
-              'tag': !Sub manufacturing-engineering-${dockerTag}-ecs-task
+              awslogs-region: !Ref AWS::Region
+              awslogs-group: !Ref ManufacturingEngineeringStackLogGroup
+              awslogs-stream-prefix: !Ref AWS::StackName
           Environment:
             - Name: DATABASE_HOST
               Value: !Ref databaseHost
@@ -176,8 +186,6 @@ Resources:
               Value: !Ref appRoot
             - Name: PROXY_ROOT
               Value: !Ref proxyRoot
-            - Name: AUTHORITY_URI
-              Value: !Ref authorityUri
             - Name: BUILD_NUMBER
               Value: !Ref dockerTag
             - Name: LOG_AMAZON_SQSQUEUEURI
@@ -200,6 +208,14 @@ Resources:
               Value:
                 Fn::ImportValue:
                   !Sub "kms-key-alias${environmentSuffix}"
+            - Name: COGNITO_HOST
+              Value: !Ref cognitoHost
+            - Name: COGNITO_CLIENT_ID
+              Value: !Ref cognitoClientId
+            - Name: COGNITO_DOMAIN_PREFIX
+              Value: !Ref cognitoDomainPrefix
+            - Name: ENTRA_LOGOUT_URI
+              Value: !Ref entraLogoutUri
   manufacturingEngineeringService:
     Type: AWS::ECS::Service
     Properties:

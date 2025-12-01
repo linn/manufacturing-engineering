@@ -25,9 +25,9 @@ public class ContextBase
 
     protected ITransactionManager TransactionManager { get; set; }
 
-    protected IQueryFacadeResourceService<PurchaseOrderLine, PurchaseOrderLineResource, PurchaseOrderLineResource> PurchaseOrderLineService { get; private set; }
+    protected IPurchaseOrderLineService PurchaseOrderLineService { get; private set; }
 
-    protected IFacadeResourceFilterService<InspectionRecordHeader, int, InspectionRecordResource, InspectionRecordResource, InspectionRecordResource> InspectionRecordsService
+    protected IAsyncFacadeService<InspectionRecordHeader, int, InspectionRecordResource, InspectionRecordResource, InspectionRecordResource> InspectionRecordsService
     {
         get;
         private set;

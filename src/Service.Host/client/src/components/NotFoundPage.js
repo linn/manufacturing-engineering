@@ -3,7 +3,7 @@ import { NotFound, Page } from '@linn-it/linn-form-components-library';
 
 export default function NotFoundPage() {
     return (
-        <Page>
+        <Page title="Page Not Found">
             <NotFound />
         </Page>
     );

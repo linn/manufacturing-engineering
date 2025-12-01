@@ -1,20 +1,20 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net7.0</TargetFramework>
+		<TargetFramework>net9.0</TargetFramework>
 		<AssemblyName>Linn.ManufacturingEngineering.Domain.LinnApps</AssemblyName>
 		<RootNamespace>Linn.ManufacturingEngineering.Domain.LinnApps</RootNamespace>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Linn.Common.Authorisation" Version="1.0.0" />
-		<PackageReference Include="Linn.Common.Configuration" Version="2.0.0" />
+		<PackageReference Include="Linn.Common.Configuration" Version="3.0.0" />
 		<PackageReference Include="Linn.Common.Domain" Version="1.2.0" />
-		<PackageReference Include="Linn.Common.Domain.LinnApps" Version="1.0.0" />
-		<PackageReference Include="Linn.Common.Email" Version="5.0.0" />
+		<PackageReference Include="Linn.Common.Domain.LinnApps" Version="2.0.0" />
+		<PackageReference Include="Linn.Common.Email" Version="5.1.1" />
 		<PackageReference Include="Linn.Common.Messaging.RabbitMQ" Version="3.2.4" />
-		<PackageReference Include="Linn.Common.Pdf" Version="3.1.0" />
-		<PackageReference Include="Linn.Common.Persistence" Version="3.0.0" />
-		<PackageReference Include="Linn.Common.Reporting" Version="1.7.0" />
+		<PackageReference Include="Linn.Common.Pdf" Version="5.0.0" />
+		<PackageReference Include="Linn.Common.Persistence" Version="5.0.1" />
+		<PackageReference Include="Linn.Common.Reporting" Version="1.9.0" />
 	</ItemGroup>
 </Project>

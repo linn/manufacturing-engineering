@@ -104,9 +104,9 @@ public class WhenPuttingInspectionRecord : ContextBase
                                                                      }
                                                       }
                           };
-        this.InspectionRecordHeaderRepisitory.FindById(123).Returns(this.record);
-        this.EmployeeRepository.FindById(Arg.Any<int>()).Returns(new Employee());
-        this.PurchaseOrderLineRepository.FindBy(Arg.Any<Expression<Func<PurchaseOrderLine, bool>>>()).Returns(
+        this.InspectionRecordHeaderRepisitory.FindByIdAsync(123).Returns(this.record);
+        this.EmployeeRepository.FindByIdAsync(Arg.Any<int>()).Returns(new Employee());
+        this.PurchaseOrderLineRepository.FindByAsync(Arg.Any<Expression<Func<PurchaseOrderLine, bool>>>()).Returns(
             new PurchaseOrderLine { OrderLine = 1, OrderNumber = 123, Part = new Part() });
         
         this.Response = this.Client.PutAsJsonAsync(
@@ -158,7 +158,7 @@ public class WhenPuttingInspectionRecord : ContextBase
     [Test]
     public void ShouldCommit()
     {
-        this.TransactionManager.Received(1).Commit();
+        this.TransactionManager.Received(1).CommitAsync();
     }
 
     [Test]

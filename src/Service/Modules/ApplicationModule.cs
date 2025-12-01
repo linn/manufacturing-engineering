@@ -2,8 +2,8 @@
 {
     using System.Threading.Tasks;
 
-    using Linn.Common.Service.Core;
-    using Linn.Common.Service.Core.Extensions;
+    using Linn.Common.Service;
+    using Linn.Common.Service.Extensions;
     using Linn.ManufacturingEngineering.Service.Models;
 
     using Microsoft.AspNetCore.Builder;
@@ -16,6 +16,8 @@
         {
             app.MapGet("/", this.Redirect);
             app.MapGet("/manufacturing-engineering", this.GetApp);
+            app.MapGet("/manufacturing-engineering/logged-out", this.GetApp);
+
         }
 
         private Task Redirect(HttpRequest req, HttpResponse res)

@@ -2,6 +2,7 @@ import { useAuth } from 'react-oidc-context';
 
 function useUserProfile() {
     const auth = useAuth();
+    console.log(auth);
     return {
         userNumber: auth?.user?.profile?.employee?.split('/')?.[2],
         userName: auth?.user?.profile?.preferred_username,

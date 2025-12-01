@@ -26,7 +26,7 @@ public class WhenLookingUpPurchaseOrder : ContextBase
         this.orderNumber = 123;
         this.lineNumber = 1;
 
-        this.PurchaseOrderLineRepository.FindBy(Arg.Any<Expression<Func<PurchaseOrderLine, bool>>>())
+        this.PurchaseOrderLineRepository.FindByAsync(Arg.Any<Expression<Func<PurchaseOrderLine, bool>>>())
             .Returns(new PurchaseOrderLine
                          {
                              OrderNumber = this.orderNumber,

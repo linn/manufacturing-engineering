@@ -1,34 +1,35 @@
-/* eslint-disable indent */
 import React, { useEffect, useState } from 'react';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import { DataGrid } from '@mui/x-data-grid';
 import Button from '@mui/material/Button';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import {
     Dropdown,
     InputField,
     Loading,
     SaveBackCancelButtons,
-    SnackbarMessage
+    SnackbarMessage,
+    usePut,
+    useGet
 } from '@linn-it/linn-form-components-library';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import Page from './Page';
-import config from '../config';
-import history from '../history';
+import Page from '../containers/Page';
 import useUserProfile from '../hooks/useUserProfile';
-import useGet from '../hooks/useGet';
 import itemTypes from '../itemTypes';
 import usePost from '../hooks/usePost';
-import usePut from '../hooks/usePut';
 
 function Inspection({ creating }) {
     const { id } = useParams();
     const { userNumber, name } = useUserProfile();
+
+    console.log(userNumber);
     const [orderNumber, setOrderNumber] = useState();
     const [inspectionData, setInspectionData] = useState({ preprocessedBatch: 'N' });
     const [changesMade, setChangesMade] = useState(false);
+
+    const navigate = useNavigate();
 
     const {
         send: fetchInspection,
@@ -40,7 +41,7 @@ function Inspection({ creating }) {
         send: fetchPurchaseOrder,
         result: orderDetails,
         clearData: clearOrderDetails
-    } = useGet(itemTypes.purchaseOrderLine.url);
+    } = useGet(itemTypes.purchaseOrderLine.url, false);
 
     const {
         send: post,
@@ -205,9 +206,9 @@ function Inspection({ creating }) {
 
     if (inspectionLoading || postLoading || putLoading) {
         return (
-            <Page homeUrl={config.appRoot} history={history}>
+            <Page title="Loading">
                 <Grid container spacing={3}>
-                    <Grid item xs={12}>
+                    <Grid item size={12}>
                         <Loading />
                     </Grid>
                 </Grid>
@@ -216,7 +217,7 @@ function Inspection({ creating }) {
     }
 
     return (
-        <Page homeUrl={config.appRoot} history={history}>
+        <Page title="Inspection Record">
             <SnackbarMessage
                 visible={!!postResult?.id || !!putResult?.id}
                 onClose={() => {
@@ -226,14 +227,14 @@ function Inspection({ creating }) {
                 message="Save Successful"
             />
             <Grid container spacing={3}>
-                <Grid item xs={12}>
+                <Grid item size={12}>
                     <Typography variant="h4">
                         {creating ? 'Create New Inspection Record' : 'Inspection Record Details'}
                     </Typography>
                 </Grid>
                 {userNumber && (
                     <>
-                        <Grid item xs={4}>
+                        <Grid item size={4}>
                             <InputField
                                 propertyName="searchTerm"
                                 label="Purchase Order"
@@ -252,7 +253,7 @@ function Inspection({ creating }) {
                                 }}
                             />
                         </Grid>
-                        <Grid item xs={4}>
+                        <Grid item size={4}>
                             <InputField
                                 propertyName="enterdBy"
                                 label="Entered By"
@@ -261,7 +262,7 @@ function Inspection({ creating }) {
                                 onChange={() => {}}
                             />
                         </Grid>
-                        <Grid item xs={4}>
+                        <Grid item size={4}>
                             <InputField
                                 propertyName="dateOfEntry"
                                 label="Date Of Entry"
@@ -274,7 +275,7 @@ function Inspection({ creating }) {
                 )}
                 {(orderDetails || inspectionData?.id) && (
                     <>
-                        <Grid item xs={4}>
+                        <Grid item size={4}>
                             <InputField
                                 propertyName="partNumber"
                                 label="Part"
@@ -283,7 +284,7 @@ function Inspection({ creating }) {
                                 onChange={() => {}}
                             />
                         </Grid>
-                        <Grid item xs={6}>
+                        <Grid item size={6}>
                             <InputField
                                 propertyName="partDescription"
                                 label="Description"
@@ -294,7 +295,7 @@ function Inspection({ creating }) {
                                 onChange={() => {}}
                             />
                         </Grid>
-                        <Grid item xs={2}>
+                        <Grid item size={2}>
                             <InputField
                                 propertyName="qty"
                                 label="Order Qty"
@@ -303,7 +304,7 @@ function Inspection({ creating }) {
                                 onChange={() => {}}
                             />
                         </Grid>
-                        <Grid item xs={2}>
+                        <Grid item size={2}>
                             <InputField
                                 disabled={!creating || inspectionData?.lines?.length}
                                 propertyName="batchSize"
@@ -327,7 +328,7 @@ function Inspection({ creating }) {
                                 }}
                             />
                         </Grid>
-                        <Grid item xs={2}>
+                        <Grid item size={2}>
                             <Dropdown
                                 propertyName="preprocessedBatch"
                                 label="Preprocessed Batch?"
@@ -344,7 +345,7 @@ function Inspection({ creating }) {
                             />
                         </Grid>
                         {creating && !inspectionData?.lines?.length && (
-                            <Grid item xs={12}>
+                            <Grid item size={12}>
                                 <Button
                                     onClick={() => {
                                         if (inspectionData.batchSize) {
@@ -361,11 +362,10 @@ function Inspection({ creating }) {
                                 </Button>
                             </Grid>
                         )}
-                        <Grid item xs={12}>
+                        <Grid item size={12}>
                             {(!creating || inspectionData?.lines?.length) && (
                                 <DataGrid
                                     columns={columns}
-                                    autoHeight
                                     columnBuffer={6}
                                     disableRowSelectionOnClick
                                     processRowUpdate={processRowUpdate}
@@ -379,10 +379,14 @@ function Inspection({ creating }) {
                                 />
                             )}
                         </Grid>
-                        <Grid item xs={12}>
+                        <Grid item size={12}>
                             <SaveBackCancelButtons
                                 cancelClick={() => {
-                                    setInspectionData({ preprocessedBatch: 'N' });
+                                    {
+                                        creating
+                                            ? setInspectionData({ preprocessedBatch: 'N' })
+                                            : setInspectionData(inspectionDetails);
+                                    }
                                     clearOrderDetails();
                                     setChangesMade(false);
                                 }}
@@ -397,9 +401,7 @@ function Inspection({ creating }) {
                                     }
                                 }}
                                 saveDisabled={!inspectionData?.lines?.length || !changesMade}
-                                backClick={() =>
-                                    history.push('/manufacturing-engineering/inspections')
-                                }
+                                backClick={() => navigate('/manufacturing-engineering/inspections')}
                             />
                         </Grid>
                     </>
