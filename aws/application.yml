@@ -72,6 +72,10 @@ Conditions:
     - !Equals [!Ref environmentSuffix, "-sys"]
 
 Resources:
+  ManufacturingEngineeringStackLogGroup:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Delete
+    Properties:
       RetentionInDays: 14
   manufacturingEngineeringRole:
     Type: AWS::IAM::Role
