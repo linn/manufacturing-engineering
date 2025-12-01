@@ -149,7 +149,7 @@ Resources:
           Image: !Sub docker.io/linn/manufacturing-engineering:${dockerTag}
           PortMappings:
             - ContainerPort: 5050
-          Memory: '500s'
+          Memory: 500
           HealthCheck:
             Command:
               - "CMD-SHELL"
