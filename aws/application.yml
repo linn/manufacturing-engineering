@@ -11,9 +11,6 @@ Parameters:
   proxyRoot:
     Type: String
     Description: proxy root
-  authorityUri:
-    Type: String
-    Description: OIDC authority uri
   databaseHost:
     Type: String
     Description: Database host
@@ -189,8 +186,6 @@ Resources:
               Value: !Ref appRoot
             - Name: PROXY_ROOT
               Value: !Ref proxyRoot
-            - Name: AUTHORITY_URI
-              Value: !Ref authorityUri
             - Name: BUILD_NUMBER
               Value: !Ref dockerTag
             - Name: LOG_AMAZON_SQSQUEUEURI
