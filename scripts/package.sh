@@ -29,6 +29,7 @@ else
 fi
 
 # create docker image(s)
+echo "DOCKER_HUB_USERNAME is: $DOCKER_HUB_USERNAME"
 docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD
 
 # Use GitHub Actions build number if available, fallback to Travis
