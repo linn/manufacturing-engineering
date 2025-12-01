@@ -10,7 +10,6 @@ import {
     Loading,
     SaveBackCancelButtons,
     SnackbarMessage,
-    usePost,
     usePut,
     useGet
 } from '@linn-it/linn-form-components-library';
@@ -19,10 +18,13 @@ import moment from 'moment';
 import Page from '../containers/Page';
 import useUserProfile from '../hooks/useUserProfile';
 import itemTypes from '../itemTypes';
+import usePost from '../hooks/usePost';
 
 function Inspection({ creating }) {
     const { id } = useParams();
     const { userNumber, name } = useUserProfile();
+
+    console.log(userNumber);
     const [orderNumber, setOrderNumber] = useState();
     const [inspectionData, setInspectionData] = useState({ preprocessedBatch: 'N' });
     const [changesMade, setChangesMade] = useState(false);

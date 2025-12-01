@@ -1,4 +1,5 @@
-﻿namespace Linn.ManufacturingEngineering.Service.Modules;
+﻿
+namespace Linn.ManufacturingEngineering.Service.Modules;
 
 using System.Threading.Tasks;
 
@@ -7,6 +8,7 @@ using Linn.Common.Service;
 using Linn.Common.Service.Extensions;
 using Linn.ManufacturingEngineering.Domain.LinnApps;
 using Linn.ManufacturingEngineering.Facade.Services;
+using Linn.ManufacturingEngineering.Proxy;
 using Linn.ManufacturingEngineering.Resources;
 using Linn.ManufacturingEngineering.Service.Extensions;
 using Linn.ManufacturingEngineering.Service.Models;
@@ -51,9 +53,18 @@ public class InspectionsModule : IModule
         HttpRequest req,
         HttpResponse res,
         InspectionRecordResource resource,
+        IMyAuthorisationService authService,
         IAsyncFacadeService<InspectionRecordHeader, int, InspectionRecordResource, InspectionRecordResource, InspectionRecordResource> service)
     {
         var user = req.HttpContext.User.GetEmployeeNumber();
+
+        // placeholder demo for show and tell 
+        // need to assume client submits a freshly minted token
+        // would require client code changes to ensure a new token is fetched before posting
+        var privilegesFromToken = req.HttpContext.GetPrivileges();
+        
+        var permittedFromToken = authService.HasPermissionFor("inspections.create", privilegesFromToken);
+        
         resource.EnteredById = user;
         await res.Negotiate(await service.Add(resource));
     }
@@ -62,11 +73,21 @@ public class InspectionsModule : IModule
         HttpRequest req,
         HttpResponse res,
         int id,
+        IMyAuthorisationService authService,
         InspectionRecordResource resource,
         IAsyncFacadeService<InspectionRecordHeader, int, InspectionRecordResource, InspectionRecordResource, InspectionRecordResource> service)
     {
         var user = req.HttpContext.User.GetEmployeeNumber();
         resource.EnteredById = user;
+        
+        // placeholder demo for show and tell 
+        // alternative, almost definitely better approach
+        // disregard the access token - it could be old for all we know
+        // fetch the live permissions from the authorisation API
+        var hasPermissionRightNow 
+            = await authService
+                .CheckUserHasPermissionToPerformAction("inspections.update", req.HttpContext.User.GetEmployeeUrl());
+        
         await res.Negotiate(await service.Update(id, resource, null));
     }
 
