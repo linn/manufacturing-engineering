@@ -20,20 +20,15 @@ if [ -n "${GITHUB_HEAD_REF}" ]; then
 elif [ -n "${GITHUB_REF_NAME}" ]; then
   # GitHub Actions push
   GIT_BRANCH=$GITHUB_REF_NAME
-elif [ "${TRAVIS_PULL_REQUEST}" = "false" ]; then
-  # Travis push
-  GIT_BRANCH=$TRAVIS_BRANCH
-else
-  # Travis PR
-  GIT_BRANCH=$TRAVIS_PULL_REQUEST_BRANCH
 fi
 
 # create docker image(s)
 echo "DOCKER_HUB_USERNAME is: $DOCKER_HUB_USERNAME"
 docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD
 
-# Use GitHub Actions build number if available, fallback to Travis
-BUILD_NUMBER="${GITHUB_RUN_NUMBER:-${TRAVIS_BUILD_NUMBER}}"
+# Use continuous build number (Travis + GitHub Actions)
+LAST_TRAVIS_BUILD_NUMBER="${LAST_TRAVIS_BUILD_NUMBER:-0}"
+BUILD_NUMBER=$((LAST_TRAVIS_BUILD_NUMBER + GITHUB_RUN_NUMBER))
 
 docker build --no-cache -t linn/manufacturing-engineering:$BUILD_NUMBER --build-arg gitBranch=$GIT_BRANCH ./src/Service.Host/
 
