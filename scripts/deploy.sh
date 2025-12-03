@@ -14,10 +14,6 @@ if [ -n "${GITHUB_REF_NAME}" ]; then
   else
     IS_PULL_REQUEST="false"
   fi
-else
-  # Fallback to Travis variables
-  CURRENT_BRANCH="${TRAVIS_BRANCH}"
-  IS_PULL_REQUEST="${TRAVIS_PULL_REQUEST}"
 fi
 
 if [ "${CURRENT_BRANCH}" = "main" ] || [ "${GITHUB_BASE_REF}" = "main" ]; then
@@ -47,12 +43,13 @@ else
   echo do not deploy to int
 fi
 
-# load the secret variables but hide the output from the travis log
+# load the secret variables but hide the output
 source ./secrets.env > /dev/null 2>&1
 
 # deploy the service to amazon
-# Use GitHub Actions build number if available, fallback to Travis
-BUILD_NUMBER="${GITHUB_RUN_NUMBER:-${TRAVIS_BUILD_NUMBER}}"
+# use continuous build number (Travis + GitHub Actions)
+LAST_TRAVIS_BUILD_NUMBER="${LAST_TRAVIS_BUILD_NUMBER:-0}"
+BUILD_NUMBER=$((LAST_TRAVIS_BUILD_NUMBER + GITHUB_RUN_NUMBER))
 
 aws cloudformation deploy --stack-name $STACK_NAME --template-file ./aws/application.yml --parameter-overrides dockerTag=$BUILD_NUMBER databaseHost=$DATABASE_HOST databaseName=$DATABASE_NAME databaseUserId=$DATABASE_USER_ID databasePassword=$DATABASE_PASSWORD rabbitServer=$RABBIT_SERVER rabbitPort=$RABBIT_PORT rabbitUsername=$RABBIT_USERNAME rabbitPassword=$RABBIT_PASSWORD appRoot=$APP_ROOT proxyRoot=$PROXY_ROOT authorityUri=$AUTHORITY_URI viewsRoot=$VIEWS_ROOT pdfServiceRoot=$PDF_SERVICE_ROOT cognitoHost=$COGNITO_HOST cognitoClientId=$COGNITO_CLIENT_ID cognitoDomainPrefix=$COGNITO_DOMAIN_PREFIX entraLogoutUri=$ENTRA_LOGOUT_URI environmentSuffix=$ENV_SUFFIX --capabilities=CAPABILITY_IAM
 
