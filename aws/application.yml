@@ -35,15 +35,6 @@ Parameters:
   rabbitPassword:
     Type: String
     Description: Rabbit password
-  loggingEnvironment:
-    Type: String
-    Description: Logging Environment
-  loggingMaxInnerExceptionDepth:
-    Type: Number
-    Description: Logging Max Inner Exception Depth
-  smtpHostname:
-    Type: String
-    Description: SMTP Hostname
   pdfServiceRoot:
     Type: String
     Description: Pdf Service API root url
@@ -190,12 +181,6 @@ Resources:
               Value: !Ref dockerTag
             - Name: LOG_AMAZON_SQSQUEUEURI
               Value: !ImportValue logging-queue-url
-            - Name: LOG_ENVIRONMENT
-              Value: !Ref loggingEnvironment
-            - Name: LOG_MAX_INNER_EXCEPTION_DEPTH
-              Value: !Ref loggingMaxInnerExceptionDepth
-            - Name: SMTP_HOSTNAME
-              Value: !Ref smtpHostname
             - Name: PDF_SERVICE_ROOT
               Value: !Ref pdfServiceRoot
             - Name: awsRegion
