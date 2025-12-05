@@ -1,10 +1,10 @@
-﻿namespace Linn.ManufacturingEngineering.IoC
+﻿namespace Linn.Production2.IoC
 {
-    using Linn.ManufacturingEngineering.Proxy;
-    using Linn.ManufacturingEngineering.Domain.LinnApps;
-    using Linn.ManufacturingEngineering.Facade.ResourceBuilders;
-    using Linn.ManufacturingEngineering.Facade.Services;
-    using Linn.ManufacturingEngineering.Resources;
+    using Linn.Production2.Proxy;
+    using Linn.Production2.Domain.LinnApps;
+    using Linn.Production2.Facade.ResourceBuilders;
+    using Linn.Production2.Facade.Services;
+    using Linn.Production2.Resources;
     using Microsoft.Extensions.DependencyInjection;
     using RazorEngineCore;
     using Linn.Common.Facade;

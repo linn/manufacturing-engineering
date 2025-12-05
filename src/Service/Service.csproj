@@ -2,8 +2,8 @@
 
 	<PropertyGroup>
 		<TargetFramework>net9.0</TargetFramework>
-		<AssemblyName>Linn.ManufacturingEngineering.Service</AssemblyName>
-		<RootNamespace>Linn.ManufacturingEngineering.Service</RootNamespace>
+		<AssemblyName>Linn.Production2.Service</AssemblyName>
+		<RootNamespace>Linn.Production2.Service</RootNamespace>
 	</PropertyGroup>
 
 	<ItemGroup>

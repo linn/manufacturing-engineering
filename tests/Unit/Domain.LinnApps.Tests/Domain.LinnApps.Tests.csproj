@@ -2,8 +2,8 @@
 
   <PropertyGroup>
 	<TargetFramework>net9.0</TargetFramework>
-    <AssemblyName>Linn.ManufacturingEngineering.Domain.LinnApps.Tests</AssemblyName>
-    <RootNamespace>Linn.ManufacturingEngineering.Domain.LinnApps.Tests</RootNamespace>
+    <AssemblyName>Linn.Production2.Domain.LinnApps.Tests</AssemblyName>
+    <RootNamespace>Linn.Production2.Domain.LinnApps.Tests</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

@@ -1,4 +1,4 @@
-﻿namespace Linn.ManufacturingEngineering.Domain.LinnApps;
+﻿namespace Linn.Production2.Domain.LinnApps;
 
 public class Part
 {

@@ -1,4 +1,4 @@
-﻿namespace Linn.ManufacturingEngineering.IoC
+﻿namespace Linn.Production2.IoC
 {
     using Amazon;
     using Amazon.Runtime;

@@ -1,4 +1,4 @@
-﻿namespace Linn.ManufacturingEngineering.Integration.Tests
+﻿namespace Linn.Production2.Integration.Tests
 {
     using System.Security.Claims;
     using Microsoft.AspNetCore.Authentication.Cookies;

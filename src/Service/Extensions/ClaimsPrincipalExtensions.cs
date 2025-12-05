@@ -1,4 +1,4 @@
-﻿namespace Linn.ManufacturingEngineering.Service.Extensions
+﻿namespace Linn.Production2.Service.Extensions
 {
     using System;
     using System.Collections.Generic;

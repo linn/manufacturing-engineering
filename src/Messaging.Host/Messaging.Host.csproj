@@ -2,8 +2,8 @@
 
 	<PropertyGroup>
 		<TargetFramework>net9.0</TargetFramework>
-		<AssemblyName>Linn.ManufacturingEngineering.Messaging.Host</AssemblyName>
-		<RootNamespace>Linn.ManufacturingEngineering.Messaging.Host</RootNamespace>
+		<AssemblyName>Linn.Production2.Messaging.Host</AssemblyName>
+		<RootNamespace>Linn.Production2.Messaging.Host</RootNamespace>
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
 	</PropertyGroup>

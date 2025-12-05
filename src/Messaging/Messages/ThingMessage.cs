@@ -1,4 +1,4 @@
-﻿namespace Linn.ManufacturingEngineering.Messaging.Messages
+﻿namespace Linn.Production2.Messaging.Messages
 {
     using Linn.Common.Messaging.RabbitMQ.Messages;
 

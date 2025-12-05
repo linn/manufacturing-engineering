@@ -1,4 +1,4 @@
-﻿namespace Linn.ManufacturingEngineering.Facade.ResourceBuilders;
+﻿namespace Linn.Production2.Facade.ResourceBuilders;
 
 using System;
 using System.Collections.Generic;
@@ -6,8 +6,8 @@ using System.Linq;
 
 using Linn.Common.Facade;
 using Linn.Common.Resources;
-using Linn.ManufacturingEngineering.Domain.LinnApps;
-using Linn.ManufacturingEngineering.Resources;
+using Linn.Production2.Domain.LinnApps;
+using Linn.Production2.Resources;
 
 public class InspectionRecordResourceBuilder : IBuilder<InspectionRecordHeader>
 {
@@ -61,8 +61,12 @@ public class InspectionRecordResourceBuilder : IBuilder<InspectionRecordHeader>
 
     private IEnumerable<LinkResource> BuildLinks(InspectionRecordHeader model, IEnumerable<string> claims)
     {
-        yield return new LinkResource { Rel = "self", Href = this.GetLocation(model) };
+        yield return new LinkResource
+                         {
+                             Rel = "self", Href = this.GetLocation(model)
+                         };
     }
 
-    object IBuilder<InspectionRecordHeader>.Build(InspectionRecordHeader model, IEnumerable<string> claims) => this.Build(model, claims);
+    object IBuilder<InspectionRecordHeader>.Build(
+        InspectionRecordHeader model, IEnumerable<string> claims) => this.Build(model, claims);
 }

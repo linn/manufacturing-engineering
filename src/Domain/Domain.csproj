@@ -2,8 +2,8 @@
 
 	<PropertyGroup>
 		<TargetFramework>net9.0</TargetFramework>
-		<AssemblyName>Linn.ManufacturingEngineering.Domain</AssemblyName>
-		<RootNamespace>Linn.ManufacturingEngineering.Domain</RootNamespace>
+		<AssemblyName>Linn.Production2.Domain</AssemblyName>
+		<RootNamespace>Linn.Production2.Domain</RootNamespace>
 	</PropertyGroup>
 
 </Project>

@@ -2,8 +2,8 @@
 
 	<PropertyGroup>
 		<TargetFramework>net9.0</TargetFramework>
-		<RootNamespace>Linn.ManufacturingEngineering.Persistence.LinnApps</RootNamespace>
-		<AssemblyName>Linn.ManufacturingEngineering.Persistence.LinnApps</AssemblyName>
+		<RootNamespace>Linn.Production2.Persistence.LinnApps</RootNamespace>
+		<AssemblyName>Linn.Production2.Persistence.LinnApps</AssemblyName>
 	</PropertyGroup>
 
 	<ItemGroup>

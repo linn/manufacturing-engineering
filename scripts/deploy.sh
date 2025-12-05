@@ -21,9 +21,9 @@ if [ "${CURRENT_BRANCH}" = "main" ] || [ "${GITHUB_BASE_REF}" = "main" ]; then
     # main branch push - deploy to production
     echo deploy to production
 
-    aws s3 cp s3://$S3_BUCKET_NAME/manufacturing-engineering/production.env ./secrets.env
+    aws s3 cp s3://$S3_BUCKET_NAME/production2/production.env ./secrets.env
 
-    STACK_NAME=manufacturing-engineering
+    STACK_NAME=production2
     APP_ROOT=http://app.linn.co.uk
     PROXY_ROOT=http://app.linn.co.uk
     ENV_SUFFIX=
@@ -31,9 +31,9 @@ if [ "${CURRENT_BRANCH}" = "main" ] || [ "${GITHUB_BASE_REF}" = "main" ]; then
     # pull request to main - deploy to sys
     echo deploy to sys
 
-    aws s3 cp s3://$S3_BUCKET_NAME/manufacturing-engineering/sys.env ./secrets.env
+    aws s3 cp s3://$S3_BUCKET_NAME/production2/sys.env ./secrets.env
 
-    STACK_NAME=manufacturing-engineering-sys
+    STACK_NAME=production2-sys
     APP_ROOT=http://app-sys.linn.co.uk
     PROXY_ROOT=http://app.linn.co.uk
     ENV_SUFFIX=-sys

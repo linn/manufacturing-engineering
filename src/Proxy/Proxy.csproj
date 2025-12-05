@@ -2,8 +2,8 @@
 
 	<PropertyGroup>
 		<TargetFramework>net9.0</TargetFramework>
-		<AssemblyName>Linn.ManufacturingEngineering.Proxy</AssemblyName>
-		<RootNamespace>Linn.ManufacturingEngineering.Proxy</RootNamespace>
+		<AssemblyName>Linn.Production2.Proxy</AssemblyName>
+		<RootNamespace>Linn.Production2.Proxy</RootNamespace>
 	</PropertyGroup>
 
 	<ItemGroup>

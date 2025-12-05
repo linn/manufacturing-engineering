@@ -1,7 +1,7 @@
-﻿namespace Linn.ManufacturingEngineering.Persistence.LinnApps
+﻿namespace Linn.Production2.Persistence.LinnApps
 {
     using Linn.Common.Configuration;
-    using Linn.ManufacturingEngineering.Domain.LinnApps;
+    using Linn.Production2.Domain.LinnApps;
 
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Logging;

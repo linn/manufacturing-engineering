@@ -1,4 +1,4 @@
-﻿namespace Linn.ManufacturingEngineering.Messaging.Host.Jobs;
+﻿namespace Linn.Production2.Messaging.Host.Jobs;
 
 using System.Threading;
 using System.Threading.Tasks;
@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Linn.Common.Logging;
 using Linn.Common.Messaging.RabbitMQ.Configuration;
 using Linn.Common.Messaging.RabbitMQ.Handlers;
-using Linn.ManufacturingEngineering.Messaging.Messages;
+using Linn.Production2.Messaging.Messages;
 
 using Microsoft.Extensions.Hosting;
 

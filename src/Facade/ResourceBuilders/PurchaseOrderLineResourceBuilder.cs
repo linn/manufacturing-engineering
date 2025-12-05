@@ -1,11 +1,11 @@
-﻿namespace Linn.ManufacturingEngineering.Facade.ResourceBuilders;
+﻿namespace Linn.Production2.Facade.ResourceBuilders;
 
 using System;
 using System.Collections.Generic;
 
 using Linn.Common.Facade;
-using Linn.ManufacturingEngineering.Domain.LinnApps;
-using Linn.ManufacturingEngineering.Resources;
+using Linn.Production2.Domain.LinnApps;
+using Linn.Production2.Resources;
 
 public class PurchaseOrderLineResourceBuilder : IBuilder<PurchaseOrderLine>
 {

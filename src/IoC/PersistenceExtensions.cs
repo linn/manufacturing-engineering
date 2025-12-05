@@ -1,10 +1,10 @@
-﻿namespace Linn.ManufacturingEngineering.IoC
+﻿namespace Linn.Production2.IoC
 {
     using Linn.Common.Persistence;
     using Linn.Common.Persistence.EntityFramework;
-    using Linn.ManufacturingEngineering.Domain.LinnApps;
-    using Linn.ManufacturingEngineering.Persistence.LinnApps;
-    using Linn.ManufacturingEngineering.Persistence.LinnApps.Repositories;
+    using Linn.Production2.Domain.LinnApps;
+    using Linn.Production2.Persistence.LinnApps;
+    using Linn.Production2.Persistence.LinnApps.Repositories;
 
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.DependencyInjection;

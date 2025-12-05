@@ -5,9 +5,9 @@ const clientId = config.cognitoClientId;
 const domainPrefix = config.cognitoDomainPrefix;
 const origin = window.location.origin;
 
-const redirectUri = origin + '/manufacturing-engineering/';
+const redirectUri = origin + '/production2/';
 
-const logoutUri = origin + '/manufacturing-engineering/logged-out';
+const logoutUri = origin + '/production2/logged-out';
 
 function getCognitoDomain(domainPrefix, authorityUri) {
     if (domainPrefix && authorityUri) {
@@ -29,7 +29,7 @@ export const oidcConfig = {
     post_logout_redirect_uri: logoutUri,
     userStore: new WebStorageStateStore({ store: window.localStorage }),
     automaticSilentRenew: true,
-    silent_redirect_uri: `${origin}/manufacturing-engineering/`,
+    silent_redirect_uri: `${origin}/production2/`,
     includeIdTokenInSilentRenew: true,
     onSigninCallback: () => {
         const redirect = sessionStorage.getItem('auth:redirect');
@@ -37,7 +37,7 @@ export const oidcConfig = {
             window.location.href = redirect;
             sessionStorage.removeItem('auth:redirect');
         } else {
-            window.location.href = `${origin}/manufacturing-engineering/`;
+            window.location.href = `${origin}/production2/`;
         }
     }
 };

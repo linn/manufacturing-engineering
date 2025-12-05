@@ -1,4 +1,4 @@
-namespace Linn.ManufacturingEngineering.Service.Host
+namespace Linn.Production2.Service.Host
 {
     using System.IdentityModel.Tokens.Jwt;
     using System.IO;
@@ -7,9 +7,9 @@ namespace Linn.ManufacturingEngineering.Service.Host
     using Linn.Common.Logging;
     using Linn.Common.Service;
     using Linn.Common.Service.Extensions;
-    using Linn.ManufacturingEngineering.IoC;
-    using Linn.ManufacturingEngineering.Service.Host.Negotiators;
-    using Linn.ManufacturingEngineering.Service.Models;
+    using Linn.Production2.IoC;
+    using Linn.Production2.Service.Host.Negotiators;
+    using Linn.Production2.Service.Models;
 
     using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Builder;
@@ -81,7 +81,7 @@ namespace Linn.ManufacturingEngineering.Service.Host
                 app.UseDeveloperExceptionPage();
                 app.UseStaticFiles(new StaticFileOptions
                 {
-                    RequestPath = "/manufacturing-engineering/build",
+                    RequestPath = "/production2/build",
                     FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "client", "build"))
                 });
             }
@@ -89,7 +89,7 @@ namespace Linn.ManufacturingEngineering.Service.Host
             {
                 app.UseStaticFiles(new StaticFileOptions
                 {
-                    RequestPath = "/manufacturing-engineering/build",
+                    RequestPath = "/production2/build",
                     FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "app", "client", "build"))
                 });
             }

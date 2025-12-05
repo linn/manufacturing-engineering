@@ -1,4 +1,4 @@
-﻿namespace Linn.ManufacturingEngineering.Integration.Tests
+﻿namespace Linn.Production2.Integration.Tests
 {
     using System;
     using Microsoft.Extensions.DependencyInjection;

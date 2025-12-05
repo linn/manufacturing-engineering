@@ -1,9 +1,9 @@
-﻿namespace Linn.ManufacturingEngineering.IoC
+﻿namespace Linn.Production2.IoC
 {
     using System.Collections.Generic;
 
     using Linn.Common.Service.Handlers;
-    using Linn.ManufacturingEngineering.Resources;
+    using Linn.Production2.Resources;
 
     using Microsoft.Extensions.DependencyInjection;
 

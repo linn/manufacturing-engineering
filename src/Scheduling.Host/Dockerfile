@@ -5,4 +5,4 @@ ENV TZ=Europe/London
 
 COPY /bin/release/net6.0/publish/ /app/bin/
 
-CMD dotnet /app/bin/Linn.ManufacturingEngineering.Scheduling.Host.dll
+CMD dotnet /app/bin/Linn.Production2.Scheduling.Host.dll

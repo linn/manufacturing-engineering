@@ -1,11 +1,11 @@
-﻿namespace Linn.ManufacturingEngineering.Persistence.LinnApps.Repositories
+﻿namespace Linn.Production2.Persistence.LinnApps.Repositories
 {
     using System;
     using System.Linq.Expressions;
     using System.Threading.Tasks;
 
     using Linn.Common.Persistence.EntityFramework;
-    using Linn.ManufacturingEngineering.Domain.LinnApps;
+    using Linn.Production2.Domain.LinnApps;
 
     using Microsoft.EntityFrameworkCore;
 

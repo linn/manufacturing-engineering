@@ -1,5 +1,5 @@
-﻿using Linn.ManufacturingEngineering.IoC;
-using Linn.ManufacturingEngineering.Messaging.Host.Jobs;
+﻿using Linn.Production2.IoC;
+using Linn.Production2.Messaging.Host.Jobs;
 
 var host = Host.CreateDefaultBuilder(args)
     .ConfigureServices(services =>

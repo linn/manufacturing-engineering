@@ -15,4 +15,4 @@ COPY views/ /app/views/
 ENV APP_PATH /app/
 ENV GIT_BRANCH $gitBranch
 
-CMD dotnet /app/bin/Linn.ManufacturingEngineering.Service.Host.dll
+CMD dotnet /app/bin/Linn.Production2.Service.Host.dll

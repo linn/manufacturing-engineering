@@ -1,4 +1,4 @@
-﻿namespace Linn.ManufacturingEngineering.Integration.Tests.Extensions
+﻿namespace Linn.Production2.Integration.Tests.Extensions
 {
     using System;
     using System.Net.Http;
