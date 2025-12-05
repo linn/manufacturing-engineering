@@ -1,15 +1,15 @@
-﻿namespace Linn.ManufacturingEngineering.Integration.Tests.InspectionsModuleTests;
+﻿namespace Linn.Production2.Integration.Tests.InspectionsModuleTests;
 
 using System.Net.Http;
 
 using Linn.Common.Facade;
 using Linn.Common.Persistence;
-using Linn.ManufacturingEngineering.Domain.LinnApps;
-using Linn.ManufacturingEngineering.Facade.ResourceBuilders;
-using Linn.ManufacturingEngineering.Facade.Services;
-using Linn.ManufacturingEngineering.IoC;
-using Linn.ManufacturingEngineering.Resources;
-using Linn.ManufacturingEngineering.Service.Modules;
+using Linn.Production2.Domain.LinnApps;
+using Linn.Production2.Facade.ResourceBuilders;
+using Linn.Production2.Facade.Services;
+using Linn.Production2.IoC;
+using Linn.Production2.Resources;
+using Linn.Production2.Service.Modules;
 
 using Microsoft.Extensions.DependencyInjection;
 

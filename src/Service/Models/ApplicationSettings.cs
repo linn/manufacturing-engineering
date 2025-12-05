@@ -1,4 +1,4 @@
-﻿namespace Linn.ManufacturingEngineering.Service.Models
+﻿namespace Linn.Production2.Service.Models
 {
     using Linn.Common.Configuration;
 

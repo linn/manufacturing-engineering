@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 	<PropertyGroup>
 		<TargetFramework>net9.0</TargetFramework>
-		<AssemblyName>Linn.ManufacturingEngineering.Service.Host</AssemblyName>
-		<RootNamespace>Linn.ManufacturingEngineering.Service.Host</RootNamespace>
+		<AssemblyName>Linn.Production2.Service.Host</AssemblyName>
+		<RootNamespace>Linn.Production2.Service.Host</RootNamespace>
 		<PreserveCompilationContext>true</PreserveCompilationContext>
 	</PropertyGroup>
 	<ItemGroup>

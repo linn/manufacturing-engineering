@@ -1,4 +1,4 @@
-﻿namespace Linn.ManufacturingEngineering.Facade.Extensions
+﻿namespace Linn.Production2.Facade.Extensions
 {
     using System.Linq;
 

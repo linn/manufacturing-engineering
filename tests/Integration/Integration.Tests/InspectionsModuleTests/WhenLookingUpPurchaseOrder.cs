@@ -1,4 +1,4 @@
-﻿namespace Linn.ManufacturingEngineering.Integration.Tests.InspectionsModuleTests;
+﻿namespace Linn.Production2.Integration.Tests.InspectionsModuleTests;
 
 using System;
 using System.Linq.Expressions;
@@ -6,9 +6,9 @@ using System.Net;
 
 using FluentAssertions;
 
-using Linn.ManufacturingEngineering.Domain.LinnApps;
-using Linn.ManufacturingEngineering.Integration.Tests.Extensions;
-using Linn.ManufacturingEngineering.Resources;
+using Linn.Production2.Domain.LinnApps;
+using Linn.Production2.Integration.Tests.Extensions;
+using Linn.Production2.Resources;
 
 using NSubstitute;
 

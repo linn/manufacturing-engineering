@@ -2,8 +2,8 @@
 
 	<PropertyGroup>
 		<TargetFramework>net9.0</TargetFramework>
-		<AssemblyName>Linn.ManufacturingEngineering.Persistence</AssemblyName>
-		<RootNamespace>Linn.ManufacturingEngineering.Persistence</RootNamespace>
+		<AssemblyName>Linn.Production2.Persistence</AssemblyName>
+		<RootNamespace>Linn.Production2.Persistence</RootNamespace>
 	</PropertyGroup>
 
 	<ItemGroup>

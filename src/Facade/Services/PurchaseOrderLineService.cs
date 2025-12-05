@@ -1,11 +1,11 @@
-﻿namespace Linn.ManufacturingEngineering.Facade.Services
+﻿namespace Linn.Production2.Facade.Services
 {
     using System.Threading.Tasks;
 
     using Linn.Common.Facade;
     using Linn.Common.Persistence;
-    using Linn.ManufacturingEngineering.Domain.LinnApps;
-    using Linn.ManufacturingEngineering.Resources;
+    using Linn.Production2.Domain.LinnApps;
+    using Linn.Production2.Resources;
 
     public class PurchaseOrderLineService : IPurchaseOrderLineService
     {

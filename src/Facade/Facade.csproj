@@ -2,8 +2,8 @@
 
 	<PropertyGroup>
 		<TargetFramework>net9.0</TargetFramework>
-		<AssemblyName>Linn.ManufacturingEngineering.Facade</AssemblyName>
-		<RootNamespace>Linn.ManufacturingEngineering.Facade</RootNamespace>
+		<AssemblyName>Linn.Production2.Facade</AssemblyName>
+		<RootNamespace>Linn.Production2.Facade</RootNamespace>
 	</PropertyGroup>
 
 	<ItemGroup>

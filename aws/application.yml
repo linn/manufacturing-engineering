@@ -1,5 +1,5 @@
 ---
-Description: ManufacturingEngineering
+Description: Production2
 AWSTemplateFormatVersion: '2010-09-09'
 Parameters:
   dockerTag:
@@ -81,17 +81,17 @@ Conditions:
     - !Equals [!Ref environmentSuffix, "-sys"]
 
 Resources:
-  ManufacturingEngineeringStackLogGroup:
+  Production2StackLogGroup:
     Type: AWS::Logs::LogGroup
     DeletionPolicy: Delete
     Properties:
       RetentionInDays: 14
-  manufacturingEngineeringRole:
+  production2Role:
     Type: AWS::IAM::Role
     Properties:
       Tags:
         - Key: "Project"
-          Value: "manufacturing-engineering"
+          Value: "production2"
         - Key: "CIT"
           Value: "IT"
         - Key: AppManagerCFNStackKey
@@ -105,7 +105,7 @@ Resources:
             Action: ["sts:AssumeRole"]
       Path: "/"
       Policies:
-        - PolicyName: manufacturingEngineeringServices
+        - PolicyName: production2Services
           PolicyDocument:
             Version: '2012-10-17'
             Statement:
@@ -131,22 +131,22 @@ Resources:
                 Action:
                   - s3:*
                 Resource: !Sub "arn:aws:s3:::auth${environmentSuffix}*-keysbucket*"
-  manufacturingEngineeringTaskDefinition:
+  production2TaskDefinition:
     Type: AWS::ECS::TaskDefinition
     Properties:
       Tags:
         - Key: "Project"
-          Value: "manufacturing-engineering"
+          Value: "production2"
         - Key: "CIT"
           Value: "IT"
         - Key: AppManagerCFNStackKey
           Value: !Sub ${AWS::StackId}
-      TaskRoleArn: !GetAtt manufacturingEngineeringRole.Arn
+      TaskRoleArn: !GetAtt production2Role.Arn
       ContainerDefinitions:
-        - Name: manufacturing-engineering
+        - Name: production2
           Cpu: '1'
           Essential: 'true'
-          Image: !Sub docker.io/linn/manufacturing-engineering:${dockerTag}
+          Image: !Sub docker.io/linn/production2:${dockerTag}
           PortMappings:
             - ContainerPort: 5050
           Memory: 500
@@ -156,14 +156,14 @@ Resources:
               - "curl -f http://localhost:5050/healthcheck || exit 1"
           DockerLabels:
             traefik.enable: true
-            traefik.http.routers.manufacturing-engineering.entrypoints: web
-            traefik.http.routers.manufacturing-engineering.rule: "PathPrefix(`/manufacturing-engineering`)"
-            traefik.http.services.manufacturing-engineering.loadbalancer.healthcheck.path: "/healthcheck"
+            traefik.http.routers.production2.entrypoints: web
+            traefik.http.routers.production2.rule: "PathPrefix(`/production2`)"
+            traefik.http.services.production2.loadbalancer.healthcheck.path: "/healthcheck"
           LogConfiguration:
             LogDriver: awslogs
             Options:
               awslogs-region: !Ref AWS::Region
-              awslogs-group: !Ref ManufacturingEngineeringStackLogGroup
+              awslogs-group: !Ref Production2StackLogGroup
               awslogs-stream-prefix: !Ref AWS::StackName
           Environment:
             - Name: DATABASE_HOST
@@ -216,12 +216,12 @@ Resources:
               Value: !Ref cognitoDomainPrefix
             - Name: ENTRA_LOGOUT_URI
               Value: !Ref entraLogoutUri
-  manufacturingEngineeringService:
+  production2Service:
     Type: AWS::ECS::Service
     Properties:
       Tags:
         - Key: "Project"
-          Value: "manufacturing-engineering"
+          Value: "production2"
         - Key: "CIT"
           Value: "IT"
         - Key: AppManagerCFNStackKey
@@ -237,4 +237,4 @@ Resources:
           Type: spread
         - Field: instanceId
           Type: spread
-      TaskDefinition: !Ref manufacturingEngineeringTaskDefinition
+      TaskDefinition: !Ref production2TaskDefinition

@@ -5,7 +5,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Linn.Common.Configuration;
 
-namespace Linn.ManufacturingEngineering.Proxy;
+namespace Linn.Production2.Proxy;
 
 public class MyAuthorisationService : IMyAuthorisationService
 {

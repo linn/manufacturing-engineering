@@ -30,7 +30,7 @@ docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD
 LAST_TRAVIS_BUILD_NUMBER="${LAST_TRAVIS_BUILD_NUMBER:-0}"
 BUILD_NUMBER=$((LAST_TRAVIS_BUILD_NUMBER + GITHUB_RUN_NUMBER))
 
-docker build --no-cache -t linn/manufacturing-engineering:$BUILD_NUMBER --build-arg gitBranch=$GIT_BRANCH ./src/Service.Host/
+docker build --no-cache -t linn/production2:$BUILD_NUMBER --build-arg gitBranch=$GIT_BRANCH ./src/Service.Host/
 
 # push to dockerhub 
-docker push linn/manufacturing-engineering:$BUILD_NUMBER
+docker push linn/production2:$BUILD_NUMBER

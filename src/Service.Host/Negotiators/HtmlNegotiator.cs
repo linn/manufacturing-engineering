@@ -1,4 +1,4 @@
-namespace Linn.ManufacturingEngineering.Service.Host.Negotiators
+namespace Linn.Production2.Service.Host.Negotiators
 {
     using System.Net;
     using System.Threading;
@@ -7,7 +7,7 @@ namespace Linn.ManufacturingEngineering.Service.Host.Negotiators
     using Linn.Common.Configuration;
     using Linn.Common.Rendering;
     using Linn.Common.Service;
-    using Linn.ManufacturingEngineering.Service.Models;
+    using Linn.Production2.Service.Models;
 
     using Microsoft.AspNetCore.Http;
     using Microsoft.Net.Http.Headers;

@@ -2,8 +2,8 @@
 
 	<PropertyGroup>
 		<TargetFramework>net9.0</TargetFramework>
-		<AssemblyName>Linn.ManufacturingEngineering.IoC</AssemblyName>
-		<RootNamespace>Linn.ManufacturingEngineering.IoC</RootNamespace>
+		<AssemblyName>Linn.Production2.IoC</AssemblyName>
+		<RootNamespace>Linn.Production2.IoC</RootNamespace>
 	</PropertyGroup>
 
 	<ItemGroup>

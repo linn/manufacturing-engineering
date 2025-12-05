@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Linn.ManufacturingEngineering.Proxy;
+namespace Linn.Production2.Proxy;
 
 public interface IMyAuthorisationService
 {

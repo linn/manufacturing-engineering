@@ -1,7 +1,7 @@
 {
-  "name": "manufacturing-engineering",
+  "name": "production2",
   "version": "1.0.0",
-  "description": "manufacturing-engineering",
+  "description": "production2",
   "main": "index.js",
   "type": "module",
   "scripts": {

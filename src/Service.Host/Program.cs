@@ -1,4 +1,4 @@
-﻿namespace Linn.ManufacturingEngineering.Service.Host
+﻿namespace Linn.Production2.Service.Host
 {
     using Microsoft.AspNetCore;
     using Microsoft.AspNetCore.Hosting;

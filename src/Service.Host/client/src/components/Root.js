@@ -13,7 +13,7 @@ import NotFoundPage from './NotFoundPage';
 
 function Root() {
     const location = useLocation();
-    const isLoggedOutRoute = location.pathname === '/manufacturing-engineering/logged-out';
+    const isLoggedOutRoute = location.pathname === '/production2/logged-out';
     useSignIn({ disabled: isLoggedOutRoute });
 
     const auth = useAuth();
@@ -54,12 +54,8 @@ function Root() {
             <div>
                 <Navigation />
                 <Routes>
-                    <Route
-                        exact
-                        path="/"
-                        element={<Navigate to="/manufacturing-engineering" replace />}
-                    />
-                    <Route path="/manufacturing-engineering" element={<App />} />
+                    <Route exact path="/" element={<Navigate to="/production2" replace />} />
+                    <Route path="/production2" element={<App />} />
                     <Route
                         path="/manufacturing-engineering/inspections"
                         element={<InspectionsSummary />}
@@ -74,7 +70,7 @@ function Root() {
                         element={<Inspection />}
                     />
                     <Route element={<NotFoundPage />} />
-                    <Route path="/manufacturing-engineering/logged-out" element={<LoggedOut />} />
+                    <Route path="/production2/logged-out" element={<LoggedOut />} />
                     <Route path="*" element={<NotFoundPage />} />
                 </Routes>
             </div>

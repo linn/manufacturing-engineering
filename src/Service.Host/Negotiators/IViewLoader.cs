@@ -1,4 +1,4 @@
-﻿namespace Linn.ManufacturingEngineering.Service.Host.Negotiators
+﻿namespace Linn.Production2.Service.Host.Negotiators
 {
     public interface IViewLoader
     {

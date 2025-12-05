@@ -1,5 +1,5 @@
 using Linn.Common.Scheduling;
-using Linn.ManufacturingEngineering.IoC;
+using Linn.Production2.IoC;
 using Scheduling.Host.Jobs;
 
 IHost host = Host.CreateDefaultBuilder(args)

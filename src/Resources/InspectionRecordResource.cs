@@ -1,4 +1,4 @@
-﻿namespace Linn.ManufacturingEngineering.Resources;
+﻿namespace Linn.Production2.Resources;
 
 using System.Collections.Generic;
 

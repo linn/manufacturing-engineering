@@ -1,10 +1,10 @@
-﻿namespace Linn.ManufacturingEngineering.Persistence.LinnApps.Repositories;
+﻿namespace Linn.Production2.Persistence.LinnApps.Repositories;
 
 using System.Linq;
 using System.Threading.Tasks;
 
 using Linn.Common.Persistence.EntityFramework;
-using Linn.ManufacturingEngineering.Domain.LinnApps;
+using Linn.Production2.Domain.LinnApps;
 using Microsoft.EntityFrameworkCore;
 
 public class InspectionRecordHeaderRepository : EntityFrameworkRepository<InspectionRecordHeader, int>

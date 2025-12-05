@@ -1,4 +1,4 @@
-﻿namespace Linn.ManufacturingEngineering.Service.Modules
+﻿namespace Linn.Production2.Service.Modules
 {
     using Linn.Common.Service;
 

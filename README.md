@@ -1,5 +1,5 @@
-# Manufacturing Engineering
-Data capture and analysis software for the Manufacturing Engineering team at Linn.
+# Production2
+Data capture and analysis software for Production operations at Linn
 
 ## Solution summary
 * Service.Host project provides forms and reporting for existing data and code in the LinnApps Oracle/postgres/delete-as-appropriate database.
@@ -9,7 +9,7 @@ Data capture and analysis software for the Manufacturing Engineering team at Lin
 ## Component technologies
 * The backend services are dotnet core C# apps with minimal third party dependencies.
 * Service.Host uses the .NET minimal API web framework
-* The javascript client app is built with React and managed with npm and webpack.
+* The javascript client app is built with React and managed with npm and vite.
 * Persistence is to an Oracle/postgres/delete-as-appropriate database via EF Core.
 * Continuous deployment via Docker container to AWS ECS using Travis CI.
 * Messaging.Host uses the RabbitMQ C# client to interact with Rabbit Messages Queues
@@ -26,4 +26,9 @@ Data capture and analysis software for the Manufacturing Engineering team at Lin
 * `npm test` to run javascript tests.
 
 ### Routes
-With the current configuration, all requests to app.linn.co.uk/manufacturing-engineering* will be sent to this app via traefik..
+With the current configuration, all requests to 
+app.linn.co.uk/production2*
+app.linn.co.uk/manufacturing-engineering* 
+app.linn.co.uk/serial-numbers* 
+
+will be sent to this app via traefik..

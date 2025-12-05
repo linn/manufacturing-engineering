@@ -1,4 +1,4 @@
-﻿namespace Linn.ManufacturingEngineering.Integration.Tests.InspectionsModuleTests;
+﻿namespace Linn.Production2.Integration.Tests.InspectionsModuleTests;
 
 using System;
 using System.Collections.Generic;
@@ -8,8 +8,8 @@ using System.Net.Http.Json;
 
 using FluentAssertions;
 
-using Linn.ManufacturingEngineering.Domain.LinnApps;
-using Linn.ManufacturingEngineering.Resources;
+using Linn.Production2.Domain.LinnApps;
+using Linn.Production2.Resources;
 
 using NSubstitute;
 
