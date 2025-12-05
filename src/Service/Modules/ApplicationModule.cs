@@ -15,14 +15,14 @@
         public void MapEndpoints(IEndpointRouteBuilder app)
         {
             app.MapGet("/", this.Redirect);
-            app.MapGet("/manufacturing-engineering", this.GetApp);
-            app.MapGet("/manufacturing-engineering/logged-out", this.GetApp);
+            app.MapGet("/production2", this.GetApp);
+            app.MapGet("/production2/logged-out", this.GetApp);
 
         }
 
         private Task Redirect(HttpRequest req, HttpResponse res)
         {
-            res.Redirect("/manufacturing-engineering");
+            res.Redirect("/production2");
             return Task.CompletedTask;
         }
 
